@@ -1,27 +1,27 @@
-PRINTF			= ft_printf/
-LIBFT			= libft/
-ASSEMBLER		= assembler/
-VIRTUAL_MACHINE	= vm/
+PRINTF_PATH		= ft_printf/
+LIBFT_PATH		= libft/
+ASM_PATH		= assembler/
+VM_PATH			= vm/
 
 all: make
 
 make:
-	@make -C $(LIBFT)
-	@make -C $(PRINTF)
-	@make -C $(ASSEMBLER)
-	@make -C $(VIRTUAL_MACHINE)
+	@make -C $(LIBFT_PATH)
+	@make -C $(PRINTF_PATH)
+	@make -C $(ASM_PATH)
+	@make -C $(VM_PATH)
 
 clean:
-	@make -C $(LIBFT) clean
-	@make -C $(PRINTF) clean
-	@make -C $(ASSEMBLER) clean
-	@make -C $(VIRTUAL_MACHINE) clean
+	@make -C $(LIBFT_PATH) clean
+	@make -C $(PRINTF_PATH) clean
+	@make -C $(ASM_PATH) clean
+	@make -C $(VM_PATH) clean
 
 fclean:
-	@make -C $(LIBFT) fclean
-	@make -C $(PRINTF) fclean
-	@make -C $(ASSEMBLER) fclean
-	@make -C $(VIRTUAL_MACHINE) fclean
+	@make -C $(LIBFT_PATH) fclean
+	@make -C $(PRINTF_PATH) fclean
+	@make -C $(ASM_PATH) fclean
+	@make -C $(VM_PATH) fclean
 
 re: fclean all
 
