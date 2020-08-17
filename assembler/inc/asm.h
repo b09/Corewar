@@ -52,6 +52,7 @@
 #define DIRECT_CHAR				'%'
 #define SEPARATOR_CHAR			','
 
+#define N_LABEL_CHARS			37      // needs a recount
 #define LABEL_CHARS				"abcdefghijklmnopqrstuvwxyz_0123456789"
 
 #define NAME_CMD_STRING			".name"
@@ -91,5 +92,14 @@ typedef struct		header_s
   char				comment[COMMENT_LENGTH + 1];
 }					header_t;
 
+/*
+**  Bla
+*/
+
+typedef struct		s_info
+{
+	char            *file_name;
+    t_list          *file_content;
+}					t_info;
 
 #endif
