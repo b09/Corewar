@@ -102,4 +102,17 @@ typedef struct		s_info
     t_list          *file_content;
 }					t_info;
 
+/*
+**  Tokenizer
+*/
+
+typedef struct		s_token
+{
+	char			*token_string;
+	unsigned char	type;
+	unsigned char	start;
+	unsigned char	line;
+	char			value;
+}					t_token;
+
 #endif
