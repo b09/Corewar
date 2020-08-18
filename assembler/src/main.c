@@ -60,17 +60,21 @@ static char *get_name_comment(char *str)
 	return (name);
 }
 
+/*
+** Validates a string by checking each char against list of legal chars
+**
+** Params: str to check
+** Return: TRUE or FALSE
+*/
+
 static int	only_label_chars(char *str)
 {
-	char	label_chars[N_LABEL_CHARS];
-
-	label_chars = ft_strcpy(&label_chars, LABEL_CHARS);
 	while (str)
 	{
 		i = 0;
 		while (i < N_LABEL_CHARS)
 		{
-			if (*str == label_chars[i])
+			if (*str == LABEL_CHARS[i])
 				break ;
 			i++;
 		}
@@ -102,6 +106,8 @@ static int	lexicon_valid(t_info *info)
 		// TODO:
 		// .name and .comment allowed anywhere but top?
 		// check macros in op.h for relevant constants
+		// check if name and comment are set at the end
+		// check if they were set already. Is that allowed?
 		else if (curr->content[0] == '.')
 		{
 			if (ft_memcmp(curr->content, NAME_CMD_STRING, 5) == 0)
