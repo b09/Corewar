@@ -99,15 +99,13 @@ static int	lexicon_valid(t_info *info)
 	while (curr)
 	{
 		// Skip comment
-		if (curr->content[0] == COMMENT_CHAR)
+		if (curr->content[0] == COMMENT_CHAR || curr->content[0] == ';')
 			;
 		// Check that only .name and .comment start with '.'
 		// Store name and content in info.
 		// TODO:
-		// .name and .comment allowed anywhere but top?
-		// check macros in op.h for relevant constants
-		// check if name and comment are set at the end
-		// check if they were set already. Is that allowed?
+		// .name and .comment at the top of the file, order doesn't matter.
+		// can have empty lines in between .name and .comment
 		else if (curr->content[0] == '.')
 		{
 			if (ft_memcmp(curr->content, NAME_CMD_STRING, 5) == 0)

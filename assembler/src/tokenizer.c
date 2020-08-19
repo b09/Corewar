@@ -12,6 +12,14 @@
 
 #include "asm.h"
 
+// static t_hmap   *init_token_hmap(void)
+// {
+//     t_hmap  *token_hmap;
+//
+//     token_hmap = hmap_new(N_TOKENS);
+//
+// }
+
 /*
 **  Duplicates substring from start of str to next whitespace.
 **  Updates *str, starting position of string after extracting current substring.
@@ -26,12 +34,50 @@ static char *get_token_string(char **str, int *start)
 {
     char    *end;
 
+	// TODO: check that separator character doesn't end up together with previous token
     end = *str;
-    while (!ft_isspace(end))
-        end++;
+    if (**str != COMMENT_CHAR && **str != ';')
+    {
+        while (!ft_isspace(end))
+            end++;
+    }
+    else
+    {
+        while (*end != '\n')
+            end++;
+    }
     (*start) = (*start) + (end - *str);
     token_string = ft_strndup(*str, end - *str);
     return (token_string);
+}
+
+static int  get_type(char *str)
+{
+    if (*str == COMMENT_CHAR || *str == ';')
+        return (COMMENT_TYPE);
+    else if (*str == COMMAND_CHAR)
+        return (COMMAND_TYPE);
+    else if (*str == DIRECT_CHAR)
+        return (DIRECT_TYPE);
+	else if (*str == REGISTRY_CHAR)
+        return (REGISTRY_TYPE);
+    else if (*str == LABEL_CHAR)
+        return (INDIRECT_LABEL_TYPE);
+	else if (*str == '-' || ft_isdigit(*str))
+        return (INDIRECT_TYPE);
+	else if (ft_strchr(LABEL_CHARS, *str))
+	{
+		if (str[ft_strlen(str) - 1] == ':')
+        	return (LABEL_TYPE);
+		return (get_opcode(str));
+	}
+    else if (*str == SEPARATOR_CHAR)
+        return (SEPARATOR_TYPE);
+	else if (*str == '\n')
+        return (ENDLINE_TYPE);
+	else if (*str == '"')
+        return (STRING_TYPE);
+	return (-1);
 }
 
 /*
@@ -45,13 +91,16 @@ static char *get_token_string(char **str, int *start)
 
 t_list *tokenize(char *str)
 {
-    static int  line;
-    int         start;
-    t_list      *head;
-    t_token     *token;
+    static int      line;
+    static t_hmap   token_hmap;
+    int             start;
+    t_list          *head;
+    t_token         *token;
 
     line = 1;
     start = 1;
+    // if (token_hmap == NULL)
+    //     token_hmap = init_token_hmap();
     while (str)
     {
         while (*str != '\n' && ft_isspace(*str))
@@ -63,7 +112,7 @@ t_list *tokenize(char *str)
         token->line = line;
         token->start = start;
         token->token_string = get_token_string(&str, &start);
-        token->type = get_token_type(token->token_string, token_hmap);
+        token->type = get_type(token->token_string);
         ft_lstappend(head, ft_lstnew(token));
     }
     line++;

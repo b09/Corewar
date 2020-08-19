@@ -112,7 +112,6 @@ typedef struct		s_token
 	unsigned char	type;
 	unsigned char	start;
 	unsigned char	line;
-	char			value;
 }					t_token;
 
 #endif
