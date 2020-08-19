@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/19 14:15:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/19 14:27:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,6 @@ static char *get_token_string(char **str, int *start)
 
 /*
 **  TOKENS:
-<<<<<<< Updated upstream
-**
-**
-**
-**
-**
-**
-**
-**
-=======
 **	1-20 intructions	
 **	20-29 plain text
 **	30-39 non action signifiers
@@ -83,7 +73,6 @@ static char *get_token_string(char **str, int *start)
 **		50 SEPERATOR
 **		51 ENDLINE
 **	
->>>>>>> Stashed changes
 */
 
 static int  get_type(char *str)
