@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   tokenizer.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>             +#+                   */
+/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/18 15:31:22 by fmiceli       ########   odam.nl         */
+/*   Updated: 2020/08/19 13:56:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,46 @@
 **  Also updates start, the index for starting position.
 **
 **  Params: str, a string starting at the first char of a token.
-            start, the index of the starting character for next token.
+			start, the index of the starting character for next token.
 **  Return: Literal string of a single token.
 */
 
 static char *get_token_string(char **str, int *start)
 {
-    char    *end;
+	char    *end;
 
 	// TODO: check that separator character doesn't end up together with previous token
-    end = *str;
-    if (**str != COMMENT_CHAR && **str != ';')
-    {
-        while (!ft_isspace(end))
-            end++;
-    }
-    else
-    {
-        while (*end != '\n')
-            end++;
-    }
-    (*start) = (*start) + (end - *str);
-    token_string = ft_strndup(*str, end - *str);
-    return (token_string);
+	end = *str;
+	if (**str != COMMENT_CHAR && **str != ';')
+	{
+		while (!ft_isspace(end))
+			end++;
+	}
+	else
+	{
+		while (*end != '\n')
+			end++;
+	}
+	(*start) = (*start) + (end - *str);
+	token_string = ft_strndup(*str, end - *str);
+	return (token_string);
 }
+
+/*
+**  TOKENS:
+**	
+**	
+**	
+**	
+**	
+**	
+**	
+**	
+*/
 
 static int  get_type(char *str)
 {
+<<<<<<< Updated upstream
     if (*str == COMMENT_CHAR || *str == ';')
         return (COMMENT_TKN);
     else if (*str == COMMAND_CHAR)
@@ -77,6 +90,32 @@ static int  get_type(char *str)
         return (ENDLINE_TKN);
 	else if (*str == '"')
         return (STRING_TKN);
+=======
+	if (*str == COMMENT_CHAR || *str == ';')
+		return (COMMENT_TYPE);
+	else if (*str == COMMAND_CHAR)
+		return (COMMAND_TYPE);
+	else if (*str == DIRECT_CHAR)
+		return (DIRECT_TYPE);
+	else if (*str == REGISTRY_CHAR)
+		return (REGISTRY_TYPE);
+	else if (*str == LABEL_CHAR)
+		return (INDIRECT_LABEL_TYPE);
+	else if (*str == '-' || ft_isdigit(*str))
+		return (INDIRECT_TYPE);
+	else if (ft_strchr(LABEL_CHARS, *str))
+	{
+		if (str[ft_strlen(str) - 1] == ':')
+			return (LABEL_TYPE);
+		return (get_opcode(str));
+	}
+	else if (*str == SEPARATOR_CHAR)
+		return (SEPARATOR_TYPE);
+	else if (*str == '\n')
+		return (ENDLINE_TYPE);
+	else if (*str == '"')
+		return (STRING_TYPE);
+>>>>>>> Stashed changes
 	return (-1);
 }
 
@@ -91,30 +130,30 @@ static int  get_type(char *str)
 
 t_list *tokenize(char *str)
 {
-    static int      line;
-    static t_hmap   token_hmap;
-    int             start;
-    t_list          *head;
-    t_token         *token;
+	static int      line;
+	static t_hmap   token_hmap;
+	int             start;
+	t_list          *head;
+	t_token         *token;
 
-    line = 1;
-    start = 1;
-    // if (token_hmap == NULL)
-    //     token_hmap = init_token_hmap();
-    while (str)
-    {
-        while (*str != '\n' && ft_isspace(*str))
-        {
-            start++;
-            str++;
-        }
-        token = (t_token *)ft_memalloc(sizeof(t_token));
-        token->line = line;
-        token->start = start;
-        token->token_string = get_token_string(&str, &start);
-        token->type = get_type(token->token_string);
-        ft_lstappend(head, ft_lstnew(token));
-    }
-    line++;
-    return (head);
+	line = 1;
+	start = 1;
+	// if (token_hmap == NULL)
+	//     token_hmap = init_token_hmap();
+	while (str)
+	{
+		while (*str != '\n' && ft_isspace(*str))
+		{
+			start++;
+			str++;
+		}
+		token = (t_token *)ft_memalloc(sizeof(t_token));
+		token->line = line;
+		token->start = start;
+		token->token_string = get_token_string(&str, &start);
+		token->type = get_type(token->token_string);
+		ft_lstappend(head, ft_lstnew(token));
+	}
+	line++;
+	return (head);
 }
