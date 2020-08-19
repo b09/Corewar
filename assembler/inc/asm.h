@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/14 17:50:19 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/18 19:57:19 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 #define CHAMP_MAX_SIZE			768
 
 #define COMMENT_CHAR			'#'
+#define ALT_COMMENT_CHAR  ';'
 #define LABEL_CHAR				':'
 #define DIRECT_CHAR				'%'
 #define SEPARATOR_CHAR			','

@@ -1,0 +1,23 @@
+.comment on top, can contain empty string
+    length < 2048 (COMMENT_LENGTH)
+    CAN HAVE '/n'
+
+.name on top, can contain empty string
+    length < 128 (PROG_NAME_LENGTH)
+    CANNOT HAVE '/n'
+
+all other .<command> are errors
+
+1 instruction per line
+
+/n means end of instruction
+    last instruction must contain '/n'
+
+comments (not .comment) start with '#' (COMMENT_CHAR)
+
+labels made only from LABEL_CHARS
+    must be followed by ':' (LABEL_CHAR)
+    can be empty (no instructions)
+    point to one single instruction (?)
+    en empty instruction will default to next line's instruction
+
