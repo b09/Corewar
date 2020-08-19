@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/14 17:50:19 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/19 14:07:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,10 @@ typedef struct		s_info
 
 /*
 **  Tokenizer
+**    token_string = raw input string
+**    type = unique integer indentifier 
+**    start = character count from start of line to start of token string
+**    line = line number where token string starts
 */
 
 typedef struct		s_token
