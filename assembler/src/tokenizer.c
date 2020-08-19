@@ -53,19 +53,18 @@ static char *get_token_string(char **str, int *start)
 
 /*
 **  TOKENS:
-**	
-**	
-**	
-**	
-**	
-**	
-**	
-**	
+**
+**
+**
+**
+**
+**
+**
+**
 */
 
 static int  get_type(char *str)
 {
-<<<<<<< Updated upstream
     if (*str == COMMENT_CHAR || *str == ';')
         return (COMMENT_TKN);
     else if (*str == COMMAND_CHAR)
@@ -90,32 +89,6 @@ static int  get_type(char *str)
         return (ENDLINE_TKN);
 	else if (*str == '"')
         return (STRING_TKN);
-=======
-	if (*str == COMMENT_CHAR || *str == ';')
-		return (COMMENT_TYPE);
-	else if (*str == COMMAND_CHAR)
-		return (COMMAND_TYPE);
-	else if (*str == DIRECT_CHAR)
-		return (DIRECT_TYPE);
-	else if (*str == REGISTRY_CHAR)
-		return (REGISTRY_TYPE);
-	else if (*str == LABEL_CHAR)
-		return (INDIRECT_LABEL_TYPE);
-	else if (*str == '-' || ft_isdigit(*str))
-		return (INDIRECT_TYPE);
-	else if (ft_strchr(LABEL_CHARS, *str))
-	{
-		if (str[ft_strlen(str) - 1] == ':')
-			return (LABEL_TYPE);
-		return (get_opcode(str));
-	}
-	else if (*str == SEPARATOR_CHAR)
-		return (SEPARATOR_TYPE);
-	else if (*str == '\n')
-		return (ENDLINE_TYPE);
-	else if (*str == '"')
-		return (STRING_TYPE);
->>>>>>> Stashed changes
 	return (-1);
 }
 
