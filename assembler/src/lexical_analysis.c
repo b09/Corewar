@@ -12,12 +12,20 @@
 
 #include "asm.h"
 
+static int	valid_cmd_tkn(char *str)
+{
+	if (!ft_strequ(str, NAME_CMD_STRING) &&
+		!ft_strequ(str, COMMENT_CMD_STRING))
+		return (FALSE);
+	return (TRUE);
+}
+
 int	valid_token(t_token *token)
 {
 	if (token->type == COMMENT_TKN)
-		;
+		return (TRUE);
 	else if (token->type == COMMAND_TKN)
-		return (FALSE);
+		return (valid_cmd_tkn(token->string));
 	else if (token->type == DIRECT_TKN)
 		return (FALSE);
 	else if (token->type == REGISTRY_TKN)
@@ -36,5 +44,4 @@ int	valid_token(t_token *token)
 		return (FALSE);
 	else if (token->type >= 1 && token->type <= 16)
 		return (FALSE);
-	return (TRUE);
 }
