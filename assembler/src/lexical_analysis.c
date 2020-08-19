@@ -14,9 +14,27 @@
 
 int	valid_token(t_token *token)
 {
-	if (token->type == COMMENT_TYPE)
-		return (TRUE);
-	else if (token->type == COMMAND_TYPE)
-		//
+	if (token->type == COMMENT_TKN)
+		;
+	else if (token->type == COMMAND_TKN)
 		return (FALSE);
+	else if (token->type == DIRECT_TKN)
+		return (FALSE);
+	else if (token->type == REGISTRY_TKN)
+		return (FALSE);
+	else if (token->type == INDIRECT_LABEL_TKN)
+		return (FALSE);
+	else if (token->type == INDIRECT_TKN)
+		return (FALSE);
+	else if (token->type == LABEL_TKN)
+		return (FALSE);
+	else if (token->type == SEPARATOR_TKN)
+		return (FALSE);
+	else if (token->type == ENDLINE_TKN)
+		return (FALSE);
+	else if (token->type == STRING_TKN)
+		return (FALSE);
+	else if (token->type >= 1 && token->type <= 16)
+		return (FALSE);
+	return (TRUE);
 }

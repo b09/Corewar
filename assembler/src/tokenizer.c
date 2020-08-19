@@ -54,29 +54,29 @@ static char *get_token_string(char **str, int *start)
 static int  get_type(char *str)
 {
     if (*str == COMMENT_CHAR || *str == ';')
-        return (COMMENT_TYPE);
+        return (COMMENT_TKN);
     else if (*str == COMMAND_CHAR)
-        return (COMMAND_TYPE);
+        return (COMMAND_TKN);
     else if (*str == DIRECT_CHAR)
-        return (DIRECT_TYPE);
+        return (DIRECT_TKN);
 	else if (*str == REGISTRY_CHAR)
-        return (REGISTRY_TYPE);
+        return (REGISTRY_TKN);
     else if (*str == LABEL_CHAR)
-        return (INDIRECT_LABEL_TYPE);
+        return (INDIRECT_LABEL_TKN);
 	else if (*str == '-' || ft_isdigit(*str))
-        return (INDIRECT_TYPE);
+        return (INDIRECT_TKN);
 	else if (ft_strchr(LABEL_CHARS, *str))
 	{
 		if (str[ft_strlen(str) - 1] == ':')
-        	return (LABEL_TYPE);
+        	return (LABEL_TKN);
 		return (get_opcode(str));
 	}
     else if (*str == SEPARATOR_CHAR)
-        return (SEPARATOR_TYPE);
+        return (SEPARATOR_TKN);
 	else if (*str == '\n')
-        return (ENDLINE_TYPE);
+        return (ENDLINE_TKN);
 	else if (*str == '"')
-        return (STRING_TYPE);
+        return (STRING_TKN);
 	return (-1);
 }
 
