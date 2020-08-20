@@ -36,8 +36,10 @@ static int	read_file(int argc, char **argv, t_info *info)
 	info->file_name = ft_memdup(str, name_len - 1);
 	info->file_name[name_len - 1] = '\0';
 	fd = open(str, O_RDONLY);
+	info->tokens = NULL;
+	info->token_tail = NULL;
 	while (gnl_with_newline(fd, &str) > 0)
-		ft_lstappend(&(info)->file_content, ft_lstnew(str, name_len));
+		tokenize(str, info);
 	return (TRUE);
 }
 
@@ -176,6 +178,3 @@ static char *get_name_comment(char *str);
 **	return: TRUE or FALSE, depending on validity
 */
 static int	read_file(int argc, char **argv, t_info *info);
-
-
-

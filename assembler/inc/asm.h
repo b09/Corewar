@@ -100,7 +100,7 @@ typedef struct		header_s
 typedef struct		s_info
 {
 	char            *file_name;
-    t_list          *file_content;
+    t_token			*tokens;
 }					t_info;
 
 /*
@@ -116,8 +116,8 @@ typedef struct		s_token
 	char			*token_string;
 	struct t_token	*next;
 	int				type;
-	int				start;
-	int				line;
+	int				row;
+	int				col;
 }					t_token;
 
 #endif

@@ -53,31 +53,31 @@ static char *get_token_string(char **str, int *start)
 
 /*
 **  TOKENS:
-**	1-20 intructions	
+**	1-20 intructions
 **	20-29 plain text
 **	30-39 non action signifiers
 **	40-49 arguments
 **	50-59 syntax character
-**	
+**
 **		*20 COMMENT
 **		21 STRING
-**	
+**
 **		*30 COMMAND
 **		31 LABEL
-**	
+**
 **		*40 DIRECT
 **		41 REGISTRY
 **		42 INDIRECT_LABEL
 **		43 INDIRECT
-**	
+**
 **		50 SEPERATOR
 **		51 ENDLINE
-**	
+**
 */
 
 static int	validate_registry_lexical(char *str)
 {
-	
+
 
 	return (FALSE);
 }
@@ -122,36 +122,35 @@ static int  get_type(char *str)
 **
 **  Params: str, a single line from the source retrieved using gnl.
 **                  expected to be sequential.
-**  Return: head of list of new tokens, to be appended to the end of
-**                  the complete list.
+**  Return:
 */
 
-t_token *tokenize(char *str)
+void	tokenize(char *str, t_info *info)
 {
-	static int      line;
-	static t_hmap   token_hmap;
-	int             start;
-	t_token          *head;
+	static int      row;
+	static token	*tail;
+	int             col;
 	t_token         *token;
 
 	line = 1;
 	start = 1;
-	// if (token_hmap == NULL)
-	//     token_hmap = init_token_hmap();
 	while (str)
 	{
 		while (*str != '\n' && ft_isspace(*str))
 		{
-			start++;
+			col++;
 			str++;
 		}
 		token = (t_token *)ft_memalloc(sizeof(t_token));
-		token->line = line;
-		token->start = start;
-		token->token_string = get_token_string(&str, &start);
+		token->row = row;
+		token->col = col;
+		token->token_string = get_token_string(&str, &row);
 		token->type = get_type(token->token_string);
-		ft_lstappend(head, ft_lstnew(token));
+		if (info->tokens == NULL)
+			info->tokens = token;
+		else
+			tail->next = token;
+		tail = token;
 	}
 	line++;
-	return (head);
 }
