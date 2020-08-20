@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/20 17:25:08 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/20 19:11:47 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,12 @@ static int	lexicon_valid(t_info *info)
 		curr = curr->next;
 	}
 }
+
+static int	lexicon_valid2(t_info *info)
+{
+	
+}
+
 
 int			main(int argc, char **argv)
 {
