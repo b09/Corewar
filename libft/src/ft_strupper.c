@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_str_toupper.c                                   :+:    :+:            */
+/*   ft_strupper.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprado <bprado@student.codam.nl>             +#+                     */
+/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/02/05 15:52:31 by bprado        #+#    #+#                 */
-/*   Updated: 2019/02/05 15:52:34 by bprado        ########   odam.nl         */
+/*   Created: 2019/01/13 19:20:02 by fmiceli       #+#    #+#                 */
+/*   Updated: 2019/01/13 19:24:31 by fmiceli       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strupper(const char *str)
+char	*ft_strupper(char *str)
 {
-	int		i;
-	char	*a;
+	int	i;
 
 	i = 0;
-	a = ft_strdup(str);
-	while (str[i] != 0)
+	while (str[i] != '\0')
 	{
-		a[i] = ft_toupper(str[i]);
-		++i;
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] = str[i] - 'a' + 'A';
+		i++;
 	}
-	a[i] = 0;
-	return (a);
+	return (str);
 }

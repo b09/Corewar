@@ -3,18 +3,18 @@
 /*                                                        ::::::::            */
 /*   ft_toupper.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprado <bprado@student.codam.nl>             +#+                     */
+/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/17 17:54:30 by bprado        #+#    #+#                 */
-/*   Updated: 2019/01/18 14:55:26 by bprado        ########   odam.nl         */
+/*   Created: 2019/01/11 16:20:14 by fmiceli       #+#    #+#                 */
+/*   Updated: 2019/01/11 16:28:19 by fmiceli       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_toupper(int c)
+int	ft_toupper(int c)
 {
-	if ((c > 96) && (c < 123))
-		c -= 32;
+	if (ft_islower(c) == TRUE)
+		return (c - 'a' + 'A');
 	return (c);
 }

@@ -105,7 +105,7 @@ typedef struct		s_info
 /*
 **  Tokenizer
 **    token_string = raw input string
-**    type = unique integer indentifier 
+**    type = unique integer indentifier
 **    start = character count from start of line to start of token string
 **    line = line number where token string starts
 */
@@ -113,9 +113,10 @@ typedef struct		s_info
 typedef struct		s_token
 {
 	char			*token_string;
-	unsigned char	type;
-	unsigned char	start;
-	unsigned char	line;
+	t_token			*next;
+	int				type;
+	int				start;
+	int				line;
 }					t_token;
 
 #endif

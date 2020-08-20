@@ -12,14 +12,6 @@
 
 #include "asm.h"
 
-// static t_hmap   *init_token_hmap(void)
-// {
-//     t_hmap  *token_hmap;
-//
-//     token_hmap = hmap_new(N_TOKENS);
-//
-// }
-
 /*
 **  Duplicates substring from start of str to next whitespace.
 **  Updates *str, starting position of string after extracting current substring.
@@ -53,26 +45,26 @@ static char *get_token_string(char **str, int *start)
 
 /*
 **  TOKENS:
-**	1-20 intructions	
+**	1-20 intructions
 **	20-29 plain text
 **	30-39 non action signifiers
 **	40-49 arguments
 **	50-59 syntax character
-**	
+**
 **		20 COMMENT
 **		21 STRING
-**	
+**
 **		30 COMMAND
 **		31 LABEL
-**	
+**
 **		40 DIRECT
 **		41 REGISTRY
 **		42 INDIRECT_LABEL
 **		43 INDIRECT
-**	
+**
 **		50 SEPERATOR
 **		51 ENDLINE
-**	
+**
 */
 
 static int  get_type(char *str)
@@ -116,15 +108,14 @@ static int  get_type(char *str)
 t_list *tokenize(char *str)
 {
 	static int      line;
-	static t_hmap   token_hmap;
 	int             start;
-	t_list          *head;
+	t_token         *head;
+	t_token         *last;
 	t_token         *token;
 
 	line = 1;
 	start = 1;
-	// if (token_hmap == NULL)
-	//     token_hmap = init_token_hmap();
+	head = NULL;
 	while (str)
 	{
 		while (*str != '\n' && ft_isspace(*str))
@@ -137,7 +128,11 @@ t_list *tokenize(char *str)
 		token->start = start;
 		token->token_string = get_token_string(&str, &start);
 		token->type = get_type(token->token_string);
-		ft_lstappend(head, ft_lstnew(token));
+		if (head == NULL)
+			head = token;
+		else
+			last->next = token;
+		last = token;
 	}
 	line++;
 	return (head);

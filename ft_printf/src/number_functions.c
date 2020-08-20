@@ -62,7 +62,7 @@ int		length_of_unsigned(t_pf_object *obj)
 	base = get_base(obj->spc);
 	counter = 1;
 	original_int = obj->val.ll;
-	while ((base > 0) && original_int > (base - 1))
+	while ((base > 0) && (unsigned char)original_int > (base - 1))
 	{
 		original_int /= base;
 		++counter;

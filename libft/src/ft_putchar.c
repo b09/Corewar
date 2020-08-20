@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_putchar.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprado <bprado@student.codam.nl>             +#+                     */
+/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/17 17:47:33 by bprado        #+#    #+#                 */
-/*   Updated: 2019/01/20 18:26:48 by bprado        ########   odam.nl         */
+/*   Created: 2019/01/11 19:13:17 by fmiceli       #+#    #+#                 */
+/*   Updated: 2019/01/11 19:14:38 by fmiceli       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

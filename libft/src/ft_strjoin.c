@@ -3,38 +3,28 @@
 /*                                                        ::::::::            */
 /*   ft_strjoin.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprado <bprado@student.codam.nl>             +#+                     */
+/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/17 17:51:21 by bprado        #+#    #+#                 */
-/*   Updated: 2019/12/13 18:45:09 by bprado        ########   odam.nl         */
+/*   Created: 2019/01/20 18:41:23 by fmiceli       #+#    #+#                 */
+/*   Updated: 2019/01/20 18:46:26 by fmiceli       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char			*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		j;
-	char	*s3;
+	int		len_s1;
+	int		len_s2;
+	char	*str;
 
-	if (!s1 || !s2)
+	len_s1 = ft_strlen(s1);
+	len_s2 = ft_strlen(s2);
+	str = (char *)malloc(len_s1 + len_s2 + 1);
+	if (str == NULL)
 		return (NULL);
-	s3 = (char*)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!s3)
-		return (NULL);
-	j = 0;
-	while (*s1)
-	{
-		s3[j] = *s1;
-		j++;
-		s1++;
-	}
-	while (*s2)
-	{
-		s3[j] = *s2;
-		j++;
-		s2++;
-	}
-	s3[j] = 0;
-	return (s3);
+	ft_memcpy(str, s1, len_s1);
+	ft_memcpy(&str[len_s1], s2, len_s2);
+	str[len_s1 + len_s2] = '\0';
+	return (str);
 }
