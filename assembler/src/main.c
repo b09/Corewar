@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/14 15:48:34 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/19 14:33:15 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static int	lexicon_valid(t_info *info)
 		{
 			if (ft_memcmp(curr->content, NAME_CMD_STRING, 5) == 0)
 				info->name = get_name_comment(curr->content);
-			else if (ft_memcmp(curr->content, COMMENT_CMD_STRING, 8") == 0)
+			else if (ft_memcmp(curr->content, COMMENT_CMD_STRING, 8) == 0)
 				info->comment = get_name_comment(curr->content);
 			else
 				return (FALSE);
