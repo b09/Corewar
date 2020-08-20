@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/19 14:07:46 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/20 17:03:59 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 # include "libft.h"
 # include "ft_printf.h"
+# include <fcntl.h> //for open
 # include <stdbool.h>
 
 
@@ -113,7 +114,7 @@ typedef struct		s_info
 typedef struct		s_token
 {
 	char			*token_string;
-	t_token			*next;
+	struct t_token	*next;
 	int				type;
 	int				start;
 	int				line;
