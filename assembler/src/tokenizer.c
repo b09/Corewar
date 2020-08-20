@@ -6,11 +6,19 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/19 14:27:26 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/20 17:28:31 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+// static t_hmap   *init_token_hmap(void)
+// {
+//     t_hmap  *token_hmap;
+//
+//     token_hmap = hmap_new(N_TOKENS);
+//
+// }
 
 /*
 **  Duplicates substring from start of str to next whitespace.
@@ -45,26 +53,39 @@ static char *get_token_string(char **str, int *start)
 
 /*
 **  TOKENS:
-**	1-20 intructions
+**	1-20 intructions	
 **	20-29 plain text
 **	30-39 non action signifiers
 **	40-49 arguments
 **	50-59 syntax character
-**
-**		20 COMMENT
+**	
+**		*20 COMMENT
 **		21 STRING
-**
-**		30 COMMAND
+**	
+**		*30 COMMAND
 **		31 LABEL
-**
-**		40 DIRECT
+**	
+**		*40 DIRECT
 **		41 REGISTRY
 **		42 INDIRECT_LABEL
 **		43 INDIRECT
-**
+**	
 **		50 SEPERATOR
 **		51 ENDLINE
-**
+**	
+*/
+
+static int	validate_registry_lexical(char *str)
+{
+	
+
+	return (FALSE);
+}
+
+/*
+**	*str arg will be only be token string
+**		ie: arriere:	ld	%-5, r5
+**				-> [arrieere:][ld][%-5][,][r5][\n]
 */
 
 static int  get_type(char *str)
@@ -75,7 +96,7 @@ static int  get_type(char *str)
         return (COMMAND_TKN);
     else if (*str == DIRECT_CHAR)
         return (DIRECT_TKN);
-	else if (*str == REGISTRY_CHAR && str[ft_strlen(str) - 1] != ':')
+	else if (*str == REGISTRY_CHAR) // && ft_atoi(str+1) >= 0
         return (REGISTRY_TKN);
     else if (*str == LABEL_CHAR)
         return (INDIRECT_LABEL_TKN);
@@ -108,14 +129,15 @@ static int  get_type(char *str)
 t_token *tokenize(char *str)
 {
 	static int      line;
+	static t_hmap   token_hmap;
 	int             start;
-	t_token         *head;
-	t_token         *last;
+	t_token          *head;
 	t_token         *token;
 
 	line = 1;
 	start = 1;
-	head = NULL;
+	// if (token_hmap == NULL)
+	//     token_hmap = init_token_hmap();
 	while (str)
 	{
 		while (*str != '\n' && ft_isspace(*str))
@@ -128,11 +150,7 @@ t_token *tokenize(char *str)
 		token->start = start;
 		token->token_string = get_token_string(&str, &start);
 		token->type = get_type(token->token_string);
-		if (head == NULL)
-			head = token;
-		else
-			last->next = token;
-		last = token;
+		ft_lstappend(head, ft_lstnew(token));
 	}
 	line++;
 	return (head);

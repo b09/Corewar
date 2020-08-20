@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/19 14:33:15 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/20 17:25:08 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static int	read_file(int argc, char **argv, t_info *info)
 	info->file_name = ft_memdup(str, name_len - 1);
 	info->file_name[name_len - 1] = '\0';
 	fd = open(str, O_RDONLY);
-	while (get_next_line(fd, *str) > 0)
-		ft_lstappend(info->file_content, *str);
+	while (gnl_with_newline(fd, &str) > 0)
+		ft_lstappend(&(info)->file_content, ft_lstnew(str, name_len));
 	return (TRUE);
 }
 
@@ -52,6 +52,7 @@ static char *get_name_comment(char *str)
 {
 	char	*start;
 	char	*end;
+	char	*name;
 
 	start = ft_strchr(str, '"') + 1;
 	end = ft_strchr(start, '"');
@@ -69,6 +70,9 @@ static char *get_name_comment(char *str)
 
 static int	only_label_chars(char *str)
 {
+	int		i;
+
+	i = 0;
 	while (str)
 	{
 		i = 0;
@@ -93,7 +97,7 @@ static int	only_label_chars(char *str)
 
 static int	lexicon_valid(t_info *info)
 {
-	char	*curr;
+	t_list	*curr;
 
 	curr = info->file_content;
 	while (curr)
@@ -137,3 +141,41 @@ int			main(int argc, char **argv)
 	parse_assembly();
 	return (0);
 }
+
+
+/*
+**	If the lexicon is valid this function stores info->name and info->comment
+**
+**	Params: info struct
+**	Return: TRUE or FALSE depending on validity
+*/
+static int	lexicon_valid(t_info *info);
+
+/*
+** Validates a string by checking each char against list of legal chars
+**
+** Params: str to check
+** Return: TRUE or FALSE
+*/
+static int	only_label_chars(char *str);
+
+/*
+**	Finds quotation marks in a larger string and returns substring.
+**
+**	Params: str that contains "<to_return>"
+**	Return: isolated string <to_return>
+*/
+static char *get_name_comment(char *str);
+
+/*
+**	Checks if file is valid, reads into t_info.
+**	Stores file_name and file_content.
+**	file_name is needed to name final assembly output, ie <file_name>.cor
+**
+**	params: argc, argv, struct with general info for assembler
+**	return: TRUE or FALSE, depending on validity
+*/
+static int	read_file(int argc, char **argv, t_info *info);
+
+
+
