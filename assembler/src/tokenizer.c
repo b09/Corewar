@@ -105,7 +105,7 @@ static int  get_type(char *str)
 **                  the complete list.
 */
 
-t_list *tokenize(char *str)
+t_token *tokenize(char *str)
 {
 	static int      line;
 	int             start;
