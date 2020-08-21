@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/21 11:49:23 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 12:59:08 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,18 @@ typedef struct		s_token
 	int				row;
 	int				col;
 }					t_token;
+
+typedef struct		s_op
+{
+	char			*op_str;
+	int				number_of_args;
+	int				args[3];
+	int				opcode;
+	int				cycles;
+	char			*description;
+	char			encoding;
+	char			label_is_twobytes;
+}
 
 
 void		tokenize(char *str, t_asm *info);
