@@ -153,10 +153,10 @@ static int	lexicon_valid(t_asm *info)
 	curr = info->token_head;
 	while (curr)
 	{
-		if (curr->type == 51)
-			ft_printf("{%d}, {'nl'}\n", curr->type); // remove
-		else
-			ft_printf("{%d}, {%s}\n", curr->type, curr->string); // remove
+		// if (curr->type == 51)
+		// 	ft_printf("{%d}, {'nl'}\n", curr->type); // remove
+		// else
+		// 	ft_printf("{%d}, {%s}\n", curr->type, curr->string); // remove
 		if (valid_token(curr) == FALSE)
 		{
 			ft_putendl_fd("Invalid token", 2);
@@ -166,6 +166,28 @@ static int	lexicon_valid(t_asm *info)
 	}
 	return (TRUE);
 }
+
+static int	syntax_valid(t_asm *asm_obj)
+{
+	t_token	*curr;
+
+	curr = info->token_head;
+	while (curr)
+	{
+		// if (curr->type == 51)
+		// 	ft_printf("{%d}, {'nl'}\n", curr->type); // remove
+		// else
+		// 	ft_printf("{%d}, {%s}\n", curr->type, curr->string); // remove
+		if (valid_syntax(curr) == FALSE)
+		{
+			ft_putendl_fd("Invalid syntax", 2);
+			exit (1);
+		}
+		curr = curr->next;
+	}
+	return (TRUE);
+}
+
 
 int			main(int argc, char **argv)
 {
