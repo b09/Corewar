@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/20 17:28:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 12:20:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,38 @@
 **  Params: str, a string starting at the first char of a token.
 			start, the index of the starting character for next token.
 **  Return: Literal string of a single token.
+**	called by:	tokenize()
 */
 
-static char *get_token_string(char **str, int *start)
+static char *get_token_string(char *str, int *start)
 {
 	char    *end;
+	char	*token_string;
 
 	// TODO: check that separator character doesn't end up together with previous token
-	end = *str;
-	if (**str != COMMENT_CHAR && **str != ';')
+	end = str;
+	if (*str != COMMENT_CHAR && *str != ';')
 	{
-		while (!ft_isspace(end))
+		while (*end && !ft_isspace(*end))
 			end++;
 	}
 	else
 	{
-		while (*end != '\n')
+		while (*end && *end != '\n')
 			end++;
 	}
-	(*start) = (*start) + (end - *str);
-	token_string = ft_strndup(*str, end - *str);
+	(*start) = (*start) + (end - str);
+	token_string = ft_strndup(str, end - str);
 	return (token_string);
 }
 
+
+static int	validate_registry_lexical(char *str)
+{
+
+
+	return (FALSE);
+}
 /*
 **  TOKENS:
 **	1-20 intructions
@@ -59,33 +68,16 @@ static char *get_token_string(char **str, int *start)
 **	40-49 arguments
 **	50-59 syntax character
 **
-**		*20 COMMENT
-**		21 STRING
-**
-**		*30 COMMAND
-**		31 LABEL
-**
-**		*40 DIRECT
-**		41 REGISTRY
-**		42 INDIRECT_LABEL
-**		43 INDIRECT
-**
-**		50 SEPERATOR
-**		51 ENDLINE
-**
 */
 
-static int	validate_registry_lexical(char *str)
-{
-
-
-	return (FALSE);
-}
-
 /*
-**	*str arg will be only be token string
-**		ie: arriere:	ld	%-5, r5
+**	*str argument will only be token string
+**		ex: 
+**			arriere:	ld	%-5, r5
 **				-> [arrieere:][ld][%-5][,][r5][\n]
+**
+**
+**	called by:	tokenize()
 */
 
 static int  get_type(char *str)
@@ -96,7 +88,7 @@ static int  get_type(char *str)
         return (COMMAND_TKN);
     else if (*str == DIRECT_CHAR)
         return (DIRECT_TKN);
-	else if (*str == REGISTRY_CHAR) // && ft_atoi(str+1) >= 0
+	else if (*str == REGISTRY_CHAR)
         return (REGISTRY_TKN);
     else if (*str == LABEL_CHAR)
         return (INDIRECT_LABEL_TKN);
@@ -123,17 +115,20 @@ static int  get_type(char *str)
 **  Params: str, a single line from the source retrieved using gnl.
 **                  expected to be sequential.
 **  Return:
+**
+**	called by:	read_file()
+**
 */
 
-void	tokenize(char *str, t_info *info)
+void	tokenize(char *str, t_asm *info)
 {
 	static int      row;
-	static token	*tail;
+	static t_token	*tail;
 	int             col;
 	t_token         *token;
 
-	line = 1;
-	start = 1;
+	if (!row)
+		row = 1;
 	while (str)
 	{
 		while (*str != '\n' && ft_isspace(*str))
@@ -144,13 +139,13 @@ void	tokenize(char *str, t_info *info)
 		token = (t_token *)ft_memalloc(sizeof(t_token));
 		token->row = row;
 		token->col = col;
-		token->token_string = get_token_string(&str, &row);
-		token->type = get_type(token->token_string);
-		if (info->tokens == NULL)
-			info->tokens = token;
+		token->string = get_token_string(&str, &col);
+		token->type = get_type(token->string);
+		if (info->token_head == NULL)
+			info->token_head = token;
 		else
 			tail->next = token;
 		tail = token;
 	}
-	line++;
+	row++;
 }

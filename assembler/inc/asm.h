@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/20 17:03:59 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 11:49:23 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@
 #define LABEL_CHAR				':'
 #define DIRECT_CHAR				'%'
 #define SEPARATOR_CHAR			','
+#define REGISTRY_CHAR			'r'
+#define COMMAND_CHAR			'.'
+#define ENDLINE_CHAR			'\n'
+#define STRING_CHAR				'"'
 
 #define N_LABEL_CHARS			37      // needs a recount
 #define LABEL_CHARS				"abcdefghijklmnopqrstuvwxyz_0123456789"
@@ -65,6 +69,41 @@
 #define CYCLE_DELTA				50
 #define NBR_LIVE				21
 #define MAX_CHECKS				10
+
+/*
+**  TOKENS:
+**	1-20 intructions
+**	20-29 plain text
+**	30-39 non action signifiers
+**	40-49 arguments
+**	50-59 syntax character
+**
+**		*20 COMMENT
+**		21 STRING
+**
+**		*30 COMMAND
+**		31 LABEL
+**
+**		*40 DIRECT
+**		41 REGISTRY
+**		42 INDIRECT_LABEL
+**		43 INDIRECT
+**
+**		50 SEPARATOR
+**		51 ENDLINE
+**
+*/
+
+#define COMMENT_TKN			20
+#define STRING_TKN			21
+#define COMMAND_TKN			30
+#define LABEL_TKN			31
+#define DIRECT_TKN			40
+#define REGISTRY_TKN		41
+#define INDIRECT_LABEL_TKN	42
+#define INDIRECT_TKN		43
+#define SEPARATOR_TKN		50
+#define ENDLINE_TKN			51
 
 /*
 **
@@ -87,25 +126,26 @@ typedef char	t_arg_type;
 
 typedef struct		header_s
 {
-  unsigned int		magic;
-  char				prog_name[PROG_NAME_LENGTH + 1];
-  unsigned int		prog_size;
-  char				comment[COMMENT_LENGTH + 1];
+	unsigned int		magic;
+	char				prog_name[PROG_NAME_LENGTH + 1];
+	unsigned int		prog_size;
+	char				comment[COMMENT_LENGTH + 1];
 }					header_t;
 
 /*
 **  Bla
 */
 
-typedef struct		s_info
+typedef struct		s_asm
 {
 	char            *file_name;
-    t_token			*tokens;
-}					t_info;
+	struct t_token	*token_head;
+	struct t_token	*token_tail;
+}					t_asm;
 
 /*
 **  Tokenizer
-**    token_string = raw input string
+**    string = raw input string
 **    type = unique integer indentifier
 **    start = character count from start of line to start of token string
 **    line = line number where token string starts
@@ -113,11 +153,16 @@ typedef struct		s_info
 
 typedef struct		s_token
 {
-	char			*token_string;
+	char			*string;
 	struct t_token	*next;
 	int				type;
 	int				row;
 	int				col;
 }					t_token;
+
+
+void		tokenize(char *str, t_asm *info);
+int			valid_token(t_token *token);
+
 
 #endif

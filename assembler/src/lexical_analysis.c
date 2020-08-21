@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   lexical_analysis.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>             +#+                   */
+/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/19 13:56:19 by fmiceli       ########   odam.nl         */
+/*   Updated: 2020/08/21 11:49:29 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static int	valid_nl_tkn(char *str)
 
 static int	valid_str_tkn(char *str)
 {
-	if (*str != STRING_CHAR || str[ft_strlen(str) - 1] != STRING_CHAR))
+	if (*str != STRING_CHAR || str[ft_strlen(str) - 1] != STRING_CHAR)
 		return (FALSE);
 	str++;
 	while (*str != '"')
@@ -124,7 +124,7 @@ static int	valid_str_tkn(char *str)
 	return (TRUE);
 }
 
-int	valid_token(t_token *token)
+int			valid_token(t_token *token)
 {
 	if (token->type == COMMENT_TKN)
 		return (TRUE);
@@ -148,4 +148,5 @@ int	valid_token(t_token *token)
 		return (valid_str_tkn(token->string));
 	else if (token->type >= 1 && token->type <= 16)
 		return (TRUE);
+	return (FALSE);		// bprado, added line to ensure some return
 }
