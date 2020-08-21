@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/21 16:25:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 16:48:32 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,10 +189,12 @@ void	tokenize(char *str, t_asm *info)
 	t_token         *token;
 	int		ch;
 
+	printf("entering tokenize(), row:%d\n", row);
+	col = 1;
 	if (!row)
 		row = 1;
 	ft_printf("Tokenizing input.\n"); //remove
-	while (str)
+	while (*str)
 	{
 
 		while ((ch = getchar()) != '\n' && ch != EOF)
@@ -201,11 +203,13 @@ void	tokenize(char *str, t_asm *info)
 		{
 			col++;
 			str++;
+			printf("str: %s %p		col:%d\n", str, str, col);
 		}
 		token = (t_token *)ft_memalloc(sizeof(t_token));
 		token->row = row;
 		token->col = col;
 		token->string = get_token_string(str, &col);
+		printf("str addr:%p\n", str);
 		str += ft_strlen(token->string);
 		token->type = get_type(token->string);
 		if (info->token_head == NULL)
@@ -213,6 +217,8 @@ void	tokenize(char *str, t_asm *info)
 		else
 			tail->next = token;
 		tail = token;
+		if (*str == '\n')
+			break ;
 		ft_printf("{%d}, {%s}\n", token->type, token->string); // remove
 	}
 	row++;
