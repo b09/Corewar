@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/21 12:20:26 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 12:35:59 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,12 @@ static int  get_type(char *str)
 	else if (*str == '"')
         return (STRING_TKN);
 	return (-1);
+}
+
+int		get_opcode(char *str)
+{
+	// finishi function
+	return (1);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/21 12:15:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 12:41:01 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,7 @@ static int	read_file(int argc, char **argv, t_asm *info)
 	name_len = ft_strlen(str);
 	if (name_len <= 2 || str[name_len - 2] != '.' || str[name_len - 1] != 's')
 		return (FALSE);
-	/*	bprado:
-		why use ft_memdup and why name_len - 1 ?
-
-			info->file_name = ft_memdup(str, name_len - 1);
-			info->file_name[name_len - 1] = '\0';
-	*/
-	info->file_name = ft_strdup(str);
+	info->file_name = ft_strndup(str, name_len);
 	fd = open(str, O_RDONLY);
 	while (gnl_with_newline(fd, &str) > 0)
 		tokenize(str, info);
@@ -76,20 +70,21 @@ static int	read_file(int argc, char **argv, t_asm *info)
 **	called by:	
 */
 
-// static int	only_label_chars(char *str)
-// {
-// 	while (str)
-// 	{
-// 		if (ft_strchr(LABEL_CHARS, *str) == NULL)
-// 			return (FALSE);
-// 		++str;
-// 	}
-// 	return (TRUE);
-// }
+static int	only_label_chars(char *str)
+{
+	while (str)
+	{
+		if (ft_strchr(LABEL_CHARS, *str) == NULL)
+			return (FALSE);
+		++str;
+	}
+	return (TRUE);
+}
 
 /* bprado
 	simplified func() through use of ft_strchr
 	original below:
+*/
 
 	static int	only_label_chars(char *str)
 	{
@@ -110,7 +105,6 @@ static int	read_file(int argc, char **argv, t_asm *info)
 		}
 		return (TRUE);
 	}
-*/
 
 /*
 **	If the lexicon is valid this function stores info->name and info->comment
