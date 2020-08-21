@@ -57,6 +57,7 @@
 #define ENDLINE_CHAR			'\n'
 #define STRING_CHAR				'"'
 
+#define N_OPCODES				16
 #define N_LABEL_CHARS			37      // needs a recount
 #define LABEL_CHARS				"abcdefghijklmnopqrstuvwxyz_0123456789"
 

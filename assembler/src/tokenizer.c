@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/21 14:53:19 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 14:55:54 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,23 @@ t_op    op_tab[17] =
 
 static char *get_token_string(char *str, int *col)
 {
-	char    *end;
+	char    *curr;
 	char	*token_string;
 
 	// TODO: check that separator character doesn't end up together with previous token
-	end = str;
-	if (*str != COMMENT_CHAR && *str != ';')
+	curr = str;
+	if (*curr != COMMENT_CHAR && *curr != ';')
 	{
-		while (*end && !ft_isspace(*end))
-			end++;
+		while (*curr && !ft_isspace(*curr))
+			curr++;
 	}
 	else
 	{
-		while (*end && *end != '\n')
-			end++;
+		while (*curr && *curr != '\n')
+			curr++;
 	}
-	(*col) = (*col) + (end - str);
-	token_string = ft_strndup(str, end - str);
+	(*col) = (*col) + (curr - str);
+	token_string = ft_strndup(str, curr - str);
 	return (token_string);
 }
 
@@ -99,6 +99,21 @@ static char *get_token_string(char *str, int *col)
 **	50-59 syntax character
 **
 */
+
+static int		get_opcode(char *str)
+{
+	char	i;
+
+	i = 0;
+
+	while (i < N_OPCODES)
+	{
+		if (ft_strequ(str, op_tab[i].op_str))
+			return(op_tab[i].opcode);
+		++i;
+	}
+	return (0);
+}
 
 /*
 **	*str argument will only be token string
@@ -139,22 +154,6 @@ static int  get_type(char *str)
 	return (-1);
 }
 
-int		get_opcode(char *str)
-{
-	char	i;
-
-	i = 0;
-
-	while (op_tab[i])
-	{
-		if (ft_strequ(str, op_tab[i].op_str))
-			return(op_tab[i].opcode);
-		++i;
-	}
-	return (0);
-}
-
-
 void	print_asm_obj(t_asm *asm)
 {
 	t_token *tokens;
@@ -193,6 +192,7 @@ void	tokenize(char *str, t_asm *info)
 
 	if (!row)
 		row = 1;
+	ft_printf("Tokenizing input.\n"); //remove
 	while (str)
 	{
 		while (*str != '\n' && ft_isspace(*str))
@@ -204,12 +204,14 @@ void	tokenize(char *str, t_asm *info)
 		token->row = row;
 		token->col = col;
 		token->string = get_token_string(str, &col);
+		str += ft_strlen(token->string);
 		token->type = get_type(token->string);
 		if (info->token_head == NULL)
 			info->token_head = token;
 		else
 			tail->next = token;
 		tail = token;
+		ft_printf("{%d}, {%s}\n", token->type, token->string); // remove
 	}
 	row++;
 }

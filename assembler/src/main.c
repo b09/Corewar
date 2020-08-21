@@ -151,9 +151,15 @@ static int	lexicon_valid(t_asm *info)
 	t_token	*curr;
 
 	curr = info->token_head;
+	ft_printf("Validating lexicon\n"); //remove
 	while (curr)
 	{
-		ft_printf("{%d}, {%s}\n", curr->type, curr->string);
+		ft_printf("{%d}, {%s}\n", curr->type, curr->string); //remove
+		if (valid_token(curr) == FALSE)
+		{
+			ft_putendl_fd("Invalid token", 2);
+			exit (1);
+		}
 		curr = curr->next;
 	}
 	return (TRUE);
