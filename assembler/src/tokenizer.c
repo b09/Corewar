@@ -12,8 +12,22 @@
 
 #include "asm.h"
 
-void	print_asm_obj(t_asm *asm);
+void	print_asm_obj(t_asm *asm_obj)
+{
+	t_token *tokens;
 
+	tokens = asm_obj->token_head;
+	ft_printf("file_name: [%s]", asm_obj->file_name);
+	while (tokens != asm_obj->token_tail)
+	{
+		ft_printf("t string: %s\n", tokens->string);
+		ft_printf("t type: %s\n", tokens->type);
+		ft_printf("t row: %s\n", tokens->row);
+		ft_printf("t col: %s\n", tokens->col);
+		ft_printf("end of current token\n\n");
+		tokens = tokens->next;
+	}
+}
 
 t_op    op_tab[17] =
 {
@@ -152,23 +166,6 @@ static int  get_type(char *str)
 	else if (*str == '"')
         return (STRING_TKN);
 	return (-1);
-}
-
-void	print_asm_obj(t_asm *asm)
-{
-	t_token *tokens;
-
-	tokens = asm->token_head;
-	ft_printf("file_name: [%s]", asm->file_name);
-	while (tokens != asm->token_tail)
-	{
-		ft_printf("t string: %s\n", tokens->string);
-		ft_printf("t type: %s\n", tokens->type);
-		ft_printf("t row: %s\n", tokens->row);
-		ft_printf("t col: %s\n", tokens->col);
-		ft_printf("end of current token\n\n");
-		tokens = tokens->next;
-	}
 }
 
 /*

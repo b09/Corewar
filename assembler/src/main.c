@@ -173,7 +173,7 @@ int			main(int argc, char **argv)
 	// read_file(argc, argv, &asm_obj);
 	if (read_file(argc, argv, &asm_obj) == FALSE)
 		return (1);
-	lexicon_valid(&asm_obj);
+	// lexicon_valid(&asm_obj);
 	// syntax_valid();
 	// instructions_valid();
 	// params_valid();
