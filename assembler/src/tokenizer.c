@@ -6,11 +6,12 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/21 14:55:54 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 16:25:31 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include <curses.h>
 
 void	print_asm_obj(t_asm *asm_obj)
 {
@@ -186,12 +187,16 @@ void	tokenize(char *str, t_asm *info)
 	static t_token	*tail;
 	int             col;
 	t_token         *token;
+	int		ch;
 
 	if (!row)
 		row = 1;
 	ft_printf("Tokenizing input.\n"); //remove
 	while (str)
 	{
+
+		while ((ch = getchar()) != '\n' && ch != EOF)
+    		continue;
 		while (*str != '\n' && ft_isspace(*str))
 		{
 			col++;
