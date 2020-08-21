@@ -6,11 +6,13 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/21 13:08:39 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/21 14:53:19 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+void	print_asm_obj(t_asm *asm);
 
 
 t_op    op_tab[17] =
@@ -152,6 +154,24 @@ int		get_opcode(char *str)
 	return (0);
 }
 
+
+void	print_asm_obj(t_asm *asm)
+{
+	t_token *tokens;
+
+	tokens = asm->token_head;
+	ft_printf("file_name: [%s]", asm->file_name);
+	while (tokens != asm->token_tail)
+	{
+		ft_printf("t string: %s\n", tokens->string);
+		ft_printf("t type: %s\n", tokens->type);
+		ft_printf("t row: %s\n", tokens->row);
+		ft_printf("t col: %s\n", tokens->col);
+		ft_printf("end of current token\n\n");
+		tokens = tokens->next;
+	}
+}
+
 /*
 **  Tokenizes one line of asm.
 **
@@ -162,6 +182,7 @@ int		get_opcode(char *str)
 **	called by:	read_file()
 **
 */
+
 
 void	tokenize(char *str, t_asm *info)
 {
