@@ -139,8 +139,8 @@ typedef struct		header_s
 typedef struct		s_asm
 {
 	char            *file_name;
-	struct t_token	*token_head;
-	struct t_token	*token_tail;
+	struct s_token	*token_head;
+	struct s_token	*token_tail;
 }					t_asm;
 
 /*
@@ -154,7 +154,7 @@ typedef struct		s_asm
 typedef struct		s_token
 {
 	char			*string;
-	struct t_token	*next;
+	struct s_token	*next;
 	int				type;
 	int				row;
 	int				col;
@@ -170,7 +170,7 @@ typedef struct		s_op
 	char			*description;
 	char			encoding;
 	char			label_is_twobytes;
-}
+}					t_op;
 
 
 void		tokenize(char *str, t_asm *info);

@@ -59,7 +59,7 @@ t_op    op_tab[17] =
 **	called by:	tokenize()
 */
 
-static char *get_token_string(char *str, int *start)
+static char *get_token_string(char *str, int *col)
 {
 	char    *end;
 	char	*token_string;
@@ -76,18 +76,18 @@ static char *get_token_string(char *str, int *start)
 		while (*end && *end != '\n')
 			end++;
 	}
-	(*start) = (*start) + (end - str);
+	(*col) = (*col) + (end - str);
 	token_string = ft_strndup(str, end - str);
 	return (token_string);
 }
 
 
-static int	validate_registry_lexical(char *str)
-{
-
-
-	return (FALSE);
-}
+// static int	validate_registry_lexical(char *str)
+// {
+//
+//
+// 	return (FALSE);
+// }
 /*
 **  TOKENS:
 **	1-20 intructions
@@ -100,7 +100,7 @@ static int	validate_registry_lexical(char *str)
 
 /*
 **	*str argument will only be token string
-**		ex: 
+**		ex:
 **			arriere:	ld	%-5, r5
 **				-> [arrieere:][ld][%-5][,][r5][\n]
 **
@@ -182,7 +182,7 @@ void	tokenize(char *str, t_asm *info)
 		token = (t_token *)ft_memalloc(sizeof(t_token));
 		token->row = row;
 		token->col = col;
-		token->string = get_token_string(&str, &col);
+		token->string = get_token_string(str, &col);
 		token->type = get_type(token->string);
 		if (info->token_head == NULL)
 			info->token_head = token;

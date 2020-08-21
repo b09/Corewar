@@ -46,7 +46,7 @@ static int	read_file(int argc, char **argv, t_asm *info)
 **
 **	Params:		str that contains "... <to_return> ..."
 **	Return:		isolated string "<to_return>""
-**	called by:	
+**	called by:
 */
 
 // static char *get_name_comment(char *str)
@@ -67,7 +67,7 @@ static int	read_file(int argc, char **argv, t_asm *info)
 **
 **	Params:		str to check
 **	Return:		TRUE or FALSE
-**	called by:	
+**	called by:
 */
 
 static int	only_label_chars(char *str)
@@ -86,25 +86,25 @@ static int	only_label_chars(char *str)
 	original below:
 */
 
-	static int	only_label_chars(char *str)
-	{
-		int		i;
-
-		i = 0;
-		while (str)
-		{
-			i = 0;
-			while (i < N_LABEL_CHARS)
-			{
-				if (*str == LABEL_CHARS[i])
-					break ;
-				i++;
-			}
-			if (i > N_LABEL_CHARS)
-				return (FALSE);
-		}
-		return (TRUE);
-	}
+// static int	only_label_chars(char *str)
+// {
+// 	int		i;
+//
+// 	i = 0;
+// 	while (str)
+// 	{
+// 		i = 0;
+// 		while (i < N_LABEL_CHARS)
+// 		{
+// 			if (*str == LABEL_CHARS[i])
+// 				break ;
+// 			i++;
+// 		}
+// 		if (i > N_LABEL_CHARS)
+// 			return (FALSE);
+// 	}
+// 	return (TRUE);
+// }
 
 /*
 **	If the lexicon is valid this function stores info->name and info->comment
@@ -146,6 +146,19 @@ static int	only_label_chars(char *str)
 // 	}
 // }
 
+static int	lexicon_valid(t_asm *info)
+{
+	t_token	*curr;
+
+	curr = info->token_head;
+	while (curr)
+	{
+		ft_printf("{%d}, {%s}\n", curr->type, curr->string);
+		curr = curr->next;
+	}
+	return (TRUE);
+}
+
 int			main(int argc, char **argv)
 {
 	t_asm	asm_obj;
@@ -154,7 +167,7 @@ int			main(int argc, char **argv)
 	// read_file(argc, argv, &asm_obj);
 	if (read_file(argc, argv, &asm_obj) == FALSE)
 		return (1);
-	// lexicon_valid(&asm_obj);
+	lexicon_valid(&asm_obj);
 	// syntax_valid();
 	// instructions_valid();
 	// params_valid();
@@ -162,7 +175,7 @@ int			main(int argc, char **argv)
 	return (0);
 }
 
-static int	lexicon_valid(t_asm *info);
+// static int	lexicon_valid(t_asm *info);
 
 static int	only_label_chars(char *str);
 
