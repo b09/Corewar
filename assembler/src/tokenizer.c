@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "asm.h"
-#include <curses.h>
 
 void	print_asm_obj(t_asm *asm_obj)
 {
@@ -83,7 +82,20 @@ static char *get_token_string(char *str, int *col)
 
 	// TODO: check that separator character doesn't end up together with previous token
 	curr = str;
-	if (*curr != COMMENT_CHAR && *curr != ';')
+	if (*str == '\n')
+	{
+		(*col)++;
+		return (ft_strdup("\n"));
+	}
+	if (*str == '"')
+	{
+		curr++;
+		while (*curr && *curr != '"')
+			curr++;
+		if (*curr == '"')
+			curr++;
+	}
+	else if (*curr != COMMENT_CHAR && *curr != ';')
 	{
 		while (*curr && !ft_isspace(*curr))
 			curr++;
@@ -187,29 +199,24 @@ void	tokenize(char *str, t_asm *info)
 	static t_token	*tail;
 	int             col;
 	t_token         *token;
-	int		ch;
 
-	printf("entering tokenize(), row:%d\n", row);
+	// printf("entering tokenize(), row:%d\n", row);
 	col = 1;
 	if (!row)
 		row = 1;
-	ft_printf("Tokenizing input.\n"); //remove
 	while (*str)
 	{
-
-		while ((ch = getchar()) != '\n' && ch != EOF)
-    		continue;
 		while (*str != '\n' && ft_isspace(*str))
 		{
 			col++;
 			str++;
-			printf("str: %s %p		col:%d\n", str, str, col);
+			// printf("str: %s %p		col:%d\n", str, str, col);
 		}
 		token = (t_token *)ft_memalloc(sizeof(t_token));
 		token->row = row;
 		token->col = col;
 		token->string = get_token_string(str, &col);
-		printf("str addr:%p\n", str);
+		// printf("str addr:%p\n", str);
 		str += ft_strlen(token->string);
 		token->type = get_type(token->string);
 		if (info->token_head == NULL)
@@ -217,9 +224,12 @@ void	tokenize(char *str, t_asm *info)
 		else
 			tail->next = token;
 		tail = token;
-		if (*str == '\n')
-			break ;
-		ft_printf("{%d}, {%s}\n", token->type, token->string); // remove
+		// if (*str == '\n')
+		// 	break ;
+		// if (token->type == 51)
+		// 	ft_printf("{%d}, {'nl'}\n", token->type); // remove
+		// else
+		// 	ft_printf("{%d}, {%s}\n", token->type, token->string); // remove
 	}
 	row++;
 }

@@ -151,10 +151,12 @@ static int	lexicon_valid(t_asm *info)
 	t_token	*curr;
 
 	curr = info->token_head;
-	ft_printf("Validating lexicon\n"); //remove
 	while (curr)
 	{
-		ft_printf("{%d}, {%s}\n", curr->type, curr->string); //remove
+		if (curr->type == 51)
+			ft_printf("{%d}, {'nl'}\n", curr->type); // remove
+		else
+			ft_printf("{%d}, {%s}\n", curr->type, curr->string); // remove
 		if (valid_token(curr) == FALSE)
 		{
 			ft_putendl_fd("Invalid token", 2);
@@ -173,7 +175,7 @@ int			main(int argc, char **argv)
 	// read_file(argc, argv, &asm_obj);
 	if (read_file(argc, argv, &asm_obj) == FALSE)
 		return (1);
-	// lexicon_valid(&asm_obj);
+	lexicon_valid(&asm_obj);
 	// syntax_valid();
 	// instructions_valid();
 	// params_valid();
