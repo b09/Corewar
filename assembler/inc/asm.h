@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/21 12:59:08 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/23 16:05:24 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,6 @@ typedef struct		s_op
 
 void		tokenize(char *str, t_asm *info);
 int			valid_token(t_token *token);
-
+int			valid_syntax(t_asm *asm_obj);
 
 #endif

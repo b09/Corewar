@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/23 15:56:03 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/23 16:02:45 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static char *get_token_string(char *str, int *col)
 
 /*
 **	Finds correct operation code for assembly intruction defined in *str.
-**	Searches in array of t_op structs which are the list of legal instructions
+**	Searches in array of t_op structs which list legal instructions
 **	
 **  Params:	
 **			char *str	==> parsed string provided by get_token_string()

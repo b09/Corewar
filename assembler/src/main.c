@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/21 12:41:01 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/23 16:25:50 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,23 @@
 **	Stores file_name and file_content.
 **	file_name is needed to name final assembly output, ie <file_name>.cor
 **
-**	Params: 	argc, argv, struct with general info for assembler
-**	Return: 	TRUE or FALSE, depending on validity
-**	called by:	main()
+**	Rules:
+**			Only one argument (file name)
+**			File name must end ".s"
+**
+**  Params:
+**			char **argv	==> main() args
+**			int	argc	==> main() args
+**			t_asm info	==> main assembler struct
+**
+**	Notes:
+**			gnl_with_newline() will include '\n' in str
+**
+**  Return:
+**			FALSE (0)= invalid file
+**			TRUE (1) = valid file
+**
+**	Called by:	main()
 */
 
 static int	read_file(int argc, char **argv, t_asm *info)
@@ -44,30 +58,40 @@ static int	read_file(int argc, char **argv, t_asm *info)
 /*
 **	Finds quotation marks in a larger string and returns substring.
 **
-**	Params:		str that contains "... <to_return> ..."
-**	Return:		isolated string "<to_return>""
-**	called by:
+**  Params:	
+**			char *str	==> contains "... <to_return> ..."
+**	
+**  Return:
+**			isolated string "<to_return>"
+**	
+**	Called by:	none
 */
 
-// static char *get_name_comment(char *str)
-// {
-// 	char	*start;
-// 	char	*end;
-// 	char	*name;
+static char *get_name_comment(char *str)
+{
+	char	*start;
+	char	*end;
+	char	*name;
 
-// 	start = ft_strchr(str, '"') + 1;
-// 	end = ft_strchr(start, '"');
-// 	name = ft_memdup(start, end - start);
-// 	name[end - start - 1] = '\n';
-// 	return (name);
-// }
+	start = ft_strchr(str, '"') + 1;
+	end = ft_strchr(start, '"');
+	name = ft_memdup(start, end - start);
+	name[end - start - 1] = '\n';
+	return (name);
+}
+
 
 /*
-**	Validates a string by checking each char against list of legal chars
+**	Validates string by checking each char against list of legal chars
 **
-**	Params:		str to check
-**	Return:		TRUE or FALSE
-**	called by:
+**  Params:	
+**			char *str	==> string from a LABEL type token
+**	
+**  Return:
+**			FALSE (0)= invalid str
+*			TRUE (1) = valid str
+**	
+**	Called by:	none
 */
 
 static int	only_label_chars(char *str)
@@ -80,31 +104,6 @@ static int	only_label_chars(char *str)
 	}
 	return (TRUE);
 }
-
-/* bprado
-	simplified func() through use of ft_strchr
-	original below:
-*/
-
-// static int	only_label_chars(char *str)
-// {
-// 	int		i;
-//
-// 	i = 0;
-// 	while (str)
-// 	{
-// 		i = 0;
-// 		while (i < N_LABEL_CHARS)
-// 		{
-// 			if (*str == LABEL_CHARS[i])
-// 				break ;
-// 			i++;
-// 		}
-// 		if (i > N_LABEL_CHARS)
-// 			return (FALSE);
-// 	}
-// 	return (TRUE);
-// }
 
 /*
 **	If the lexicon is valid this function stores info->name and info->comment
@@ -167,26 +166,27 @@ static int	lexicon_valid(t_asm *info)
 	return (TRUE);
 }
 
-static int	syntax_valid(t_asm *asm_obj)
-{
-	t_token	*curr;
+//	********* DO NOT DELETE, COMMENTED OUT FOR COMPILATION ******
+// static int	syntax_valid(t_asm *asm_obj)
+// {
+// 	t_token	*curr;
 
-	curr = info->token_head;
-	while (curr)
-	{
-		// if (curr->type == 51)
-		// 	ft_printf("{%d}, {'nl'}\n", curr->type); // remove
-		// else
-		// 	ft_printf("{%d}, {%s}\n", curr->type, curr->string); // remove
-		if (valid_syntax(curr) == FALSE)
-		{
-			ft_putendl_fd("Invalid syntax", 2);
-			exit (1);
-		}
-		curr = curr->next;
-	}
-	return (TRUE);
-}
+// 	curr = asm_obj->token_head;
+// 	while (curr)
+// 	{
+// 		// if (curr->type == 51)
+// 		// 	ft_printf("{%d}, {'nl'}\n", curr->type); // remove
+// 		// else
+// 		// 	ft_printf("{%d}, {%s}\n", curr->type, curr->string); // remove
+// 		if (valid_syntax(curr) == FALSE)
+// 		{
+// 			ft_putendl_fd("Invalid syntax", 2);
+// 			exit (1);
+// 		}
+// 		curr = curr->next;
+// 	}
+// 	return (TRUE);
+// }
 
 
 int			main(int argc, char **argv)
@@ -205,10 +205,3 @@ int			main(int argc, char **argv)
 	return (0);
 }
 
-// static int	lexicon_valid(t_asm *info);
-
-static int	only_label_chars(char *str);
-
-static char *get_name_comment(char *str);
-
-static int	read_file(int argc, char **argv, t_asm *info);
