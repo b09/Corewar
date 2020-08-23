@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/21 16:48:32 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/23 15:08:34 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,47 +68,147 @@ t_op    op_tab[17] =
 **  Duplicates substring from start of str to next whitespace.
 **  Updates *str, starting position of string after extracting current substring.
 **  Also updates start, the index for starting position.
+**	*col is the character count for that line, (one more than char index)
+**	*col's incremented value is for the next token, not current
 **
 **  Params: str, a string starting at the first char of a token.
 			start, the index of the starting character for next token.
+**	Initial whitespace jumped over before *str arrives to func()
 **  Return: Literal string of a single token.
 **	called by:	tokenize()
 */
 
 static char *get_token_string(char *str, int *col)
 {
-	char    *curr;
-	char	*token_string;
+	int		i;
 
-	// TODO: check that separator character doesn't end up together with previous token
-	curr = str;
-	if (*str == '\n')
+	i = 0;
+	if (ft_strchr("\n,\"*;", *str))
+		i++;
+	if (*str == '"' || *str == '#' || *str == ';')
 	{
-		(*col)++;
-		return (ft_strdup("\n"));
-	}
-	if (*str == '"')
-	{
-		curr++;
-		while (*curr && *curr != '"')
-			curr++;
-		if (*curr == '"')
-			curr++;
-	}
-	else if (*curr != COMMENT_CHAR && *curr != ';')
-	{
-		while (*curr && !ft_isspace(*curr))
-			curr++;
+		i = ft_strchr_int(&str[i], *str == '"' ? '"' : '\n');
+		if (i == -1)
+			return (NULL);
+		++i;
 	}
 	else
 	{
-		while (*curr && *curr != '\n')
-			curr++;
+		while (str[i] && ft_isspace(str[i]) == FALSE && str[i] != ',')
+			++i;
+			
 	}
-	(*col) = (*col) + (curr - str);
-	token_string = ft_strndup(str, curr - str);
-	return (token_string);
+	*col += i;
+	return (ft_strndup(str, i));
 }
+// static char *get_token_string(char *str, int *col)
+// {
+// 	char    *curr;
+// 	char	*token_string;
+// 	int		i;
+// 	// TODO: check that separator character doesn't end up together with previous token
+// 	curr = str;
+
+// 	/*
+
+// 	<.name> until space found or newline
+// 	<"Candy"> until '"' found
+// 	<# some comment> from # until newline
+
+// 	.name "Candy"
+// 	.comment "content"
+
+// 		st		r1, r12
+// 		ld      %0 , r14
+// 		zjmp    %:base
+
+// 	def:
+// 		st		r9, -256
+// 		st		r10, -256
+
+// 	*/
+// 	// if first character NEWLINE(\n) or COMMA(,)
+// 	// if (*str == '\n' || *str == ',')
+// 	// {
+// 	// 	(*col)++;
+// 	// 	return (*str == '\n' ? ft_strdup("\n") : ft_strdup(","));
+// 	// }
+
+// 	if (ft_strchr("\n,\"*;", *str))
+// 		i++;
+
+// 	// if (*str == '\n' || *str == ',')
+// 	// 	i++;
+
+// 	else if (*str == '"' || *str == '#' || *str == ';')
+// 	{
+// 		i = ft_strchr_int(str + 1, *str == '"' ? '"' : '\n');
+// 		if (i == -1)
+// 			return (NULL);
+// 		++i; // ft_strchr_int returns index, so must increase by one
+// 		// return (ft_strndup(str, i + 1));
+// 	}
+
+// 	// else if (*str == '"')
+// 	// {
+// 	// 	i = ft_strchr_int(str + 1, '"');
+// 	// 	if (i == -1)
+// 	// 		return (NULL);
+// 	// 	return (ft_strndup(str, i + 1));
+// 	// }
+
+// 	// else if (*str == '#' || *str == ';')
+// 	// {
+// 	// 	i = ft_strchr_int(str + 1, '\n');
+// 	// 	if (i == -1)
+// 	// 		return (NULL);
+// 	// 	return (ft_strndup(str, i + 1));
+// 	// }
+
+// 	else
+// 	{
+// 		while (str[i] && ft_isspace(str[i]) == FALSE && str[i] != ',')
+// 			++i;
+			
+// 	}
+
+// 	*col += i;
+// 	token_string = ft_strndup(str, i);
+// 	return (token_string);
+
+
+
+
+
+// 	else if (*curr != COMMENT_CHAR && *curr != ';')
+// 	{
+// 		i = ft_strchr_int(str + 1, *str == '"' ? '"' : '/n');
+// 		if (i == -1)
+// 			return (NULL);
+// 		return (ft_strndup(str, i + 1));
+// 	}
+
+
+// 	if (*str == '"')
+// 	{
+// 		curr++;
+// 		while (*curr && *curr != '"')
+// 			curr++;
+// 		if (*curr == '"')
+// 			curr++;
+// 	}
+// 	else
+// 	{
+// 		while (*curr && *curr != '\n')
+// 		{
+// 			curr++;
+// 			i++;
+// 		}
+// 	}
+// 	*col += i;
+// 	token_string = ft_strndup(str, i);
+// 	return (token_string);
+// }
 
 
 // static int	validate_registry_lexical(char *str)
@@ -199,6 +299,7 @@ void	tokenize(char *str, t_asm *info)
 	static t_token	*tail;
 	int             col;
 	t_token         *token;
+	// int		ch;
 
 	// printf("entering tokenize(), row:%d\n", row);
 	col = 1;
@@ -206,6 +307,9 @@ void	tokenize(char *str, t_asm *info)
 		row = 1;
 	while (*str)
 	{
+
+		// while ((ch = getchar()) != '\n' && ch != EOF)
+    	// 	continue;
 		while (*str != '\n' && ft_isspace(*str))
 		{
 			col++;
