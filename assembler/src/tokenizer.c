@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/23 16:02:45 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/23 16:45:25 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static char *get_token_string(char *str, int *col)
 		i = ft_strchr_int(&str[i], *str == '"' ? '"' : '\n');
 		if (i == -1)
 			return (NULL);
-		++i;
+		i += *str == '"' ? 2 : 1;
 	}
 	else
 	{
@@ -217,16 +217,16 @@ void	tokenize(char *str, t_asm *info)
 	static t_token	*tail;
 	int             col;
 	t_token         *token;
-	// int		ch;
+	int		ch;
 
-	// printf("entering tokenize(), row:%d\n", row);
+	printf("entering tokenize(), row:%d\n", row);
 	col = 1;
 	if (!row)
 		row = 1;
 	while (*str)
 	{
-		// while ((ch = getchar()) != '\n' && ch != EOF)
-    	// 	continue;
+		while ((ch = getchar()) != '\n' && ch != EOF)
+    		continue;
 		while (*str != '\n' && ft_isspace(*str))
 		{
 			col++;
@@ -245,10 +245,10 @@ void	tokenize(char *str, t_asm *info)
 			tail->next = token;
 		tail = token;
 
-		// if (token->type == 51)
-		// 	ft_printf("{%d}, {'nl'}\n", token->type); // remove
-		// else
-		// 	ft_printf("{%d}, {%s}\n", token->type, token->string); // remove
+		if (token->type == 51)
+			ft_printf("{%d}, {'nl'}\n", token->type); // remove
+		else
+			ft_printf("{%d}, {%s}\n", token->type, token->string); // remove
 	}
 	row++;
 }
