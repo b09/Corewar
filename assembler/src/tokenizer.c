@@ -6,11 +6,19 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/23 15:08:34 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/23 15:56:03 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+/*
+**	Debub function, prints values of t_asm *obj members
+**
+**  Params:	
+**			t_asm *obj	==> main assembler struct
+**
+*/
 
 void	print_asm_obj(t_asm *asm_obj)
 {
@@ -56,26 +64,28 @@ t_op    op_tab[17] =
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
 
-// static t_hmap   *init_token_hmap(void)
-// {
-//     t_hmap  *token_hmap;
-//
-//     token_hmap = hmap_new(N_TOKENS);
-//
-// }
-
 /*
-**  Duplicates substring from start of str to next whitespace.
-**  Updates *str, starting position of string after extracting current substring.
-**  Also updates start, the index for starting position.
-**	*col is the character count for that line, (one more than char index)
-**	*col's incremented value is for the next token, not current
+**  Duplicates substring from str[0] to specific end.
+**	*col is the character count in string for when token begins (not index!)
+**	*col's incremented value is for the next token, not current token
+**	
+**	Rules:
+**			if *str == '\n', increase *col++, copy '\n'
+**			if *str == '"', copy til next '"', increase *col by length of string
+**			if *str == '#' or ';', copy until newline (can there be EOF at end?)
+**			if *str is any other character, copy until '\n' || ',' || ft_isspace
 **
-**  Params: str, a string starting at the first char of a token.
-			start, the index of the starting character for next token.
-**	Initial whitespace jumped over before *str arrives to func()
-**  Return: Literal string of a single token.
-**	called by:	tokenize()
+**  Params:	
+**			char *str	==> string starting at the first char of a token.
+**			int *col 	==> char count of starting position of token, updated -
+**							- for next token
+**	Notes:
+**			Initial whitespace jumped over before *str arrives to func()
+**	
+**  Return:
+**			Literal string of a single token.
+**	
+**	Called by:	tokenize()
 */
 
 static char *get_token_string(char *str, int *col)
@@ -96,127 +106,11 @@ static char *get_token_string(char *str, int *col)
 	{
 		while (str[i] && ft_isspace(str[i]) == FALSE && str[i] != ',')
 			++i;
-			
 	}
 	*col += i;
 	return (ft_strndup(str, i));
 }
-// static char *get_token_string(char *str, int *col)
-// {
-// 	char    *curr;
-// 	char	*token_string;
-// 	int		i;
-// 	// TODO: check that separator character doesn't end up together with previous token
-// 	curr = str;
 
-// 	/*
-
-// 	<.name> until space found or newline
-// 	<"Candy"> until '"' found
-// 	<# some comment> from # until newline
-
-// 	.name "Candy"
-// 	.comment "content"
-
-// 		st		r1, r12
-// 		ld      %0 , r14
-// 		zjmp    %:base
-
-// 	def:
-// 		st		r9, -256
-// 		st		r10, -256
-
-// 	*/
-// 	// if first character NEWLINE(\n) or COMMA(,)
-// 	// if (*str == '\n' || *str == ',')
-// 	// {
-// 	// 	(*col)++;
-// 	// 	return (*str == '\n' ? ft_strdup("\n") : ft_strdup(","));
-// 	// }
-
-// 	if (ft_strchr("\n,\"*;", *str))
-// 		i++;
-
-// 	// if (*str == '\n' || *str == ',')
-// 	// 	i++;
-
-// 	else if (*str == '"' || *str == '#' || *str == ';')
-// 	{
-// 		i = ft_strchr_int(str + 1, *str == '"' ? '"' : '\n');
-// 		if (i == -1)
-// 			return (NULL);
-// 		++i; // ft_strchr_int returns index, so must increase by one
-// 		// return (ft_strndup(str, i + 1));
-// 	}
-
-// 	// else if (*str == '"')
-// 	// {
-// 	// 	i = ft_strchr_int(str + 1, '"');
-// 	// 	if (i == -1)
-// 	// 		return (NULL);
-// 	// 	return (ft_strndup(str, i + 1));
-// 	// }
-
-// 	// else if (*str == '#' || *str == ';')
-// 	// {
-// 	// 	i = ft_strchr_int(str + 1, '\n');
-// 	// 	if (i == -1)
-// 	// 		return (NULL);
-// 	// 	return (ft_strndup(str, i + 1));
-// 	// }
-
-// 	else
-// 	{
-// 		while (str[i] && ft_isspace(str[i]) == FALSE && str[i] != ',')
-// 			++i;
-			
-// 	}
-
-// 	*col += i;
-// 	token_string = ft_strndup(str, i);
-// 	return (token_string);
-
-
-
-
-
-// 	else if (*curr != COMMENT_CHAR && *curr != ';')
-// 	{
-// 		i = ft_strchr_int(str + 1, *str == '"' ? '"' : '/n');
-// 		if (i == -1)
-// 			return (NULL);
-// 		return (ft_strndup(str, i + 1));
-// 	}
-
-
-// 	if (*str == '"')
-// 	{
-// 		curr++;
-// 		while (*curr && *curr != '"')
-// 			curr++;
-// 		if (*curr == '"')
-// 			curr++;
-// 	}
-// 	else
-// 	{
-// 		while (*curr && *curr != '\n')
-// 		{
-// 			curr++;
-// 			i++;
-// 		}
-// 	}
-// 	*col += i;
-// 	token_string = ft_strndup(str, i);
-// 	return (token_string);
-// }
-
-
-// static int	validate_registry_lexical(char *str)
-// {
-//
-//
-// 	return (FALSE);
-// }
 /*
 **  TOKENS:
 **	1-20 intructions
@@ -227,6 +121,19 @@ static char *get_token_string(char *str, int *col)
 **
 */
 
+/*
+**	Finds correct operation code for assembly intruction defined in *str.
+**	Searches in array of t_op structs which are the list of legal instructions
+**	
+**  Params:	
+**			char *str	==> parsed string provided by get_token_string()
+**	
+**  Return:
+**			int - operation code for instruction described in *str
+**	
+**	Called by:
+**			get_type()
+*/
 static int		get_opcode(char *str)
 {
 	char	i;
@@ -243,13 +150,17 @@ static int		get_opcode(char *str)
 }
 
 /*
-**	*str argument will only be token string
-**		ex:
-**			arriere:	ld	%-5, r5
-**				-> [arrieere:][ld][%-5][,][r5][\n]
-**
-**
-**	called by:	tokenize()
+**	
+**  Params:	
+**			char *str	==> parsed string provided by get_token_string()
+**	Notes:
+**			Register strings (ex:"r12") are also valid labels, must separate
+**	
+**  Return:
+**			int value used as key to identify token type
+**	
+**	Called by:
+**			tokenize()
 */
 
 static int  get_type(char *str)
@@ -281,17 +192,24 @@ static int  get_type(char *str)
 	return (-1);
 }
 
-/*
-**  Tokenizes one line of asm.
-**
-**  Params: str, a single line from the source retrieved using gnl.
-**                  expected to be sequential.
-**  Return:
-**
-**	called by:	read_file()
-**
-*/
 
+/*
+**	Tokenizes one line of asm. Creates linked list of token nodes, populates
+**	them
+**	
+**  Params:	
+**			char *str	==> raw string from file, provided by gnl_with_newline()
+**			t_asm *info	==> assembler struct initialized by main()
+**
+**	Notes:
+**			Removes all whitespace PRECENDING token
+**	
+**  Return:
+**			VOID
+**	
+**	Called by:
+**			read_file()
+*/
 
 void	tokenize(char *str, t_asm *info)
 {
@@ -307,7 +225,6 @@ void	tokenize(char *str, t_asm *info)
 		row = 1;
 	while (*str)
 	{
-
 		// while ((ch = getchar()) != '\n' && ch != EOF)
     	// 	continue;
 		while (*str != '\n' && ft_isspace(*str))
@@ -320,7 +237,6 @@ void	tokenize(char *str, t_asm *info)
 		token->row = row;
 		token->col = col;
 		token->string = get_token_string(str, &col);
-		// printf("str addr:%p\n", str);
 		str += ft_strlen(token->string);
 		token->type = get_type(token->string);
 		if (info->token_head == NULL)
@@ -328,8 +244,7 @@ void	tokenize(char *str, t_asm *info)
 		else
 			tail->next = token;
 		tail = token;
-		// if (*str == '\n')
-		// 	break ;
+
 		// if (token->type == 51)
 		// 	ft_printf("{%d}, {'nl'}\n", token->type); // remove
 		// else
