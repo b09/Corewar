@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/24 13:51:44 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/24 18:10:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ static int	read_file(int argc, char **argv, t_asm *info)
 		return (FALSE);
 	info->file_name = ft_strndup(str, name_len);
 	info->fd = open(str, O_RDONLY);
-	// while (gnl_with_newline(fd, &str) > 0)
-		tokenize(str, info);
+	tokenize(str, info);
 	print_asm_obj(info);	
 	return (TRUE);
 }
