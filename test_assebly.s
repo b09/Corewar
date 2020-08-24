@@ -1,5 +1,8 @@
 .name "Candy"
-.comment "content"
+.comment "content there is a space
+
+
+"
 
 	st		r1, r12
 	ld      %0 , r14

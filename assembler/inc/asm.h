@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/23 16:05:24 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/24 17:03:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct		header_s
 
 typedef struct		s_asm
 {
+	int				fd;
 	char            *file_name;
 	struct s_token	*token_head;
 	struct s_token	*token_tail;
@@ -179,5 +180,10 @@ typedef struct		s_op
 void		tokenize(char *str, t_asm *info);
 int			valid_token(t_token *token);
 int			valid_syntax(t_asm *asm_obj);
+void		print_asm_obj(t_asm *asm_obj);
+void		populate_token(int row, int *col, char **str, t_asm *info);
+int			guarantee_quote_pairs(char *str);
+
+
 
 #endif
