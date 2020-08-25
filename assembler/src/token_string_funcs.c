@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/24 18:04:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/24 19:54:52 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 
 static char		*get_token_string(char *str, int *col)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	if (ft_strchr("\n,\"*;", *str))
@@ -85,8 +85,8 @@ static char		*get_token_string(char *str, int *col)
 
 static int		find_end_quote(int fd, char **str, int *row)
 {
-	char	*old_string;
-	char	*joined_string;
+	char		*old_string;
+	char		*joined_string;
 
 	old_string = *str;
 	joined_string = *str;
@@ -125,7 +125,7 @@ static int		find_end_quote(int fd, char **str, int *row)
 
 int				guarantee_quote_pairs(char *str)
 {
-	int		quotes;
+	int			quotes;
 
 	quotes = 0;
 	while (*str)

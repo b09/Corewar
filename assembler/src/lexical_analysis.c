@@ -6,13 +6,13 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/21 11:49:29 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/24 19:57:17 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-static int	valid_cmd_tkn(char *str)
+static int		valid_cmd_tkn(char *str)
 {
 	if (!ft_strequ(str, NAME_CMD_STRING) &&
 		!ft_strequ(str, COMMENT_CMD_STRING))
@@ -20,7 +20,7 @@ static int	valid_cmd_tkn(char *str)
 	return (TRUE);
 }
 
-static int	valid_dir_tkn(char *str)
+static int		valid_dir_tkn(char *str)
 {
 	if (*str != DIRECT_CHAR)
 		return (FALSE);
@@ -48,7 +48,7 @@ static int	valid_dir_tkn(char *str)
 	return (TRUE);
 }
 
-static int	valid_reg_tkn(char *str)
+static int		valid_reg_tkn(char *str)
 {
 	if (*str != LABEL_CHAR)
 		return (FALSE);
@@ -62,7 +62,7 @@ static int	valid_reg_tkn(char *str)
 	return (TRUE);
 }
 
-static int	valid_ilbl_tkn(char *str)
+static int		valid_ilbl_tkn(char *str)
 {
 	if (*str != LABEL_CHAR)
 		return (FALSE);
@@ -76,7 +76,7 @@ static int	valid_ilbl_tkn(char *str)
 	return (TRUE);
 }
 
-static int	valid_ind_tkn(char *str)
+static int		valid_ind_tkn(char *str)
 {
 	if (*str == '-')
 		str++;
@@ -89,7 +89,7 @@ static int	valid_ind_tkn(char *str)
 	return (TRUE);
 }
 
-static int	valid_lbl_tkn(char *str)
+static int		valid_lbl_tkn(char *str)
 {
 	while (ft_strchr(LABEL_CHARS, *str))
 		str++;
@@ -98,21 +98,21 @@ static int	valid_lbl_tkn(char *str)
 	return (TRUE);
 }
 
-static int	valid_sep_tkn(char *str)
+static int		valid_sep_tkn(char *str)
 {
 	if (*str != SEPARATOR_CHAR || ft_strlen(str) != 1)
 		return (FALSE);
 	return (TRUE);
 }
 
-static int	valid_nl_tkn(char *str)
+static int		valid_nl_tkn(char *str)
 {
 	if (*str != ENDLINE_CHAR || ft_strlen(str) != 1)
 		return (FALSE);
 	return (TRUE);
 }
 
-static int	valid_str_tkn(char *str)
+static int		valid_str_tkn(char *str)
 {
 	if (*str != STRING_CHAR || str[ft_strlen(str) - 1] != STRING_CHAR)
 		return (FALSE);
@@ -124,7 +124,7 @@ static int	valid_str_tkn(char *str)
 	return (TRUE);
 }
 
-int			valid_token(t_token *token)
+int				valid_token(t_token *token)
 {
 	if (token->type == COMMENT_TKN)
 		return (TRUE);

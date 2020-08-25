@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/24 18:10:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/24 19:56:43 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@
 **	Called by:	main()
 */
 
-static int	read_file(int argc, char **argv, t_asm *info)
+static int		read_file(int argc, char **argv, t_asm *info)
 {
-	char 	*str;
-	int		name_len;
-	int		fd;
+	char		*str;
+	int			name_len;
+	int			fd;
 
 	if (argc != 2)
 		return (FALSE);
@@ -67,11 +67,11 @@ static int	read_file(int argc, char **argv, t_asm *info)
 **	Called by:	none
 */
 
-static char *get_name_comment(char *str)
+static char		*get_name_comment(char *str)
 {
-	char	*start;
-	char	*end;
-	char	*name;
+	char		*start;
+	char		*end;
+	char		*name;
 
 	start = ft_strchr(str, '"') + 1;
 	end = ft_strchr(start, '"');
@@ -94,7 +94,7 @@ static char *get_name_comment(char *str)
 **	Called by:	none
 */
 
-static int	only_label_chars(char *str)
+static int		only_label_chars(char *str)
 {
 	while (str)
 	{
@@ -145,9 +145,9 @@ static int	only_label_chars(char *str)
 // 	}
 // }
 
-static int	lexicon_valid(t_asm *info)
+static int		lexicon_valid(t_asm *info)
 {
-	t_token	*curr;
+	t_token		*curr;
 
 	curr = info->token_head;
 	while (curr)
@@ -189,9 +189,9 @@ static int	lexicon_valid(t_asm *info)
 // }
 
 
-int			main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
-	t_asm	asm_obj;
+	t_asm		asm_obj;
 
 	ft_bzero(&asm_obj, sizeof(asm_obj));
 	// read_file(argc, argv, &asm_obj);
