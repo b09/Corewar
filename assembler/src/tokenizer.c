@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/25 10:39:40 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/25 20:29:00 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ static int		get_type(char *str)
 		return (COMMENT_TKN);
 	else if (*str == COMMAND_CHAR)
 		return (COMMAND_TKN);
-	else if (*str == DIRECT_CHAR)
+	else if (*str == DIRECT_CHAR && *(str + 1) != LABEL_CHAR)
 		return (DIRECT_TKN);
 	else if (*str == REGISTRY_CHAR && str[ft_strlen(str) - 1] != ':')
 		return (REGISTRY_TKN);
-	else if (*str == LABEL_CHAR)
+	else if (*str == DIRECT_CHAR && *(str + 1) == LABEL_CHAR)
 		return (INDIRECT_LABEL_TKN);
 	else if (*str == '-' || ft_isdigit(*str))
 		return (INDIRECT_TKN);
