@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/26 15:18:38 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/26 17:47:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char			*get_token_string(char *str, int *col)
 	int			i;
 
 	i = 0;
-	if (ft_strchr("\n,\"*;", *str))
+	if (ft_strchr("\n,\"#;", *str))
 		i++;
 	if (*str == '"' || *str == '#' || *str == ';')
 	{

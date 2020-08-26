@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/26 15:14:46 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/26 17:21:13 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int		valid_dir_tkn(char *str)
 	{
 		if (*str == '-')
 			str++;
-		if (*str == '\0') // this will already be captured by the while loop below
+		if (*str == '\0')
 			return (FALSE);
 		while (ft_isdigit(*str))
 			str++;
@@ -64,12 +64,11 @@ static int		valid_dir_tkn(char *str)
 */
 static int		valid_reg_tkn(char *str)
 {
-	// if (*str != LABEL_CHAR) // should this be "if (*str != REGISTRY_CHAR)"?
-	// 	return (FALSE);
+
 	if (*str != REGISTRY_CHAR)
 		return (FALSE);
 	str++;
-	if (*str == 0 || ft_strlen(str) > 2) // ensures size is 1 or 2, protects ft_atoi from str being larger than int
+	if (*str == 0 || ft_strlen(str) > 2)
 		return (FALSE);
 	if (ft_atoi(str) == 0 || ft_atoi(str) > 99)
 		return (FALSE);
@@ -86,9 +85,6 @@ static int		valid_reg_tkn(char *str)
 
 static int		valid_ilbl_tkn(char *str)
 {
-	if (*str != DIRECT_CHAR)
-		return (FALSE);
-	str++;
 	if (*str != LABEL_CHAR)
 		return (FALSE);
 	str++;
@@ -105,8 +101,8 @@ static int		valid_ind_tkn(char *str)
 {
 	if (*str == '-')
 		str++;
-	// if (*str == '\0')	// captured by while below
-		// return (FALSE);
+	if (*str == '\0')
+		return (FALSE);
 	while (ft_isdigit(*str))
 		str++;
 	if (*str != '\0')
@@ -142,7 +138,7 @@ static int		valid_str_tkn(char *str)
 	if (*str != STRING_CHAR || str[ft_strlen(str) - 1] != STRING_CHAR)
 		return (FALSE);
 	str++;
-	while (*str && *str != '"') // protected from infinite while
+	while (*str && *str != '"')
 		str++;
 	if (ft_strchr(str, '"') < str + (ft_strlen(str) - 1))
 		return (FALSE);
@@ -175,5 +171,3 @@ int				valid_token(t_token *token)
 		return (TRUE);
 	return (FALSE);		// bprado, added line to ensure some return
 }
-
-
