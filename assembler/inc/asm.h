@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/24 17:03:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/25 16:13:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,13 @@ int			valid_syntax(t_asm *asm_obj);
 void		print_asm_obj(t_asm *asm_obj);
 void		populate_token(int row, int *col, char **str, t_asm *info);
 int			guarantee_quote_pairs(char *str);
+int			find_end_quote(int fd, char **str, int *row);
+char		*get_token_string(char *str, int *col);
+int			little_to_big_endian(int number, size_t size);
+int			create_and_write_file(t_asm *asm_obj);
+
+
+
 
 
 

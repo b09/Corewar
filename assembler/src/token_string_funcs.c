@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/24 19:54:52 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/26 13:31:12 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 **	Called by:	tokenize()
 */
 
-static char		*get_token_string(char *str, int *col)
+char			*get_token_string(char *str, int *col)
 {
 	int			i;
 
@@ -54,6 +54,8 @@ static char		*get_token_string(char *str, int *col)
 	{
 		while (str[i] && ft_isspace(str[i]) == FALSE && str[i] != ',')
 			++i;
+		// if (i > 1 && str[i] == ',')
+		// 	--i;
 	}
 	*col += i;
 	return (ft_strndup(str, i));
@@ -83,7 +85,7 @@ static char		*get_token_string(char *str, int *col)
 **			tokenize()
 */
 
-static int		find_end_quote(int fd, char **str, int *row)
+int				find_end_quote(int fd, char **str, int *row)
 {
 	char		*old_string;
 	char		*joined_string;

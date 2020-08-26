@@ -6,11 +6,15 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/24 19:57:17 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/25 20:05:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+/*
+**	A command can only be ".name" or ".comment"
+*/
 
 static int		valid_cmd_tkn(char *str)
 {
@@ -20,6 +24,13 @@ static int		valid_cmd_tkn(char *str)
 	return (TRUE);
 }
 
+/*
+**	Direct arguments must begin '%'
+**	They must be followed by either:
+**		1) a label, beginning with ':', followed by LABEL_CHARS
+**		2) a number
+*/
+
 static int		valid_dir_tkn(char *str)
 {
 	if (*str != DIRECT_CHAR)
@@ -27,7 +38,7 @@ static int		valid_dir_tkn(char *str)
 	str++;
 	if (*str == ':')
 	{
-		while (str)
+		while (*str)
 		{
 			if (!ft_strchr(LABEL_CHARS, *str))
 				return (FALSE);
@@ -38,7 +49,7 @@ static int		valid_dir_tkn(char *str)
 	{
 		if (*str == '-')
 			str++;
-		if (*str == '\0')
+		if (*str == '\0') // this will already be captured by the while loop below
 			return (FALSE);
 		while (ft_isdigit(*str))
 			str++;
@@ -48,11 +59,18 @@ static int		valid_dir_tkn(char *str)
 	return (TRUE);
 }
 
+/*
+**	A register must be 'r1' or 'r2'... thru to 'r99', 'r0' and 'r00' are invalid
+*/
 static int		valid_reg_tkn(char *str)
 {
-	if (*str != LABEL_CHAR)
+	// if (*str != LABEL_CHAR) // should this be "if (*str != REGISTRY_CHAR)"?
+	// 	return (FALSE);
+	if (*str != REGISTRY_CHAR)
 		return (FALSE);
 	str++;
+	if (*str == 0 || ft_strlen(str) > 2) // ensures size is 1 or 2, protects ft_atoi from str being larger than int
+		return (FALSE);
 	if (ft_atoi(str) == 0 || ft_atoi(str) > 99)
 		return (FALSE);
 	if (!ft_isdigit(str[0]))
@@ -67,7 +85,7 @@ static int		valid_ilbl_tkn(char *str)
 	if (*str != LABEL_CHAR)
 		return (FALSE);
 	str++;
-	while (str)
+	while (*str)
 	{
 		if (!ft_strchr(LABEL_CHARS, *str))
 			return (FALSE);
@@ -80,8 +98,8 @@ static int		valid_ind_tkn(char *str)
 {
 	if (*str == '-')
 		str++;
-	if (*str == '\0')
-		return (FALSE);
+	// if (*str == '\0')	// captured by while below
+		// return (FALSE);
 	while (ft_isdigit(*str))
 		str++;
 	if (*str != '\0')
@@ -117,7 +135,7 @@ static int		valid_str_tkn(char *str)
 	if (*str != STRING_CHAR || str[ft_strlen(str) - 1] != STRING_CHAR)
 		return (FALSE);
 	str++;
-	while (*str != '"')
+	while (*str && *str != '"') // protected from infinite while
 		str++;
 	if (ft_strchr(str, '"') < str + (ft_strlen(str) - 1))
 		return (FALSE);
