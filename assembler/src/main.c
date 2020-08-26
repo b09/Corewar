@@ -52,19 +52,19 @@ static int		read_file(int argc, char **argv, t_asm *info)
 	info->file_name = ft_strndup(str, name_len - 2);
 	info->fd = open(str, O_RDONLY);
 	tokenize(str, info);
-	print_asm_obj(info);	
+	print_asm_obj(info);
 	return (TRUE);
 }
 
 /*
 **	Finds quotation marks in a larger string and returns substring.
 **
-**  Params:	
+**  Params:
 **			char *str	==> contains "... <to_return> ..."
-**	
+**
 **  Return:
 **			isolated string "<to_return>"
-**	
+**
 **	Called by:	none
 */
 
@@ -85,13 +85,13 @@ static char		*get_name_comment(char *str)
 /*
 **	Validates string by checking each char against list of legal chars
 **
-**  Params:	
+**  Params:
 **			char *str	==> string from a LABEL type token
-**	
+**
 **  Return:
 **			FALSE (0)= invalid str
 *			TRUE (1) = valid str
-**	
+**
 **	Called by:	none
 */
 
@@ -207,4 +207,3 @@ int				main(int argc, char **argv)
 	// parse_assembly();
 	return (0);
 }
-

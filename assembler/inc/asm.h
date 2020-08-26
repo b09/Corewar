@@ -143,8 +143,8 @@ typedef struct		s_asm
 	char            *file_name;
 	struct s_token	*token_head;
 	struct s_token	*token_tail;
-	int				name_cmd_seen;
-	int				comment_cmd_seen;
+	char			*name_cmd_string;
+	char			*comment_cmd_string;
 }					t_asm;
 
 /*
