@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/26 13:31:12 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/26 15:18:38 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,8 @@ char			*get_token_string(char *str, int *col)
 	}
 	else
 	{
-		while (str[i] && ft_isspace(str[i]) == FALSE && str[i] != ',')
+		while (str[i] && !ft_isspace(str[i]) && str[i] != ',' && str[0] != ',')
 			++i;
-		// if (i > 1 && str[i] == ',')
-		// 	--i;
 	}
 	*col += i;
 	return (ft_strndup(str, i));

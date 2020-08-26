@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/25 20:05:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/26 15:14:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,15 @@ static int		valid_reg_tkn(char *str)
 	return (TRUE);
 }
 
+/*
+**	Indirect label
+*/
+
 static int		valid_ilbl_tkn(char *str)
 {
+	if (*str != DIRECT_CHAR)
+		return (FALSE);
+	str++;
 	if (*str != LABEL_CHAR)
 		return (FALSE);
 	str++;
@@ -168,3 +175,5 @@ int				valid_token(t_token *token)
 		return (TRUE);
 	return (FALSE);		// bprado, added line to ensure some return
 }
+
+
