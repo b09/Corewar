@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   syntactic_analysis.c                               :+:    :+:            */
+/*   remove_filler_tokens.c                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/25 23:54:37 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/25 23:55:02 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 12:57:36 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 **	Used to remove comments and newlines before the first encoding token
 */
 
-static void remove_leading_nl_and_comm(t_asm *asm_obj)
+static void		remove_leading_nl_and_comm(t_asm *asm_obj)
 {
-	t_token	current;
+	t_token		*current;
 
 	current = asm_obj->token_head;
 	while (current->type == COMMENT_TKN || current->type == ENDLINE_TKN)
@@ -33,11 +33,11 @@ static void remove_leading_nl_and_comm(t_asm *asm_obj)
 **	Removes comments and extra newlines. Leaves 1 newline token per set.
 */
 
-void remove_comments_and_extra_nl(t_asm *asm_obj)
+void 			remove_comments_and_extra_nl(t_asm *asm_obj)
 {
-	t_token	current;
-	t_token	previous;
-	int		nl_seen;
+	t_token		*current;
+	t_token		*previous;
+	int			nl_seen;
 
 	remove_nl_and_comm_before_header(asm_obj);
 	current = asm_obj->token_head;
