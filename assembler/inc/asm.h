@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/25 16:13:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/26 18:36:02 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,10 @@ typedef struct		header_s
 typedef struct		s_asm
 {
 	int				fd;
-	char            *file_name;
+	char			*file_name;
+	char			*champ_name;
+	char			*champ_comment;
+	struct s_token	*instructions_head;
 	struct s_token	*token_head;
 	struct s_token	*token_tail;
 	char			*name_cmd_string;
