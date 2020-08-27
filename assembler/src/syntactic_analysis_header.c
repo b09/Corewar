@@ -6,11 +6,21 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/27 13:22:14 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 17:02:04 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+int				valid_instructions(t_asm *asm_obj)
+{
+	return (1);
+}
+
+static void		remove_separators_and_nl(t_asm *asm_obj)
+{
+	return ;
+}
 
 static int		valid_name_cmd(t_asm *asm_obj)
 {
@@ -25,7 +35,7 @@ static int		valid_name_cmd(t_asm *asm_obj)
 		// return (FALSE);
 		return (print_error(SYNTAX_NO_NAME_STR));
 	}
-	asm_obj->name_cmd_string = ft_strdup(current->next->token_string);
+	asm_obj->name_cmd_string = ft_strdup(current->next->string);
 	next = current->next->next->next;
 	while (current != next)
 	{
@@ -50,7 +60,7 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 		// return (FALSE);
 		return (print_error(SYNTAX_NO_CMNT_STR));
 	}
-	asm_obj->comment_cmd_string = ft_strdup(current->next->token_string);
+	asm_obj->comment_cmd_string = ft_strdup(current->next->string);
 	next = current->next->next->next;
 	while (current != next)
 	{
@@ -82,18 +92,18 @@ int				valid_header(t_asm *asm_obj)
 		// return (FALSE);
 		return (print_error(SYNTAX_NO_NAME));
 	}
-	else if (ft_strequ(current->token_string, NAME_CMD_STRING))
+	else if (ft_strequ(current->string, NAME_CMD_STRING))
 	{
 		valid_name_cmd(asm_obj);
 		current = asm_obj->token_head;
-		if (ft_strequ(current->token_string, COMMENT_CMD_STRING))
+		if (ft_strequ(current->string, COMMENT_CMD_STRING))
 			return (valid_comment_cmd(asm_obj));
 	}
-	else if (ft_strequ(current->token_string, COMMENT_CMD_STRING))
+	else if (ft_strequ(current->string, COMMENT_CMD_STRING))
 	{
 		valid_comment_cmd(asm_obj);
 		current = asm_obj->token_head;
-		if (ft_strequ(current->token_string, NAME_CMD_STRING))
+		if (ft_strequ(current->string, NAME_CMD_STRING))
 			return (valid_name_cmd(asm_obj));
 	}
 	return (FALSE);

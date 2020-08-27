@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/27 13:24:02 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 17:01:41 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,18 +189,64 @@ typedef struct		s_op
 	char			label_is_twobytes;
 }					t_op;
 
+/*
+**	tokenizer.c
+*/
 
 void		tokenize(char *str, t_asm *info);
-int			valid_token(t_token *token);
-int			valid_syntax(t_asm *asm_obj);
-void		print_asm_obj(t_asm *asm_obj);
 void		populate_token(int row, int *col, char **str, t_asm *info);
-int			guarantee_quote_pairs(char *str);
+
+/*
+**	print_functions.c
+*/
+
+void		print_asm_obj(t_asm *asm_obj);
+int			print_error(char *str);
+
+/*
+**	lexical_analysis.c
+*/
+
+int			valid_token(t_token *token);
+
+/*
+**	remove_filler_tokens.c
+*/
+
+void		remove_comments_and_extra_nl(t_asm *asm_obj);
+void		token_del(t_token *token); // function not written
+
+
+/*
+**	syntactic_analysis_header.c
+*/
+
+int			valid_header(t_asm *asm_obj);
+int			valid_instructions(t_asm *asm_obj); // function not written
+
+
+/*
+**	syntactic_analysis.c
+*/
+
+int			valid_syntax(t_asm *asm_obj);
+int			valid_header(t_asm *asm_obj);
+
+
+/*
+**	token_string_functions.c
+*/
+
 int			find_end_quote(int fd, char **str, int *row);
+int			guarantee_quote_pairs(char *str);
 char		*get_token_string(char *str, int *col);
+
+/*
+**	translator.c
+*/
+
 int			little_to_big_endian(int number, size_t size);
 int			create_and_write_file(t_asm *asm_obj);
-int			print_error(char *str);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/27 13:02:46 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 15:06:17 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static void		write_string(t_asm *asm_obj, char *str, size_t null_count)
 	write_to_file(asm_obj->fd, (unsigned char *)str, size);
 	while (size < null_count)
 	{
-		write_to_file(asm_obj->fd, "", 1);
+		write_to_file(asm_obj->fd, (unsigned char *)"", 1);
 		++size;
 	}
 }

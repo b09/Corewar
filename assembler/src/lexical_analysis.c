@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/26 17:21:13 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 14:48:42 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 /*
 **	A command can only be ".name" or ".comment"
+**
+**	Called by:	valid_token()
 */
 
 static int		valid_cmd_tkn(char *str)
@@ -29,6 +31,8 @@ static int		valid_cmd_tkn(char *str)
 **	They must be followed by either:
 **		1) a label, beginning with ':', followed by LABEL_CHARS
 **		2) a number
+**
+**	Called by:	valid_token()
 */
 
 static int		valid_dir_tkn(char *str)
@@ -61,6 +65,8 @@ static int		valid_dir_tkn(char *str)
 
 /*
 **	A register must be 'r1' or 'r2'... thru to 'r99', 'r0' and 'r00' are invalid
+**
+**	Called by:	valid_token()
 */
 static int		valid_reg_tkn(char *str)
 {
@@ -79,7 +85,9 @@ static int		valid_reg_tkn(char *str)
 }
 
 /*
-**	Indirect label
+**	Indirect labels begin with ':', followed by LABEL_CHARS
+**
+**	Called by:	valid_token()
 */
 
 static int		valid_ilbl_tkn(char *str)
@@ -96,6 +104,12 @@ static int		valid_ilbl_tkn(char *str)
 	return (TRUE);
 }
 
+/*
+**
+**
+**	Called by:	valid_token()
+*/
+
 static int		valid_ind_tkn(char *str)
 {
 	if (*str == '-')
@@ -109,6 +123,13 @@ static int		valid_ind_tkn(char *str)
 	return (TRUE);
 }
 
+/*
+**	A label token must contain only LABEL_CHARS, except for the last character
+**	which must be ':'
+**
+**	Called by:	valid_token()
+*/
+
 static int		valid_lbl_tkn(char *str)
 {
 	while (ft_strchr(LABEL_CHARS, *str))
@@ -118,6 +139,12 @@ static int		valid_lbl_tkn(char *str)
 	return (TRUE);
 }
 
+/*
+**	A separator token must have the string "," and nothing else
+**
+**	Called by:	valid_token()
+*/
+
 static int		valid_sep_tkn(char *str)
 {
 	if (*str != SEPARATOR_CHAR || ft_strlen(str) != 1)
@@ -125,12 +152,24 @@ static int		valid_sep_tkn(char *str)
 	return (TRUE);
 }
 
+/*
+**	A separator token must have the string "\n" and nothing else
+**
+**	Called by:	valid_token()
+*/
+
 static int		valid_nl_tkn(char *str)
 {
 	if (*str != ENDLINE_CHAR || ft_strlen(str) != 1)
 		return (FALSE);
 	return (TRUE);
 }
+
+/*
+**	A string token must begin and end with the quote character
+**
+**	Called by:	valid_token()
+*/
 
 static int		valid_str_tkn(char *str)
 {
@@ -143,6 +182,12 @@ static int		valid_str_tkn(char *str)
 		return (FALSE);
 	return (TRUE);
 }
+
+/*
+**
+**
+**	Called by:	none
+*/
 
 int				valid_token(t_token *token)
 {

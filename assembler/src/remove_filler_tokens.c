@@ -6,14 +6,28 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/25 23:54:37 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/27 12:57:36 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 16:57:57 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
+void		token_del(t_token *token)
+{
+	return ;
+}
+
+static void		remove_nl_and_comm_before_header(t_asm *asm_obj)
+{
+	return ;
+}
+
+
+
 /*
 **	Used to remove comments and newlines before the first encoding token
+**
+**	Called by:	valid_syntax()
 */
 
 static void		remove_leading_nl_and_comm(t_asm *asm_obj)
@@ -31,9 +45,11 @@ static void		remove_leading_nl_and_comm(t_asm *asm_obj)
 
 /*
 **	Removes comments and extra newlines. Leaves 1 newline token per set.
+**
+**	Called by:	valid_syntax()
 */
 
-void 			remove_comments_and_extra_nl(t_asm *asm_obj)
+void			remove_comments_and_extra_nl(t_asm *asm_obj)
 {
 	t_token		*current;
 	t_token		*previous;
