@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/27 12:56:12 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 13:02:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int			little_to_big_endian(int number, size_t byte_size)
 **
 **	Return:
 **			Void
-**	
+**
 **	Called by:
 **			write_string()
 **			write_exec_size()
@@ -82,7 +82,7 @@ static void		write_to_file(int fd, unsigned char *value, size_t size)
 **
 **	Return:
 **			Void
-**	
+**
 **	Called by:
 **			create_and_write_file()
 */
@@ -106,10 +106,10 @@ static void		write_string(t_asm *asm_obj, char *str, size_t null_count)
 **
 **	Params:	
 **			t_asm *info	==> assembler struct initialized by main()
-**	
+**
 **	Return:
 **			Void
-**	
+**
 **	Called by:
 **			create_and_write_file()
 */
@@ -136,16 +136,16 @@ static void		write_exec_size(t_asm *asm_obj)
 **
 **	Params:	
 **			t_asm *info	==> assembler struct initialized by main()
-**	
+**
 **	Notes:
 **			write_string() will add the strings related to '.name' and 'comment'
 **			and each of the these string require 4 bytes of trailing zeroes,
 **			which is why the the last param of write_string() contains the max
 **			length for each string plus four bytes.
-**	
+**
 **	Return:
 **			int
-**	
+**
 **	Called by:
 **			main()
 */

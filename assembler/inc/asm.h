@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/26 18:36:02 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 13:24:02 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@
 #define CYCLE_DELTA				50
 #define NBR_LIVE				21
 #define MAX_CHECKS				10
+
+/*
+**			ERROR MACROS
+*/
+#define SYNTAX_NO_NAME			"Syntax error: expected .name and .comment in\
+								header.\n"
+#define SYNTAX_NO_NAME_STR		"Syntax error: expected string after .name in\
+								header.\n"
+#define SYNTAX_NO_CMNT_STR		"Syntax error: expected string after .comment\
+								in header.\n"
 
 /*
 **  TOKENS:
@@ -190,6 +200,8 @@ int			find_end_quote(int fd, char **str, int *row);
 char		*get_token_string(char *str, int *col);
 int			little_to_big_endian(int number, size_t size);
 int			create_and_write_file(t_asm *asm_obj);
+int			print_error(char *str);
+
 
 
 

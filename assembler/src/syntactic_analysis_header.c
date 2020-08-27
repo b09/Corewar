@@ -6,23 +6,24 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/26 17:53:25 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 13:22:14 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-static int	valid_name_cmd(t_asm *asm_obj)
+static int		valid_name_cmd(t_asm *asm_obj)
 {
-	t_token	*current;
-	t_token	*next;
-	size_t	len;
+	t_token		*current;
+	t_token		*next;
+	size_t		len;
 
 	current = asm_obj->token_head;
 	if (current->next->type != STRING_TKN)
 	{
-		ft_printf("Syntax error: expected string after .name in header.\n");
-		return (FALSE);
+		// ft_printf("Syntax error: expected string after .name in header.\n");
+		// return (FALSE);
+		return (print_error(SYNTAX_NO_NAME_STR));
 	}
 	asm_obj->name_cmd_string = ft_strdup(current->next->token_string);
 	next = current->next->next->next;
@@ -36,17 +37,18 @@ static int	valid_name_cmd(t_asm *asm_obj)
 	return (len > 0 && len <= PROG_NAME_LENGTH ? TRUE : FALSE);
 }
 
-static int	valid_comment_cmd(t_asm *asm_obj)
+static int		valid_comment_cmd(t_asm *asm_obj)
 {
-	t_token	*current;
-	t_token	*next;
-	size_t	len;
+	t_token		*current;
+	t_token		*next;
+	size_t		len;
 
 	current = asm_obj->token_head;
 	if (current->next->type != STRING_TKN)
 	{
-		ft_printf("Syntax error: expected string after .comment in header.\n");
-		return (FALSE);
+		// ft_printf("Syntax error: expected string after .comment in header.\n");
+		// return (FALSE);
+		return (print_error(SYNTAX_NO_CMNT_STR));
 	}
 	asm_obj->comment_cmd_string = ft_strdup(current->next->token_string);
 	next = current->next->next->next;
@@ -69,15 +71,16 @@ static int	valid_comment_cmd(t_asm *asm_obj)
 **	both with their properly formatted strings.
 */
 
-int			valid_header(t_asm *asm_obj)
+int				valid_header(t_asm *asm_obj)
 {
-	t_token	*current;
+	t_token		*current;
 
 	current = asm_obj->token_head;
 	if (current->type != COMMAND_TKN)
 	{
-		ft_printf("Syntax error: expected .name and .comment in header.\n");
-		return (FALSE);
+		// ft_printf("Syntax error: expected .name and .comment in header.\n");
+		// return (FALSE);
+		return (print_error(SYNTAX_NO_NAME));
 	}
 	else if (ft_strequ(current->token_string, NAME_CMD_STRING))
 	{

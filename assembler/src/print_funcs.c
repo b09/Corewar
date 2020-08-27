@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   debug.c                                            :+:    :+:            */
+/*   print_funcs.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/25 20:07:58 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 13:06:20 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,10 @@ void			print_asm_obj(t_asm *asm_obj)
 		ft_printf("position:[%d:%d]\n\n", tokens->row, tokens->col);
 		tokens = tokens->next;
 	}
+}
+
+int				print_error(char *str)
+{
+	ft_putstr_fd(str, 2);
+	exit(0);
 }
