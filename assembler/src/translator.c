@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/27 15:06:17 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 12:16:16 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ int			little_to_big_endian(int number, size_t byte_size)
 
 static void		write_to_file(int fd, unsigned char *value, size_t size)
 {
-	int		i;
-
 	while (size)
 	{
 		--size;
@@ -87,15 +85,28 @@ static void		write_to_file(int fd, unsigned char *value, size_t size)
 **			create_and_write_file()
 */
 
+static size_t	strlen_duplicate(char *str)
+{
+	size_t		size;
+
+	size = 0;
+	while (*str)
+		++size;
+	return (size);
+}
+
 static void		write_string(t_asm *asm_obj, char *str, size_t null_count)
 {
 	size_t		size;
 	
 	size = ft_strlen(str);
-	write_to_file(asm_obj->fd, (unsigned char *)str, size);
+	// write_to_file(asm_obj->fd, (unsigned char *)str, size);
+	write_to_file(asm_obj->fd, str, size);
+	str = "";
 	while (size < null_count)
 	{
-		write_to_file(asm_obj->fd, (unsigned char *)"", 1);
+		// write_to_file(asm_obj->fd, (unsigned char *)str, 1);
+		write_to_file(asm_obj->fd, str, 1);
 		++size;
 	}
 }
@@ -161,9 +172,15 @@ int			create_and_write_file(t_asm *asm_obj)
 	asm_obj->fd = fd;
 	magic_number = COREWAR_EXEC_MAGIC;
 	write_to_file(fd, (unsigned char *)&magic_number, 4);
-	write_string(asm_obj, asm_obj->champ_name, PROG_NAME_LENGTH + 4); // write_name with 4 byte null
-	write_string(asm_obj, asm_obj->champ_name, COMMENT_LENGTH + 4); // write comment
-	write_exec_size(asm_obj);
+	// write_string(asm_obj, asm_obj->champ_name, PROG_NAME_LENGTH + 4); // write_name with 4 byte null
+	// write_string(asm_obj, asm_obj->champ_name, COMMENT_LENGTH + 4); // write comment
+	// write_exec_size(asm_obj);
 	return (1);
 }
+
+/*
+	NOTES:
+		labels need to be saved, position needs to be calculated
+		
+*/
 

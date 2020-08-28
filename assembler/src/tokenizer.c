@@ -6,13 +6,13 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/25 20:29:00 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 19:58:18 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-t_op    op_tab[17] =
+t_op	op_tab[17] =
 {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0},
@@ -43,7 +43,11 @@ t_op    op_tab[17] =
 **	Finds correct operation code for assembly intruction defined in *str.
 **	Searches in array of t_op structs which list legal instructions
 **
+<<<<<<< Updated upstream
 **  Params:
+=======
+**  Params:	
+>>>>>>> Stashed changes
 **			char *str	==> parsed string provided by get_token_string()
 **
 **  Return:
@@ -118,7 +122,11 @@ static int		get_type(char *str)
 **	will guarantee that there is a closing quote by continueing to call gnl
 **	until another closing quote is found
 **
+<<<<<<< Updated upstream
 **	Params:
+=======
+**	Params:	
+>>>>>>> Stashed changes
 **			char *str	==> raw string from file, provided by gnl_with_newline()
 **			t_asm *info	==> assembler struct initialized by main()
 **
@@ -165,7 +173,11 @@ void			tokenize(char *str, t_asm *info)
 /*
 **	Creates and populates t_token nodes, links them together into a linked list.
 **
+<<<<<<< Updated upstream
 **	Params:
+=======
+**	Params:	
+>>>>>>> Stashed changes
 **			int row		==> line number in file read by gnl()
 **			int *col	==> char count of starting position of token
 **			char **str	==> raw string from file, provided by gnl_with_newline()
@@ -173,6 +185,10 @@ void			tokenize(char *str, t_asm *info)
 **
 **	Called by:
 **			tokenize()
+**
+**	Notes:
+**			If token is an instruction, the intruction's struct is copied from
+**			the op_tab[17].
 **
 **		DEBUG
 	ft_printf("func: %s len:%d str: [%s] addr:%p\n", __func__, ft_strlen(*str), *str, *str);
@@ -189,6 +205,12 @@ void		populate_token(int row, int *col, char **str, t_asm *info)
 	token->string = get_token_string(*str, col);
 	(*str) += ft_strlen(token->string);
 	token->type = get_type(token->string);
+	if (token->type < 17)
+	{
+		token->t_op = (t_op *)ft_memalloc(sizeof(t_op));
+		ft_memcpy((void*)token->t_op, (void *)&op_tab[token->type - 1],\
+		sizeof(t_op));
+	}
 	if (info->token_head == NULL)
 	{
 		info->token_head = token;

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/27 17:01:41 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 15:45:02 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,15 @@ typedef struct		s_asm
 }					t_asm;
 
 /*
-**  Tokenizer
-**    string = raw input string
-**    type = unique integer indentifier
-**    start = character count from start of line to start of token string
-**    line = line number where token string starts
+**			Tokenizer
+**	string	= raw input string
+**	next	= pointer to next token
+**	prev	= pointer to previous token
+**	type	= unique integer indentifier
+**	row		= line number where token string starts
+**	col		= character count from start of line to start of token string
+**	translation_size = if instruction, size in bytes of instruction with arguments
+**	t_op	= if instruction, operation struct containing rules for instruction
 */
 
 typedef struct		s_token
@@ -176,13 +180,15 @@ typedef struct		s_token
 	int				type;
 	int				row;
 	int				col;
+	int				traslation_size;
+	struct s_op		*t_op;
 }					t_token;
 
 typedef struct		s_op
 {
 	char			*op_str;
 	int				number_of_args;
-	int				args[3];
+	char			args[3];
 	int				opcode;
 	int				cycles;
 	char			*description;
