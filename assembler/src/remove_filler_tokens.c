@@ -6,11 +6,17 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/25 23:54:37 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/27 16:57:57 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 16:56:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+static void		token_unlink_del(t_asm *asm_obj, t_token *current)
+{
+	return ;
+}
+
 
 /*
 **	Used to remove comments and newlines before the header
@@ -25,7 +31,7 @@ static void		remove_leading_nl_and_comm(t_asm *asm_obj)
 	current = asm_obj->token_head;
 	while (current->type == COMMENT_TKN || current->type == ENDLINE_TKN)
 	{
-		token_unlink_del(current);
+		token_unlink_del(asm_obj, current);
 		current = asm_obj->token_head;
 	}
 }
@@ -50,7 +56,7 @@ void			remove_comments_and_extra_nl(t_asm *asm_obj)
 		if (current->type == COMMENT_TKN ||
 			(nl_seen && current->type == ENDLINE_TKN))
 		{
-			token_unlink_del(current);
+			token_unlink_del(asm_obj, current);
 			current = asm_obj->token_head;
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 16:47:24 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 16:54:22 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ void		populate_token(int row, int *col, char **str, t_asm *info)
 		token->t_op = (t_op *)ft_memalloc(sizeof(t_op));
 		ft_memcpy((void*)token->t_op, (void *)&op_tab[token->type - 1],\
 		sizeof(t_op));
+		token->traslation_size = 1 + token->t_op->encoding;
 	}
 	if (info->token_head == NULL)
 	{
