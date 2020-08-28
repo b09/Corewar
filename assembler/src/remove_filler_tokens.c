@@ -14,7 +14,22 @@
 
 void		token_del(t_token *token)
 {
-	return ;
+	free(token->token_string);
+	free(token);
+}
+
+void		token_unlink_del(t_asm *asm_obj, t_token *token)
+{
+	if (token == asm_obj->token_head)
+		asm_obj->token_head = token->next;
+	else
+	{
+		token->prev->next = token->next;
+		if (token->next)
+			token->next->prev = token->prev;
+	}
+	free(token->token_string);
+	free(token);
 }
 
 static void		remove_nl_and_comm_before_header(t_asm *asm_obj)
@@ -37,8 +52,7 @@ static void		remove_leading_nl_and_comm(t_asm *asm_obj)
 	current = asm_obj->token_head;
 	while (current->type == COMMENT_TKN || current->type == ENDLINE_TKN)
 	{
-		asm_obj->token_head = current->next;
-		token_del(current);
+		token_unlink_del(current);
 		current = asm_obj->token_head;
 	}
 }
@@ -62,8 +76,7 @@ void			remove_comments_and_extra_nl(t_asm *asm_obj)
 		if (current->type == COMMENT_TKN ||
 			(nl_seen && current->type == ENDLINE_TKN))
 		{
-			asm_obj->token_head = current->next;
-			token_del(current);
+			token_unlink_del(current);
 			current = asm_obj->token_head;
 		}
 		else

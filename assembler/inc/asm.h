@@ -172,6 +172,7 @@ typedef struct		s_token
 {
 	char			*string;
 	struct s_token	*next;
+	struct s_token	*prev;
 	int				type;
 	int				row;
 	int				col;

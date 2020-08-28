@@ -42,13 +42,13 @@ t_op    op_tab[17] =
 /*
 **	Finds correct operation code for assembly intruction defined in *str.
 **	Searches in array of t_op structs which list legal instructions
-**	
-**  Params:	
+**
+**  Params:
 **			char *str	==> parsed string provided by get_token_string()
-**	
+**
 **  Return:
 **			int - operation code for instruction described in *str
-**	
+**
 **	Called by:
 **			get_type()
 */
@@ -69,15 +69,15 @@ static int		get_opcode(char *str)
 }
 
 /*
-**	
-**	Params:	
+**
+**	Params:
 **			char *str	==> parsed string provided by get_token_string()
 **	Notes:
 **			Register strings (ex:"r12") are also valid labels, must separate
-**	
+**
 **	Return:
 **			int value used as key to identify token type
-**	
+**
 **	Called by:
 **			tokenize()
 */
@@ -117,14 +117,14 @@ static int		get_type(char *str)
 **	them. Calls gnl_with_newline(), and if the current str has a '"', find_quote
 **	will guarantee that there is a closing quote by continueing to call gnl
 **	until another closing quote is found
-**	
-**	Params:	
+**
+**	Params:
 **			char *str	==> raw string from file, provided by gnl_with_newline()
 **			t_asm *info	==> assembler struct initialized by main()
 **
 **	Notes:
 **			Removes all whitespace PRECENDING token
-**	
+**
 **	Called by:
 **			read_file()
 **
@@ -164,13 +164,13 @@ void			tokenize(char *str, t_asm *info)
 
 /*
 **	Creates and populates t_token nodes, links them together into a linked list.
-**	
-**	Params:	
+**
+**	Params:
 **			int row		==> line number in file read by gnl()
 **			int *col	==> char count of starting position of token
 **			char **str	==> raw string from file, provided by gnl_with_newline()
 **			t_asm *info	==> assembler struct initialized by main()
-**	
+**
 **	Called by:
 **			tokenize()
 **
@@ -190,8 +190,14 @@ void		populate_token(int row, int *col, char **str, t_asm *info)
 	(*str) += ft_strlen(token->string);
 	token->type = get_type(token->string);
 	if (info->token_head == NULL)
+	{
 		info->token_head = token;
+		token->prev = NULL;
+	}
 	else
+	{
 		tail->next = token;
+		token->prev = tail;
+	}
 	tail = token;
 }

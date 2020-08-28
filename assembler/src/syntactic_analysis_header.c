@@ -19,7 +19,17 @@ int				valid_instructions(t_asm *asm_obj)
 
 static void		remove_separators_and_nl(t_asm *asm_obj)
 {
-	return ;
+	t_token		*current;
+	t_token		*next;
+
+	current = asm_obj->token_head;
+	while (current)
+	{
+		next = current->next;
+		if (current->type == SEPARATOR_TKN || current->type == ENDLINE_TKN)
+			token_unlink_del(asm_obj, current);
+		current = next;
+	}
 }
 
 static int		valid_name_cmd(t_asm *asm_obj)
@@ -39,8 +49,7 @@ static int		valid_name_cmd(t_asm *asm_obj)
 	next = current->next->next->next;
 	while (current != next)
 	{
-		asm_obj->token_head = current->next;
-		token_del(current);
+		token_unlink_del(asm_obj, current);
 		current = asm_obj->token_head;
 	}
 	len = ft_strlen(asm_obj->name_cmd_string);
@@ -64,8 +73,7 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 	next = current->next->next->next;
 	while (current != next)
 	{
-		asm_obj->token_head = current->next;
-		token_del(current);
+		token_unlink_del(asm_obj, current);
 		current = asm_obj->token_head;
 	}
 	len = ft_strlen(asm_obj->comment_cmd_string);
