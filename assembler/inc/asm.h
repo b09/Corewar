@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/28 22:16:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 23:24:50 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ typedef struct		s_token
 	int				traslation_size;
 	struct s_op		*t_op;
 	int				label_value_as_arg;
+	unsigned char	codage;
 }					t_token;
 
 typedef struct		s_op

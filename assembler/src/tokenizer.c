@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 22:16:25 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 23:28:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,19 +216,26 @@ void		populate_token(int row, int *col, char **str, t_asm *info)
 	tail = token;
 }
 
-static void		argument_size(t_token *instruction, t_token *args)
+static void		argument_size(t_token *instruction, t_token *args, size_t i)
 {
 	if (args->type == REGISTRY_TKN)
-		instruction->traslation_size += 1;
-	else if (args->type == DIRECT_TKN || args->type == LABEL_TKN)
 	{
+		instruction->codage |= 1 << i;
+		instruction->traslation_size += 1;
+	}
+	else if (args->type == DIRECT_TKN || args->type == DIRECT_LABEL_TKN)
+	{
+		instruction->codage |= 2 << i;
 		if (instruction->t_op->label_is_twobytes == 1)
 			instruction->traslation_size += 2;
 		else
 			instruction->traslation_size += 4;
 	}
-	else if (args->type == INDIRECT_TKN)
+	else if (args->type == INDIRECT_TKN || args->type == INDIRECT_LABEL_TKN)
+	{
+		instruction->codage |= 3 << i;
 		instruction->traslation_size += 2;
+	}
 }
 
 
@@ -236,7 +243,7 @@ void			get_argument_size(t_asm *asm_obj)
 {
 	t_token		*args;
 	t_token		*instruction;
-	int			i;
+	size_t		i;
 
 	instruction = asm_obj->instructions_head;
 	while (instruction)
@@ -252,7 +259,7 @@ void			get_argument_size(t_asm *asm_obj)
 				else
 					args = args->next;
 				++i;
-				argument_size(instruction, args);
+				argument_size(instruction, args, i * 2);
 			}
 		}
 		instruction = instruction->next;
@@ -262,11 +269,26 @@ void			get_argument_size(t_asm *asm_obj)
 void			populate_label_args(t_asm *asm_obj)
 {
 	t_token		*label_arg;
+	t_token		*token;
 
 	label_arg = asm_obj->token_head;
 	while (label_arg)
 	{
-		if (label_arg->type == LAB)
+		if ((label_arg->type == 42 && label_arg->label_value_as_arg == 0)\
+		|| (label_arg->type == 44 && label_arg->label_value_as_arg == 0))
+		{
+			token = asm_obj->token_head;
+			while ()
+			{
+				// traverse linked list going forwards counting t_token->translation_size
+				// bytes between label defition and label argument, then populating
+				// label_value_as_arg with the byte count.
+				// if label defition not found, go in opposite direction and subtract
+				// byte counnt from position.
+				// if label definition not found, return ERROR
+			}
+
+		}
 		label_arg = label_arg->next;
 	}
 }
