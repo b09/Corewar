@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 16:54:22 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 22:16:25 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static int		get_opcode(char *str)
 **
 **	Params:
 **			char *str	==> parsed string provided by get_token_string()
+**
 **	Notes:
 **			Register strings (ex:"r12") are also valid labels, must separate
 **
@@ -90,9 +91,11 @@ static int		get_type(char *str)
 		return (COMMAND_TKN);
 	else if (*str == DIRECT_CHAR && *(str + 1) != LABEL_CHAR)
 		return (DIRECT_TKN);
+	else if (*str == DIRECT_CHAR && *(str + 1) == LABEL_CHAR) // this is new
+		return (DIRECT_LABEL_TKN);
 	else if (*str == REGISTRY_CHAR && str[ft_strlen(str) - 1] != ':')
 		return (REGISTRY_TKN);
-	else if (*str == DIRECT_CHAR && *(str + 1) == LABEL_CHAR)
+	else if (*str == LABEL_CHAR)
 		return (INDIRECT_LABEL_TKN);
 	else if (*str == '-' || ft_isdigit(*str))
 		return (INDIRECT_TKN);
@@ -203,7 +206,7 @@ void		populate_token(int row, int *col, char **str, t_asm *info)
 	if (info->token_head == NULL)
 	{
 		info->token_head = token;
-		token->prev = NULL;
+		token->prev = NULL; // through ft_memalloc, the struct's member should already be NULL
 	}
 	else
 	{
@@ -211,4 +214,59 @@ void		populate_token(int row, int *col, char **str, t_asm *info)
 		token->prev = tail;
 	}
 	tail = token;
+}
+
+static void		argument_size(t_token *instruction, t_token *args)
+{
+	if (args->type == REGISTRY_TKN)
+		instruction->traslation_size += 1;
+	else if (args->type == DIRECT_TKN || args->type == LABEL_TKN)
+	{
+		if (instruction->t_op->label_is_twobytes == 1)
+			instruction->traslation_size += 2;
+		else
+			instruction->traslation_size += 4;
+	}
+	else if (args->type == INDIRECT_TKN)
+		instruction->traslation_size += 2;
+}
+
+
+void			get_argument_size(t_asm *asm_obj)
+{
+	t_token		*args;
+	t_token		*instruction;
+	int			i;
+
+	instruction = asm_obj->instructions_head;
+	while (instruction)
+	{
+		if (instruction->t_op)
+		{
+			i = 0;
+			args = NULL;
+			while (i < instruction->t_op->number_of_args)
+			{
+				if (!args)
+					args = instruction->next;
+				else
+					args = args->next;
+				++i;
+				argument_size(instruction, args);
+			}
+		}
+		instruction = instruction->next;
+	}
+}
+
+void			populate_label_args(t_asm *asm_obj)
+{
+	t_token		*label_arg;
+
+	label_arg = asm_obj->token_head;
+	while (label_arg)
+	{
+		if (label_arg->type == LAB)
+		label_arg = label_arg->next;
+	}
 }

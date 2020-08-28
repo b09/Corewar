@@ -6,3 +6,4 @@ corewar
 .DS_Store
 *.gch
 *.a
+*.cor

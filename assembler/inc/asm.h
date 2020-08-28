@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/28 15:45:02 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 22:16:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,24 @@
 								in header.\n"
 
 /*
-**  TOKENS:
+**		TOKENS:
 **	1-20 intructions
 **	20-29 plain text
 **	30-39 non action signifiers
 **	40-49 arguments
 **	50-59 syntax character
 **
-**		*20 COMMENT
+**		20 COMMENT
 **		21 STRING
 **
-**		*30 COMMAND
+**		30 COMMAND
 **		31 LABEL
 **
-**		*40 DIRECT
+**		40 DIRECT
 **		41 REGISTRY
 **		42 INDIRECT_LABEL
 **		43 INDIRECT
+**		44 DIRECT_LABEL
 **
 **		50 SEPARATOR
 **		51 ENDLINE
@@ -113,6 +114,7 @@
 #define REGISTRY_TKN		41
 #define INDIRECT_LABEL_TKN	42
 #define INDIRECT_TKN		43
+#define DIRECT_LABEL_TKN	44
 #define SEPARATOR_TKN		50
 #define ENDLINE_TKN			51
 
@@ -182,6 +184,7 @@ typedef struct		s_token
 	int				col;
 	int				traslation_size;
 	struct s_op		*t_op;
+	int				label_value_as_arg;
 }					t_token;
 
 typedef struct		s_op
@@ -202,6 +205,8 @@ typedef struct		s_op
 
 void		tokenize(char *str, t_asm *info);
 void		populate_token(int row, int *col, char **str, t_asm *info);
+void		get_argument_size(t_asm *asm_obj);
+
 
 /*
 **	print_functions.c

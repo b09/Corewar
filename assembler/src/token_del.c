@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:54:56 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 16:58:01 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/28 20:15:50 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void		token_del(t_token *token)
 {
 	// free(token->token_string);
 	// free(token);
-	ft_memdel(token->string);
-	ft_memdel(token);
+	ft_memdel((void*)&token->string);
+	ft_memdel((void*)&token);
 }
 
 void		token_unlink_del(t_asm *asm_obj, t_token *token)
@@ -32,6 +32,6 @@ void		token_unlink_del(t_asm *asm_obj, t_token *token)
 	}
 	// free(token->token_string);
 	// free(token);
-	ft_memdel(token->string);
-	ft_memdel(token);
+	ft_memdel((void*)&token->string);
+	ft_memdel((void*)&token);
 }
