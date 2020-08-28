@@ -12,26 +12,6 @@
 
 #include "asm.h"
 
-int				valid_instructions(t_asm *asm_obj)
-{
-	return (1);
-}
-
-static void		remove_separators_and_nl(t_asm *asm_obj)
-{
-	t_token		*current;
-	t_token		*next;
-
-	current = asm_obj->token_head;
-	while (current)
-	{
-		next = current->next;
-		if (current->type == SEPARATOR_TKN || current->type == ENDLINE_TKN)
-			token_unlink_del(asm_obj, current);
-		current = next;
-	}
-}
-
 static int		valid_name_cmd(t_asm *asm_obj)
 {
 	t_token		*current;
@@ -77,7 +57,7 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 		current = asm_obj->token_head;
 	}
 	len = ft_strlen(asm_obj->comment_cmd_string);
-	return (len > 0 && len <= PROG_NAME_LENGTH ? TRUE : FALSE);
+	return (len <= COMMENT_LENGTH ? TRUE : FALSE);
 }
 
 /*

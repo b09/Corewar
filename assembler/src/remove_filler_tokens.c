@@ -12,35 +12,8 @@
 
 #include "asm.h"
 
-void		token_del(t_token *token)
-{
-	free(token->token_string);
-	free(token);
-}
-
-void		token_unlink_del(t_asm *asm_obj, t_token *token)
-{
-	if (token == asm_obj->token_head)
-		asm_obj->token_head = token->next;
-	else
-	{
-		token->prev->next = token->next;
-		if (token->next)
-			token->next->prev = token->prev;
-	}
-	free(token->token_string);
-	free(token);
-}
-
-static void		remove_nl_and_comm_before_header(t_asm *asm_obj)
-{
-	return ;
-}
-
-
-
 /*
-**	Used to remove comments and newlines before the first encoding token
+**	Used to remove comments and newlines before the header
 **
 **	Called by:	valid_syntax()
 */
@@ -69,9 +42,10 @@ void			remove_comments_and_extra_nl(t_asm *asm_obj)
 	t_token		*previous;
 	int			nl_seen;
 
-	remove_nl_and_comm_before_header(asm_obj);
+	remove_leading_nl_and_comm(asm_obj);
 	current = asm_obj->token_head;
-	while (current->next)
+	// while (current->next)  why was this current->next?
+	while (current)
 	{
 		if (current->type == COMMENT_TKN ||
 			(nl_seen && current->type == ENDLINE_TKN))
@@ -87,5 +61,26 @@ void			remove_comments_and_extra_nl(t_asm *asm_obj)
 				nl_seen = FALSE;
 			current = current->next;
 		}
+	}
+}
+
+/*
+**	Removes all separator and nl tokens after validating instructions.
+**
+**	Called by:	valid_syntax()
+*/
+
+void		remove_separators_and_nl(t_asm *asm_obj)
+{
+	t_token		*current;
+	t_token		*next;
+
+	current = asm_obj->token_head;
+	while (current)
+	{
+		next = current->next;
+		if (current->type == SEPARATOR_TKN || current->type == ENDLINE_TKN)
+			token_unlink_del(asm_obj, current);
+		current = next;
 	}
 }
