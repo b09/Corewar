@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/27 17:01:41 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 19:35:35 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,13 +176,14 @@ typedef struct		s_token
 	int				type;
 	int				row;
 	int				col;
+	struct s_op		*t_op;
 }					t_token;
 
 typedef struct		s_op
 {
 	char			*op_str;
 	int				number_of_args;
-	int				args[3];
+	char			args[3];
 	int				opcode;
 	int				cycles;
 	char			*description;

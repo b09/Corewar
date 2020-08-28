@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/25 16:11:36 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/27 19:36:51 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,9 +198,9 @@ int				main(int argc, char **argv)
 	// read_file(argc, argv, &asm_obj);
 	if (read_file(argc, argv, &asm_obj) == FALSE)
 		return (1);
-	create_and_write_file(&asm_obj);
 	ft_printf("filename: %s\n", asm_obj.file_name);
-	lexicon_valid(&asm_obj);
+	create_and_write_file(&asm_obj);
+	// lexicon_valid(&asm_obj);
 	// syntax_valid();
 	// instructions_valid();
 	// params_valid();
