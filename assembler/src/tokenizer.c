@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 23:28:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 13:05:42 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ t_op	op_tab[17] =
 **	Finds correct operation code for assembly intruction defined in *str.
 **	Searches in array of t_op structs which list legal instructions
 **
-**  Params:
+**	Params:
 **			char *str	==> parsed string provided by get_token_string()
 **
-**  Return:
+**	Return:
 **			int - operation code for instruction described in *str
 **
 **	Called by:
@@ -92,11 +92,11 @@ static int		get_type(char *str)
 	else if (*str == DIRECT_CHAR && *(str + 1) != LABEL_CHAR)
 		return (DIRECT_TKN);
 	else if (*str == DIRECT_CHAR && *(str + 1) == LABEL_CHAR) // this is new
-		return (DIRECT_LABEL_TKN);
+		return (DIR_LBL_TKN);
 	else if (*str == REGISTRY_CHAR && str[ft_strlen(str) - 1] != ':')
 		return (REGISTRY_TKN);
 	else if (*str == LABEL_CHAR)
-		return (INDIRECT_LABEL_TKN);
+		return (INDIR_LBL_TKN);
 	else if (*str == '-' || ft_isdigit(*str))
 		return (INDIRECT_TKN);
 	else if (ft_strchr(LABEL_CHARS, *str))
@@ -114,6 +114,53 @@ static int		get_type(char *str)
 	return (-1);
 }
 
+/*
+**	Creates and populates t_token nodes, links them together into a linked list.
+**
+**	Params:
+**			int row		==> line number in file read by gnl()
+**			int *col	==> char count of starting position of token
+**			char **str	==> raw string from file, provided by gnl_with_newline()
+**			t_asm *info	==> assembler struct initialized by main()
+**
+**	Called by:
+**			tokenize()
+**
+**	Notes:
+**			If token is an instruction, the intruction's struct is copied from
+**			the op_tab[17].
+**
+**		DEBUG
+	ft_printf("func: %s len:%d str: [%s] addr:%p\n", __func__, ft_strlen(*str), *str, *str);
+*/
+
+static void			create_token(int row, int *col, char **str, t_asm *info)
+{
+	t_token			*token;
+	static t_token	*tail;
+
+	token = (t_token *)ft_memalloc(sizeof(t_token));
+	token->row = row;
+	token->col = *col;
+	token->string = get_token_string(*str, col);
+	(*str) += ft_strlen(token->string);
+	token->type = get_type(token->string);
+	if (token->type < 17)
+	{
+		token->t_op = (t_op *)ft_memalloc(sizeof(t_op));
+		ft_memcpy((void*)token->t_op, (void *)&op_tab[token->type - 1],\
+		sizeof(t_op));
+		token->translation_size = 1 + token->t_op->encoding;
+	}
+	if (info->token_head == NULL)
+		info->token_head = token;
+	else
+	{
+		tail->next = token;
+		token->prev = tail;
+	}
+	tail = token;
+}
 
 /*
 **	Tokenizes one line of asm. Creates linked list of token nodes, populates
@@ -147,7 +194,7 @@ void			tokenize(char *str, t_asm *info)
 	{
 		col = 1;
 		if (ft_strchr(str, '"') && find_end_quote(info->fd, &str, &row) == 0)
-			return ; // signifies ERROR no end quote found
+			print_error(NO_END_QUOTE);
 		while (*str)
 		{
 			while (*str != '\n' && ft_isspace(*str))
@@ -155,140 +202,9 @@ void			tokenize(char *str, t_asm *info)
 				col++;
 				str++;
 			}
-			populate_token(row, &col, &str, info);
+			create_token(row, &col, &str, info);
 		}
 		// ft_memdel((void*)&str); // MUST DEBUG
 		row++;
-	}
-}
-// where does str have to be freed?
-// what happens if multiple quotes are opened?
-
-
-/*
-**	Creates and populates t_token nodes, links them together into a linked list.
-**
-**	Params:
-**			int row		==> line number in file read by gnl()
-**			int *col	==> char count of starting position of token
-**			char **str	==> raw string from file, provided by gnl_with_newline()
-**			t_asm *info	==> assembler struct initialized by main()
-**
-**	Called by:
-**			tokenize()
-**
-**	Notes:
-**			If token is an instruction, the intruction's struct is copied from
-**			the op_tab[17].
-**
-**		DEBUG
-	ft_printf("func: %s len:%d str: [%s] addr:%p\n", __func__, ft_strlen(*str), *str, *str);
-*/
-
-void		populate_token(int row, int *col, char **str, t_asm *info)
-{
-	t_token			*token;
-	static t_token	*tail;
-
-	token = (t_token *)ft_memalloc(sizeof(t_token));
-	token->row = row;
-	token->col = *col;
-	token->string = get_token_string(*str, col);
-	(*str) += ft_strlen(token->string);
-	token->type = get_type(token->string);
-	if (token->type < 17)
-	{
-		token->t_op = (t_op *)ft_memalloc(sizeof(t_op));
-		ft_memcpy((void*)token->t_op, (void *)&op_tab[token->type - 1],\
-		sizeof(t_op));
-		token->traslation_size = 1 + token->t_op->encoding;
-	}
-	if (info->token_head == NULL)
-	{
-		info->token_head = token;
-		token->prev = NULL; // through ft_memalloc, the struct's member should already be NULL
-	}
-	else
-	{
-		tail->next = token;
-		token->prev = tail;
-	}
-	tail = token;
-}
-
-static void		argument_size(t_token *instruction, t_token *args, size_t i)
-{
-	if (args->type == REGISTRY_TKN)
-	{
-		instruction->codage |= 1 << i;
-		instruction->traslation_size += 1;
-	}
-	else if (args->type == DIRECT_TKN || args->type == DIRECT_LABEL_TKN)
-	{
-		instruction->codage |= 2 << i;
-		if (instruction->t_op->label_is_twobytes == 1)
-			instruction->traslation_size += 2;
-		else
-			instruction->traslation_size += 4;
-	}
-	else if (args->type == INDIRECT_TKN || args->type == INDIRECT_LABEL_TKN)
-	{
-		instruction->codage |= 3 << i;
-		instruction->traslation_size += 2;
-	}
-}
-
-
-void			get_argument_size(t_asm *asm_obj)
-{
-	t_token		*args;
-	t_token		*instruction;
-	size_t		i;
-
-	instruction = asm_obj->instructions_head;
-	while (instruction)
-	{
-		if (instruction->t_op)
-		{
-			i = 0;
-			args = NULL;
-			while (i < instruction->t_op->number_of_args)
-			{
-				if (!args)
-					args = instruction->next;
-				else
-					args = args->next;
-				++i;
-				argument_size(instruction, args, i * 2);
-			}
-		}
-		instruction = instruction->next;
-	}
-}
-
-void			populate_label_args(t_asm *asm_obj)
-{
-	t_token		*label_arg;
-	t_token		*token;
-
-	label_arg = asm_obj->token_head;
-	while (label_arg)
-	{
-		if ((label_arg->type == 42 && label_arg->label_value_as_arg == 0)\
-		|| (label_arg->type == 44 && label_arg->label_value_as_arg == 0))
-		{
-			token = asm_obj->token_head;
-			while ()
-			{
-				// traverse linked list going forwards counting t_token->translation_size
-				// bytes between label defition and label argument, then populating
-				// label_value_as_arg with the byte count.
-				// if label defition not found, go in opposite direction and subtract
-				// byte counnt from position.
-				// if label definition not found, return ERROR
-			}
-
-		}
-		label_arg = label_arg->next;
 	}
 }

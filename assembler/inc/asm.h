@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/28 23:24:50 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 13:05:05 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@
 								header.\n"
 #define SYNTAX_NO_CMNT_STR		"Syntax error: expected string after .comment\
 								in header.\n"
+#define NO_LABEL_DEFINITION		"Syntax error: label not defined\n"
+#define NO_END_QUOTE			"Syntax error: No end quote found for string\n"
 
 /*
 **		TOKENS:
@@ -112,9 +114,9 @@
 #define LABEL_TKN			31
 #define DIRECT_TKN			40
 #define REGISTRY_TKN		41
-#define INDIRECT_LABEL_TKN	42
+#define INDIR_LBL_TKN		42
 #define INDIRECT_TKN		43
-#define DIRECT_LABEL_TKN	44
+#define DIR_LBL_TKN			44
 #define SEPARATOR_TKN		50
 #define ENDLINE_TKN			51
 
@@ -182,9 +184,9 @@ typedef struct		s_token
 	int				type;
 	int				row;
 	int				col;
-	int				traslation_size;
+	int				translation_size;
 	struct s_op		*t_op;
-	int				label_value_as_arg;
+	int				bytecode;
 	unsigned char	codage;
 }					t_token;
 
@@ -205,8 +207,10 @@ typedef struct		s_op
 */
 
 void		tokenize(char *str, t_asm *info);
-void		populate_token(int row, int *col, char **str, t_asm *info);
+// void		create_token(int row, int *col, char **str, t_asm *info);
 void		get_argument_size(t_asm *asm_obj);
+int			find_label_definition(t_token *lab_arg);
+
 
 
 /*
@@ -253,6 +257,13 @@ int			valid_header(t_asm *asm_obj);
 int			find_end_quote(int fd, char **str, int *row);
 int			guarantee_quote_pairs(char *str);
 char		*get_token_string(char *str, int *col);
+
+/*
+**	token_del.c
+*/
+
+void		token_del(t_token *token);
+void		token_unlink_del(t_asm *asm_obj, t_token *token);
 
 /*
 **	translator.c

@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/27 14:48:42 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 11:32:05 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ int				valid_token(t_token *token)
 		return (valid_dir_tkn(token->string));
 	else if (token->type == REGISTRY_TKN)
 		return (valid_reg_tkn(token->string));
-	else if (token->type == INDIRECT_LABEL_TKN)
+	else if (token->type == INDIR_LBL_TKN)
 		return (valid_ilbl_tkn(token->string));
 	else if (token->type == INDIRECT_TKN)
 		return (valid_ind_tkn(token->string));

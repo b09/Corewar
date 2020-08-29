@@ -6,17 +6,11 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/25 23:54:37 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 16:56:46 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 12:49:48 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-
-static void		token_unlink_del(t_asm *asm_obj, t_token *current)
-{
-	return ;
-}
-
 
 /*
 **	Used to remove comments and newlines before the header

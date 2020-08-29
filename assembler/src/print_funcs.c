@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/28 19:02:36 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 12:44:57 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void			print_asm_obj(t_asm *asm_obj)
 													tokens->string : "\\n");
 		ft_printf("t type: %-5d ", tokens->type);
 		ft_printf("position:[%d:%d] ", tokens->row, tokens->col);
-		ft_printf("t type: %-5d ", tokens->traslation_size);
+		ft_printf("t type: %-5d ", tokens->translation_size);
 		if (tokens->t_op)
 		{
 			ft_printf(C_CYAN"op_str:%s ", tokens->t_op->op_str);

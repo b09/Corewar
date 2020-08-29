@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/28 16:59:36 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 11:58:09 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ static void		write_exec_size(t_asm *asm_obj)
 	t_token		*tokens;
 
 	size = 0;
-	tokens = asm_obj->instructions_head;
+	tokens = asm_obj->token_head;
 	while (tokens)
 	{
-		++size;
+		size += tokens->translation_size;
 		tokens = tokens->next;
 	}
 	write_to_file(asm_obj->fd, (unsigned char *)&size, 4);
