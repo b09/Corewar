@@ -6,20 +6,26 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/29 13:42:18 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 14:01:20 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
 /*
-**	Finds the definition of label, of which 
+**	Finds the token at which the functions's argument is defined. The func()'s
+**	arg is either a IND_LBL_TKN or a DIR_LBL_TKN. As func() traverses tokens
+**	seeking definition, the t_token->translation_size is added for all tokens
+**	between label definition and label as argument, which are the amount of
+**	bytes which will separate definition from argument in the tranlated byte-
+**	code. Token list is searched forwards and backwards, and if definition is
+**	not found, error printed and program exited.
 **
 **	Params:
-**			char *str	==> 
+**			t_token *lab_arg ==> label token used as argument for an instruction
 **
 **	Notes:
-**			
+**			if label definition not found, error printed and program exited
 **
 **	Called by:
 **			argument_size()
@@ -84,8 +90,8 @@ static int		get_number(char *str)
 **			t_token *instruction ==> instruction token
 **			t_token *args	==> token->next of instruction token, assumed to be
 **							an argument of the instruction
-**			size_t i		==> number of argument for instruction (can be up to
-**								three arguments) - 1;
+**			size_t i		==> number of argument for instruction - 1 (can be
+**								up to three arguments);
 **
 **	Notes:
 **			find_label_definition() will print error and exit if label
@@ -162,31 +168,3 @@ void			get_argument_size(t_asm *asm_obj)
 		instruction = instruction->next;
 	}
 }
-
-// NOT NEEDED ANYMORE
-void			populate_lab_args(t_asm *asm_obj)
-{
-	t_token		*lab_arg;
-	t_token		*token;
-
-	lab_arg = asm_obj->token_head;
-	while (lab_arg)
-	{
-		if ((lab_arg->type == 42 && lab_arg->bytecode == 0)\
-		|| (lab_arg->type == 44 && lab_arg->bytecode == 0))
-		{
-			token = lab_arg;
-			lab_arg->bytecode = find_label_definition(token);
-			if (lab_arg->bytecode == 0)
-				print_error(NO_LABEL_DEFINITION);
-		}
-		lab_arg = lab_arg->next;
-	}
-}
-
-// traverse linked list going forwards counting t_token->translation_size
-// bytes between label defition and label argument, then populating
-// bytecode with the byte count.
-// if label defition not found, go in opposite direction and subtract
-// byte counnt from position.
-// if label definition not found, return ERROR
