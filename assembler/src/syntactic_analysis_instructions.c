@@ -28,6 +28,29 @@ static int	skip_labels(t_token **token)
 	return (TRUE);
 }
 
+static int	valid_arg(t_token *ins, int i)
+{
+	t_token *arg;
+	int		j;
+
+	j = 0;
+	arg = ins->next;
+	while (j != i)
+	{
+		j++
+		arg = arg->next->next;
+	}
+	if (arg->type == REGISTRY_TKN && ins->t_op->args[i] & T_REG)
+		return (TRUE);
+	else if ((arg->type == DIRECT_TKN || arg->type == DIRECT_LABEL_TKN) &&
+		ins->t_op->args[i] & T_DIR)
+		return (TRUE);
+	else if ((arg->type == INDIRECT_TKN || arg->type == INDIRECT_LABEL_TKN) &&
+		ins->t_op->args[i] & T_IND)
+		return (TRUE);
+	return (FALSE);
+}
+
 static int	validate_args(t_token **token)
 {
 	t_token *ins;
@@ -39,7 +62,7 @@ static int	validate_args(t_token **token)
 	i = 0;
 	while (i < ins->t_op->number_of_args)
 	{
-		if () // VALIDATE INDIVIDUAL ARGS
+		if (valid_arg(ins, i) == FALSE)
 			return (print_error(SYNTAX_INVALID_ARG));
 		i++;
 		current = current->next;
