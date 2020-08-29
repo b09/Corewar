@@ -28,6 +28,31 @@ static int	skip_labels(t_token **token)
 	return (TRUE);
 }
 
+static int	validate_args(t_token **token)
+{
+	t_token *ins;
+	t_token *current;
+	int		i;
+
+	ins = *token;
+	current = ins->next;;
+	i = 0;
+	while (i < ins->t_op->number_of_args)
+	{
+		if () // VALIDATE INDIVIDUAL ARGS
+			return (print_error(SYNTAX_INVALID_ARG));
+		i++;
+		current = current->next;
+		if (i < ins->t_op->number_of_args)
+		{
+			if (current->type != SEPARATOR_TKN)
+				return (print_error(SYNTAX_MISSING_SEPARATOR));
+			current = current->next;
+		}
+	}
+	return (TRUE);
+}
+
 int			valid_instructions(t_asm *asm_obj)
 {
 	t_token	*current;
@@ -38,7 +63,7 @@ int			valid_instructions(t_asm *asm_obj)
 		skip_labels(&current);
 		if (!is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));
-		// DO STUFF TO CHECK ARGUMENTS AND SEPARATORS
+		validate_args(&current);
 		if (current->type != ENDLINE_TKN)
 			return (print_error(SYNTAX_EXPECTED_NL));
 		current = current->next;
