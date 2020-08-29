@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/27 19:36:51 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 13:13:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 **			Only one argument (file name)
 **			File name must end ".s"
 **
-**  Params:
+**	Params:
 **			char **argv	==> main() args
 **			int	argc	==> main() args
 **			t_asm info	==> main assembler struct
@@ -30,7 +30,7 @@
 **			gnl_with_newline() will include '\n' in str
 **			file_name copied WITHOUT '.s' extension
 **
-**  Return:
+**	Return:
 **			FALSE (0)= invalid file
 **			TRUE (1) = valid file
 **
@@ -59,10 +59,10 @@ static int		read_file(int argc, char **argv, t_asm *info)
 /*
 **	Finds quotation marks in a larger string and returns substring.
 **
-**  Params:
+**	Params:
 **			char *str	==> contains "... <to_return> ..."
 **
-**  Return:
+**	Return:
 **			isolated string "<to_return>"
 **
 **	Called by:	none
@@ -85,10 +85,10 @@ static char		*get_name_comment(char *str)
 /*
 **	Validates string by checking each char against list of legal chars
 **
-**  Params:
+**	Params:
 **			char *str	==> string from a LABEL type token
 **
-**  Return:
+**	Return:
 **			FALSE (0)= invalid str
 *			TRUE (1) = valid str
 **
