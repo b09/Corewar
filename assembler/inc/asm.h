@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/29 13:28:37 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 20:24:43 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,20 @@
 
 # include "libft.h"
 # include "ft_printf.h"
-# include <fcntl.h> //for open
+# include <fcntl.h>
 # include <stdbool.h>
 
+/*
+**	COLORS FOR FT_PRINTF
+*/
 
-# define C_RED		"\x1b[31m"
-# define C_GREEN	"\x1b[32m"
-# define C_YELLOW	"\x1b[33m"
-# define C_BLUE		"\x1b[34m"
-# define C_MAGENTA	"\x1b[35m"
-# define C_CYAN		"\x1b[36m"
-# define C_RESET	"\x1b[0m"
+# define C_RED					"\x1b[31m"
+# define C_GREEN				"\x1b[32m"
+# define C_YELLOW				"\x1b[33m"
+# define C_BLUE					"\x1b[34m"
+# define C_MAGENTA				"\x1b[35m"
+# define C_CYAN					"\x1b[36m"
+# define C_RESET				"\x1b[0m"
 
 /*
 ** op.h header provided as attachment for Corewar project
@@ -108,17 +111,17 @@
 **
 */
 
-#define COMMENT_TKN			20
-#define STRING_TKN			21
-#define COMMAND_TKN			30
-#define LABEL_TKN			31
-#define DIRECT_TKN			40
-#define REGISTRY_TKN		41
-#define INDIR_LBL_TKN		42
-#define INDIRECT_TKN		43
-#define DIR_LBL_TKN			44
-#define SEPARATOR_TKN		50
-#define ENDLINE_TKN			51
+#define COMMENT_TKN				20
+#define STRING_TKN				21
+#define COMMAND_TKN				30
+#define LABEL_TKN				31
+#define DIRECT_TKN				40
+#define REGISTRY_TKN			41
+#define INDIR_LBL_TKN			42
+#define INDIRECT_TKN			43
+#define DIR_LBL_TKN				44
+#define SEPARATOR_TKN			50
+#define ENDLINE_TKN				51
 
 /*
 **
@@ -148,7 +151,15 @@ typedef struct		header_s
 }					header_t;
 
 /*
-**  Bla
+**			Main Assembler Struct
+**	file_name			= name of file provided to asm executable
+**	champ_name			= name of champion contained in assebly file
+**	champ_comment		= comment of champion contained in assembly file
+**	instructions_head	= pointer to first token which is an intruction
+**	token_head			= head of t_token linked list
+**	token_tail			= tail of t_token linked list
+**	name_cmd_string		= name of champion contained in assebly file
+**	comment_cmd_string	= comment of champion contained in assembly file
 */
 
 typedef struct		s_asm
@@ -166,7 +177,7 @@ typedef struct		s_asm
 
 /*
 **			Tokenizer
-**	string	= raw input string
+**	string	= raw input string from assembly file provided by gnl()
 **	next	= pointer to next token
 **	prev	= pointer to previous token
 **	type	= unique integer indentifier
@@ -174,6 +185,10 @@ typedef struct		s_asm
 **	col		= character count from start of line to start of token string
 **	translation_size = if instruction, size in bytes of instruction with arguments
 **	t_op	= if instruction, operation struct containing rules for instruction
+**	bytecode= value of the string translated to the appropriate int value used
+**				final translation of assembly file into bytecode
+**	codage	= single byte used as flag to specify the types of arguments an
+				instruction will have, added to translated bytecode for vm
 */
 
 typedef struct		s_token
@@ -189,6 +204,10 @@ typedef struct		s_token
 	int				bytecode;
 	unsigned char	codage;
 }					t_token;
+
+/*
+**	struct provided as resource, found in project spec
+*/
 
 typedef struct		s_op
 {
@@ -274,6 +293,11 @@ void		token_unlink_del(t_asm *asm_obj, t_token *token);
 */
 
 int			little_to_big_endian(int number, size_t size);
+
+/*
+**	translation_write_funcs.c
+*/
+
 int			create_and_write_file(t_asm *asm_obj);
 
 
