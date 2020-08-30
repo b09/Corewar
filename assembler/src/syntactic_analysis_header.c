@@ -13,7 +13,6 @@
 #include "asm.h"
 
 /*
-**
 **	Checks name_command token for validity.
 **	name_command is valid when followed by a string that can be size
 **	of 1 up to PROG_NAME_LENGTH, which is currently set to 128.
@@ -44,7 +43,6 @@ static int		valid_name_cmd(t_asm *asm_obj)
 }
 
 /*
-**
 **	Checks comment_command token for validity.
 **	comment_command is valid when followed by a string that can be size
 **	of 0 up to COMMENT_LENGTH, which is currently set to 2048.
