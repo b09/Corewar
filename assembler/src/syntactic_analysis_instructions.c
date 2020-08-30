@@ -12,6 +12,14 @@
 
 #include "asm.h"
 
+/*
+**	Validates that labels are on their own lines, updates current token to check
+**
+**	Input: address of current token to check.
+**
+**	Return: True or False
+*/
+
 static int	skip_labels(t_token **token)
 {
 	t_token	*current;
@@ -27,6 +35,16 @@ static int	skip_labels(t_token **token)
 	*token = current;
 	return (TRUE);
 }
+
+/*
+**	Validates that the type of current argument is allowed
+**	for instruction's opcode.
+**
+**	Input:	ins,	token that contains current instruction.
+**			i,		index for current argument to check.
+**
+**	Return: True or False
+*/
 
 static int	valid_arg(t_token *ins, int i)
 {
@@ -50,6 +68,18 @@ static int	valid_arg(t_token *ins, int i)
 		return (TRUE);
 	return (FALSE);
 }
+
+/*
+**	Validates number of arguments for specific opcode,
+**	calls valid_arg() on each argument, checks separation by SEPARATOR_CHAR's.
+**
+**	Updates *token to point to next token to check after this instruction line
+**	was validated.
+**
+**	Input: address of token containing opcode.
+**
+**	Return: True or False
+*/
 
 static int	validate_args(t_token **token)
 {
@@ -75,6 +105,24 @@ static int	validate_args(t_token **token)
 	}
 	return (TRUE);
 }
+
+/*
+**	Makes sure instructions are syntactically correct.
+**	Also allowes any amount of labels to precede an instruction.
+**	Instruction lines are formatted correctly if;
+**
+**	1. They start with an opcode.
+**	2. They have the correct amount of arguments for that opcode.
+**	3. The arguments are of types allowed by that opcode.
+**	4. Arguments are seperated by SEPARATOR_CHAR's
+**	5. Each opcode and label are at the start of a line.
+**
+**	Input: asm_obj
+**
+**	Return: True or False
+**
+**	Called by: valid_syntax()
+*/
 
 int			valid_instructions(t_asm *asm_obj)
 {

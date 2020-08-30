@@ -18,7 +18,7 @@
 **	Called by:	valid_syntax()
 */
 
-static void		remove_leading_nl_and_comm(t_asm *asm_obj)
+static void	remove_leading_nl_and_comm(t_asm *asm_obj)
 {
 	t_token		*current;
 
@@ -36,7 +36,7 @@ static void		remove_leading_nl_and_comm(t_asm *asm_obj)
 **	Called by:	valid_syntax()
 */
 
-void			remove_comments_and_extra_nl(t_asm *asm_obj)
+void		remove_comments_and_extra_nl(t_asm *asm_obj)
 {
 	t_token		*current;
 	t_token		*previous;

@@ -12,6 +12,17 @@
 
 #include "asm.h"
 
+/*
+**
+**	Checks name_command token for validity.
+**	name_command is valid when followed by a string that can be size
+**	of 1 up to PROG_NAME_LENGTH, which is currently set to 128.
+**
+**	Input: asm_obj
+**
+**	Return: True or False
+*/
+
 static int		valid_name_cmd(t_asm *asm_obj)
 {
 	t_token		*current;
@@ -31,6 +42,17 @@ static int		valid_name_cmd(t_asm *asm_obj)
 	len = ft_strlen(asm_obj->name_cmd_string);
 	return (len > 0 && len <= PROG_NAME_LENGTH ? TRUE : FALSE);
 }
+
+/*
+**
+**	Checks comment_command token for validity.
+**	comment_command is valid when followed by a string that can be size
+**	of 0 up to COMMENT_LENGTH, which is currently set to 2048.
+**
+**	Input: asm_obj
+**
+**	Return: True or False
+*/
 
 static int		valid_comment_cmd(t_asm *asm_obj)
 {
@@ -59,6 +81,12 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 **
 **	Header is formatted properly if it has .name and .comment in any order,
 **	both with their properly formatted strings.
+**
+**	Input: asm_obj
+**
+**	Return: True or False
+**
+**	Called by: valid_syntax()
 */
 
 int				valid_header(t_asm *asm_obj)

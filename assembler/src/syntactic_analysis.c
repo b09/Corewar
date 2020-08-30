@@ -12,12 +12,7 @@
 
 #include "asm.h"
 
-static void	remove_separators_and_nl(t_asm *asm_obj)
-{
-	return ;
-}
-
-int			valid_syntax(t_asm *asm_obj)
+int	valid_syntax(t_asm *asm_obj)
 {
 	remove_comments_and_extra_nl(asm_obj);
 	if (valid_header(asm_obj) == FALSE)
