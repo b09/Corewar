@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 19:25:47 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 19:32:07 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@
 #define SYNTAX_CMNT_LONG		"Syntax error: Champion comment is too long\n"
 #define SYNTAX_NAME_LONG		"Syntax error: Champion name is too long\n"
 #define SYNTAX_HEADER_INVALID	"Syntax error: Header is invalid\n"
+#define FILE_TYPE_INVALID		"File type is invalid\n"
+#define NUM_ARGS_INVALID		"The number of arguments is invalid. Please use\
+								one assembly file at a time.\n"
 
 /*
 **		TOKENS:

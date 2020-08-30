@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 18:33:25 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 19:32:20 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ static int		read_file(int argc, char **argv, t_asm *info)
 	int			fd;
 
 	if (argc != 2)
-		return (FALSE);
+		return (print_error(NUM_ARGS_INVALID));
 	str = argv[1];
 	name_len = ft_strlen(str);
 	if (name_len <= 2 || str[name_len - 2] != '.' || str[name_len - 1] != 's')
-		return (FALSE);
+		return (print_error(FILE_TYPE_INVALID));
 	info->file_name = ft_strndup(str, name_len - 2);
 	info->fd = open(str, O_RDONLY);
 	tokenize(str, info, 0);
