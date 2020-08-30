@@ -21,7 +21,7 @@ static void	del_cmd_str_and_nl(t_asm *asm_obj, t_token **token)
 	token_cmd = *token;
 	token_str = token_cmd->next;
 	token_nl = token_str->next;
-	if (token_nl == NULL)
+	if (token_nl == NULL || token_nl->type != ENDLINE_TKN)
 		print_error(SYNTAX_MISSING_NL);
 	*token = token_nl->next;
 	token_unlink_del(asm_obj, token_cmd);
