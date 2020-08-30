@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 22:08:16 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 22:15:13 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int			valid_instructions(t_asm *asm_obj)
 		if (!is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));
 		validate_args(&current);
-		if (current->type != ENDLINE_TKN)
+		if (!current || current->type != ENDLINE_TKN)
 			return (print_error(SYNTAX_EXPECTED_NL));
 		current = current->next;
 	}

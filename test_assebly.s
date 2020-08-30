@@ -6,7 +6,7 @@
 	zjmp    %:base
 
 def:
-	live		r9, -256
+	st		r9, -256
 	st		r10, -256
 	st		r14, -9
 	st      r4, -21
