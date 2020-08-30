@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 17:05:18 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 17:43:39 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ typedef struct		s_op
 **	tokenizer.c
 */
 
-void		tokenize(char *str, t_asm *info);
+void		tokenize(char *str, t_asm *info, int i);
 // void		create_token(int row, int *col, char **str, t_asm *info);
 // int			find_label_definition(t_token *lab_arg);
 

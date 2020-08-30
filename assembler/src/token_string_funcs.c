@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 17:04:59 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 18:01:47 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int				find_end_quote(int fd, char **str, int *row)
 	while (gnl_with_newline(fd, str) > 0)
 	{
 		joined_string = ft_strjoin(old_string, *str);
-		// ft_memdel((void*)&old_string); // MUST DEBUG
+		free((void*)old_string);
 		old_string = joined_string;
 		(*row)++;
 		if (ft_strchr_int(*str, '"') && guarantee_quote_pairs(joined_string))
