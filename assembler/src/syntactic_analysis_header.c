@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 16:44:08 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 19:23:27 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,16 @@ static int		valid_name_cmd(t_asm *asm_obj)
 	current = asm_obj->token_head;
 	if (current->next->type != STRING_TKN)
 		return (print_error(SYNTAX_NO_NAME_STR));
-	asm_obj->name_cmd_string = ft_strdup(current->next->string);
-	next = current->next->next->next;
+	asm_obj->champ_name = ft_strdup(current->next->string);
+	next = current->next->next->next; // check if nl token // unlink name, string, nl
 	while (current != next)
 	{
 		token_unlink_del(asm_obj, current);
 		current = asm_obj->token_head;
 	}
-	len = ft_strlen(asm_obj->name_cmd_string);
-	return (len > 0 && len <= PROG_NAME_LENGTH ? TRUE : FALSE);
+	if (ft_strlen(asm_obj->champ_comment) > PROG_NAME_LENGTH)
+		print_error(SYNTAX_NAME_LONG);
+	return (TRUE);
 }
 
 /*
@@ -58,20 +59,20 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 {
 	t_token		*current;
 	t_token		*next;
-	size_t		len;
 
 	current = asm_obj->token_head;
 	if (current->next->type != STRING_TKN)
 		return (print_error(SYNTAX_NO_CMNT_STR));
-	asm_obj->comment_cmd_string = ft_strdup(current->next->string);
+	asm_obj->champ_comment = ft_strdup(current->next->string);
 	next = current->next->next->next;
 	while (current != next)
 	{
 		token_unlink_del(asm_obj, current);
 		current = asm_obj->token_head;
 	}
-	len = ft_strlen(asm_obj->comment_cmd_string);
-	return (len <= COMMENT_LENGTH ? TRUE : FALSE);
+	if (ft_strlen(asm_obj->champ_comment) > COMMENT_LENGTH)
+		print_error(SYNTAX_CMNT_LONG);
+	return (TRUE);
 }
 
 /*
@@ -110,5 +111,5 @@ int				valid_header(t_asm *asm_obj)
 		if (ft_strequ(current->string, NAME_CMD_STRING))
 			return (valid_name_cmd(asm_obj));
 	}
-	return (FALSE);
+	return (print_error(SYNTAX_HEADER_INVALID));
 }

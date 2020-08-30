@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 14:05:59 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 18:13:53 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ static int		get_type(char *str)
 	ft_printf("func: %s len:%d str: [%s] addr:%p\n", __func__, ft_strlen(*str), *str, *str);
 */
 
-static void			create_token(int row, int *col, char **str, t_asm *info)
+static void			create_token(int row, int *col, char *str, t_asm *info)
 {
 	t_token			*token;
 	static t_token	*tail;
@@ -138,8 +138,7 @@ static void			create_token(int row, int *col, char **str, t_asm *info)
 	token = (t_token *)ft_memalloc(sizeof(t_token));
 	token->row = row;
 	token->col = *col;
-	token->string = get_token_string(*str, col);
-	(*str) += ft_strlen(token->string);
+	token->string = get_token_string(&str[*col - 1], col);
 	token->type = get_type(token->string);
 	if (token->type < 17)
 	{
@@ -179,7 +178,7 @@ static void			create_token(int row, int *col, char **str, t_asm *info)
 	while ((ch = getchar()) != '\n' && ch != EOF)
 		continue;
 */
-void			tokenize(char *str, t_asm *info)
+void			tokenize(char *str, t_asm *info, int i)
 {
 	static int		row;
 	int				col;
@@ -191,16 +190,13 @@ void			tokenize(char *str, t_asm *info)
 		col = 1;
 		if (ft_strchr(str, '"') && find_end_quote(info->fd, &str, &row) == 0)
 			print_error(NO_END_QUOTE);
-		while (*str)
+		while (str[col - 1])
 		{
-			while (*str != '\n' && ft_isspace(*str))
-			{
+			while (str[col - 1] != '\n' && ft_isspace(str[col - 1]))
 				col++;
-				str++;
-			}
-			create_token(row, &col, &str, info);
+			create_token(row, &col, str, info);
 		}
-		// ft_memdel((void*)&str); // MUST DEBUG
+		free((void*)str);
 		row++;
 	}
 }

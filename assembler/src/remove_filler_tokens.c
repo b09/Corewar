@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/25 23:54:37 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/29 12:49:48 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 18:37:54 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,11 @@ static void	remove_leading_nl_and_comm(t_asm *asm_obj)
 void		remove_comments_and_extra_nl(t_asm *asm_obj)
 {
 	t_token		*current;
-	t_token		*previous;
 	int			nl_seen;
 
+	nl_seen = FALSE;
 	remove_leading_nl_and_comm(asm_obj);
 	current = asm_obj->token_head;
-	// while (current->next)  why was this current->next?
 	while (current)
 	{
 		if (current->type == COMMENT_TKN ||
