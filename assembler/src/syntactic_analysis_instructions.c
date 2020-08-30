@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 16:58:30 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 22:08:16 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ static int	validate_args(t_token **token)
 			current = current->next;
 		}
 	}
+	*token = current;
 	return (TRUE);
 }
 
