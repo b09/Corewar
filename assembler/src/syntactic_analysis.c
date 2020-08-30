@@ -6,16 +6,11 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 19:26:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 16:42:25 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 16:54:23 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-
-static void	remove_separators_and_nl(t_asm *asm_obj)
-{
-	return ;
-}
 
 /*
 **

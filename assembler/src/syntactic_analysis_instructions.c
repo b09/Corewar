@@ -6,11 +6,18 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 16:52:10 by fmiceli       ########   odam.nl         */
+/*   Updated: 2020/08/30 16:58:30 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+int			is_opcode(int type)
+{
+	if (type < 20)
+		return (TRUE);
+	return (FALSE);
+}
 
 /*
 **	Validates that labels are on their own lines, updates current token to check
@@ -30,7 +37,7 @@ static int	skip_labels(t_token **token)
 		if (current->next && current->next->type == ENDLINE_TKN)
 			current = current->next->next;
 		else
-			return (print_error(SYNTAX_EXPECTED_NL_AFTER_LABEL));
+			return (print_error(SYNTAX_EXPECTED_NL));
 	}
 	*token = current;
 	return (TRUE);
@@ -55,15 +62,15 @@ static int	valid_arg(t_token *ins, int i)
 	arg = ins->next;
 	while (j != i)
 	{
-		j++
+		j++;
 		arg = arg->next->next;
 	}
 	if (arg->type == REGISTRY_TKN && ins->t_op->args[i] & T_REG)
 		return (TRUE);
-	else if ((arg->type == DIRECT_TKN || arg->type == DIRECT_LABEL_TKN) &&
+	else if ((arg->type == DIRECT_TKN || arg->type == DIR_LBL_TKN) &&
 		ins->t_op->args[i] & T_DIR)
 		return (TRUE);
-	else if ((arg->type == INDIRECT_TKN || arg->type == INDIRECT_LABEL_TKN) &&
+	else if ((arg->type == INDIRECT_TKN || arg->type == INDIR_LBL_TKN) &&
 		ins->t_op->args[i] & T_IND)
 		return (TRUE);
 	return (FALSE);

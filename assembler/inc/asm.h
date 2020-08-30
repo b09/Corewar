@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 14:42:09 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 16:58:40 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@
 #define NO_LABEL_DEFINITION		"Syntax error: label not defined\n"
 #define NO_END_QUOTE			"Syntax error: No end quote found for string\n"
 #define NO_END_QUOTE_NL			"Syntax error: End quote or newline not found\n"
+#define SYNTAX_INVALID_ARG		"Syntax error: Invalid argument\n"
+#define SYNTAX_MISSING_SEPARATOR "Syntax error: Missing comma\n"
+#define SYNTAX_EXPECTED_INSTRUCTION "Syntax error: Expected instruction\n"
+#define SYNTAX_EXPECTED_NL		"Syntax error: Missing newline character\n"
 
 /*
 **		TOKENS:
@@ -280,6 +284,8 @@ int			valid_header(t_asm *asm_obj);
 */
 
 int			valid_instructions(t_asm *asm_obj);
+int			is_opcode(int type);
+
 
 /*
 **	syntactic_analysis.c
