@@ -47,11 +47,11 @@ static int	valid_name_cmd(t_asm *asm_obj)
 	size_t		len;
 
 	current = asm_obj->token_head;
-	if (current->next->type != STRING_TKN)
+	if (current->next == NULL || current->next->type != STRING_TKN)
 		return (print_error(SYNTAX_NO_NAME_STR));
 	asm_obj->champ_name = ft_strdup(current->next->string);
 	del_cmd_str_and_nl(asm_obj, &current);
-	if (ft_strlen(asm_obj->champ_comment) > PROG_NAME_LENGTH)
+	if (ft_strlen(asm_obj->champ_comment) > PROG_NAME_LENGTH) // prog_name can be len 0?
 		print_error(SYNTAX_NAME_LONG);
 	return (TRUE);
 }
@@ -73,7 +73,7 @@ static int	valid_comment_cmd(t_asm *asm_obj)
 	t_token		*next;
 
 	current = asm_obj->token_head;
-	if (current->next->type != STRING_TKN)
+	if (current->next == NULL || current->next->type != STRING_TKN)
 		return (print_error(SYNTAX_NO_CMNT_STR));
 	asm_obj->champ_comment = ft_strdup(current->next->string);
 	del_cmd_str_and_nl(asm_obj, &current);
