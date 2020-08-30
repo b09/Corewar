@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 19:32:20 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 20:51:47 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int				main(int argc, char **argv)
 	lexicon_valid(&asm_obj);
 	valid_syntax(&asm_obj);
 	// create_and_write_file(&asm_obj);
-	print_asm_obj(&asm_obj);
 	// instructions_valid();
 	// params_valid();
 	// parse_assembly();

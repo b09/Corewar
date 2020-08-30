@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 19:23:27 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 20:55:37 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	del_cmd_str_and_nl(t_asm *asm_obj, t_token **token)
 	t_token	*token_str;
 	t_token	*token_nl;
 
+	print_asm_obj(asm_obj);
 	token_cmd = *token;
 	token_str = token_cmd->next;
 	token_nl = token_str->next;

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 19:32:07 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 20:32:27 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@
 #define FILE_TYPE_INVALID		"File type is invalid\n"
 #define NUM_ARGS_INVALID		"The number of arguments is invalid. Please use\
 								one assembly file at a time.\n"
+#define SYNTAX_MISSING_NL		"Syntax error: Missing new line\n"
 
 /*
 **		TOKENS:

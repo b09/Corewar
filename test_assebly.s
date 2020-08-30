@@ -119,10 +119,6 @@ live3:
 zjmp %:live3
 
 attak:
-	st      r9, 256
-	live 	%42
-
-attak:
 	live 	%42
 	st      r9, 256
 	st      r9, 256
@@ -151,7 +147,6 @@ zjmp %:attak
 
 live2:
 		live    %1
-
 save:
 		live %1
 		fork	%:attak
