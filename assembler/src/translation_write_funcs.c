@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/29 20:56:51 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/29 21:06:58 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static void		write_exec_code(t_asm *asm_obj)
 			write_to_file(asm_obj->fd, (unsigned char *)&token->codage, 1);
 		}
 		else
-			write_to_file(asm_obj->fd, (unsigned char *)&token->codage,\
+			write_to_file(asm_obj->fd, (unsigned char *)&token->bytecode,\
 			token->translation_size);
 
 		token = token->next;

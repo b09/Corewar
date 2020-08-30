@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/29 20:24:43 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 12:44:10 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@
 								in header.\n"
 #define NO_LABEL_DEFINITION		"Syntax error: label not defined\n"
 #define NO_END_QUOTE			"Syntax error: No end quote found for string\n"
+#define NO_END_QUOTE_NL			"Syntax error: End quote or newline not found\n"
 
 /*
 **		TOKENS:
@@ -248,6 +249,17 @@ int			print_error(char *str);
 */
 
 int			valid_token(t_token *token);
+
+/*
+**	lexical_analysis_helpers.c
+*/
+
+int			valid_cmd_tkn(char *str);
+int			valid_dir_tkn(char *str);
+int			valid_reg_tkn(char *str);
+int			valid_ilbl_tkn(char *str);
+int			valid_ind_tkn(char *str);
+
 
 /*
 **	remove_filler_tokens.c

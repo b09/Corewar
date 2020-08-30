@@ -6,14 +6,14 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/29 20:46:29 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 12:45:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
 /*
-**	Finds the token at which the functions's argument is defined. The func()'s
+**	Finds the token at which the functions's argument is defined. t_token lab_-
 **	arg is either a IND_LBL_TKN or a DIR_LBL_TKN. As func() traverses tokens
 **	seeking definition, the t_token->translation_size is added for all tokens
 **	between label definition and label as argument, which are the amount of
@@ -25,21 +25,25 @@
 **			t_token *lab_arg ==> label token used as argument for an instruction
 **
 **	Notes:
-**			if label definition not found, error printed and program exited
+**			if label definition not found, error printed and program exited.
+**			When func() traverses the linked list backwards, the instruction
+**			string which uses lab_arg as one of its arguments must be skipped
+**			when counting token->translation_size bytes, for which the second
+**			while loop is used.
+**			ex:
+**			line 1[instruction size = 1][arg1 size = 2][arg2 size = 4]
+**														^^ start counting here
+**			line 2[instruction size = 1][arg1 size = 2][arg2 (lab_arg) size = 4]
+**										^^ do not start counting here
 **
 **	Called by:
 **			argument_size()
 **
 */
 
-static int		find_label_definition(t_token *lab_arg)
+static int		find_label_definition(t_token *lab_arg, t_token *tokens, int i,\
+				char *str)
 {
-	char		*str;
-	int			i;
-	t_token		*tokens;
-
-	tokens = lab_arg->next;
-	i = 0;
 	str = lab_arg->type == 44 ? lab_arg->string + 2 : lab_arg->string + 1;
 	while (tokens)
 	{
@@ -47,14 +51,20 @@ static int		find_label_definition(t_token *lab_arg)
 		if (tokens->type == LABEL_TKN && ft_strnequ(str, tokens->string,\
 		ft_max(ft_strlen(str), ft_strlen(tokens->string) - 1)))
 			return (i);
+		tokens = tokens->next;
 	}
 	tokens = lab_arg->prev;
+	while (tokens && tokens->type > 19)
+		tokens = tokens->prev;
+	tokens = tokens->prev;
+	i = 0;
 	while (tokens)
 	{
-		i -= tokens->translation_size; // skip first translation_size
+		i -= tokens->translation_size;
 		if (tokens->type == LABEL_TKN && ft_strnequ(str, tokens->string,\
 		ft_max(ft_strlen(str), ft_strlen(tokens->string) - 1)))
 			return (i);
+		tokens = tokens->prev;
 	}
 	return (print_error(NO_LABEL_DEFINITION));
 }
@@ -128,7 +138,7 @@ static void		argument_size(t_token *instruction, t_token *args, size_t i)
 		args->bytecode = args->type == 43 ? get_number(args->string) : 0;
 	}
 	if (args->type == INDIR_LBL_TKN || args->type == DIR_LBL_TKN)
-		args->bytecode = find_label_definition(args);
+		args->bytecode = find_label_definition(args, NULL, 0, NULL);
 }
 
 /*

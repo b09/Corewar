@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/26 17:47:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 13:49:34 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@
 **			if *str == '#' or ';', copy until newline (can there be EOF at end?)
 **			if *str is any other character, copy until '\n' || ',' || ft_isspace
 **
-**	Params:	
+**	Params:
 **			char *str	==> string starting at the first char of a token.
 **			int *col 	==> char count of starting position of token, updated -
 **							- for next token
 **	Notes:
 **			Initial whitespace jumped over before *str arrives to func()
-**	
+**
 **	Return:
 **			Literal string of a single token.
-**	
-**	Called by:	tokenize()
+**
+**	Called by:	create_token()
 */
 
 char			*get_token_string(char *str, int *col)
@@ -47,7 +47,7 @@ char			*get_token_string(char *str, int *col)
 	{
 		i = ft_strchr_int(&str[i], *str == '"' ? '"' : '\n');
 		if (i == -1)
-			return (NULL);// handle error
+			print_error(NO_END_QUOTE_NL);
 		i += *str == '"' ? 2 : 1;
 	}
 	else
@@ -63,7 +63,7 @@ char			*get_token_string(char *str, int *col)
 **	func() guarantees that there will be a closing quote for every opened quote.
 **	If the current line doesn't not contain even pairs of quotes, gnl_newline()
 **	will be called, with the new string joining the old string
-**	
+**
 **	Params:	
 **			char **str	==> pointer to raw string from file, provided by 
 **							gnl_with_newline().
@@ -74,11 +74,11 @@ char			*get_token_string(char *str, int *col)
 **			If the new str (populated by gnl()) does contain an '"', the
 **			joined_sting (containing the new and old str), will be checked for
 **			even pairs of quotes by guarentee_quote_pairs().
-**	
+**
 **	Return:
 **			FALSE (0)= odd pairs of quotes found (no ending quote)
 **			TRUE (1) = even pairs of quotes
-**	
+**
 **	Called by:
 **			tokenize()
 */
@@ -110,15 +110,15 @@ int				find_end_quote(int fd, char **str, int *row)
 
 /*
 **	func() checks number of quotes in the str
-**	
+**
 **	Params:	
-**			char *str	==> raw input str from gnl(). str can be long, made from
-**							multiple calls to gnl().
-**	
+**			char *str	==> raw input str from gnl(). str can be long, containig
+**							multiple newlines made from multiple calls to gnl().
+**
 **	Return:
 **			FALSE (0)= odd pairs of quotes found (no ending quote)
 **			TRUE (1) = even pairs of quotes
-**	
+**
 **	Called by:
 **			find_end_quote()
 */

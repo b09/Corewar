@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/29 13:13:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 12:21:57 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,44 @@ static int		read_file(int argc, char **argv, t_asm *info)
 	print_asm_obj(info);
 	return (TRUE);
 }
+
+
+int				main(int argc, char **argv)
+{
+	t_asm		asm_obj;
+
+	ft_bzero(&asm_obj, sizeof(asm_obj));
+	if (read_file(argc, argv, &asm_obj) == FALSE)
+		return (1);
+	create_and_write_file(&asm_obj);
+	// lexicon_valid(&asm_obj);
+	// syntax_valid();
+	// instructions_valid();
+	// params_valid();
+	// parse_assembly();
+	return (0);
+}
+
+
+
+
+
+
+
+
+
+/*
+**			REVIEW BELOW FUNCTIONS WITH FLAVIO
+**			REVIEW BELOW FUNCTIONS WITH FLAVIO
+**			REVIEW BELOW FUNCTIONS WITH FLAVIO
+**			REVIEW BELOW FUNCTIONS WITH FLAVIO
+**			REVIEW BELOW FUNCTIONS WITH FLAVIO
+**			REVIEW BELOW FUNCTIONS WITH FLAVIO
+*/
+
+
+
+
 
 /*
 **	Finds quotation marks in a larger string and returns substring.
@@ -188,22 +226,3 @@ static int		lexicon_valid(t_asm *info)
 // 	}
 // 	return (TRUE);
 // }
-
-
-int				main(int argc, char **argv)
-{
-	t_asm		asm_obj;
-
-	ft_bzero(&asm_obj, sizeof(asm_obj));
-	// read_file(argc, argv, &asm_obj);
-	if (read_file(argc, argv, &asm_obj) == FALSE)
-		return (1);
-	ft_printf("filename: %s\n", asm_obj.file_name);
-	create_and_write_file(&asm_obj);
-	// lexicon_valid(&asm_obj);
-	// syntax_valid();
-	// instructions_valid();
-	// params_valid();
-	// parse_assembly();
-	return (0);
-}

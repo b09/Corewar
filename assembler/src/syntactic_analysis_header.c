@@ -6,11 +6,17 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/28 09:47:46 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 12:34:22 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+/*
+**
+**	Called by:	valid_header()
+**
+*/
 
 static int		valid_name_cmd(t_asm *asm_obj)
 {
@@ -31,6 +37,12 @@ static int		valid_name_cmd(t_asm *asm_obj)
 	len = ft_strlen(asm_obj->name_cmd_string);
 	return (len > 0 && len <= PROG_NAME_LENGTH ? TRUE : FALSE);
 }
+
+/*
+**
+**	Called by:	valid_header()
+**
+*/
 
 static int		valid_comment_cmd(t_asm *asm_obj)
 {
@@ -59,6 +71,9 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 **
 **	Header is formatted properly if it has .name and .comment in any order,
 **	both with their properly formatted strings.
+**
+**	Called by:	valid_syntax()
+**
 */
 
 int				valid_header(t_asm *asm_obj)

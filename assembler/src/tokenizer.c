@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/29 13:05:42 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 13:57:35 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int		get_type(char *str)
 		return (COMMAND_TKN);
 	else if (*str == DIRECT_CHAR && *(str + 1) != LABEL_CHAR)
 		return (DIRECT_TKN);
-	else if (*str == DIRECT_CHAR && *(str + 1) == LABEL_CHAR) // this is new
+	else if (*str == DIRECT_CHAR && *(str + 1) == LABEL_CHAR)
 		return (DIR_LBL_TKN);
 	else if (*str == REGISTRY_CHAR && str[ft_strlen(str) - 1] != ':')
 		return (REGISTRY_TKN);
@@ -100,11 +100,12 @@ static int		get_type(char *str)
 	else if (*str == '-' || ft_isdigit(*str))
 		return (INDIRECT_TKN);
 	else if (ft_strchr(LABEL_CHARS, *str))
-	{
-		if (str[ft_strlen(str) - 1] == ':')
-			return (LABEL_TKN);
-		return (get_opcode(str));
-	}
+		return (str[ft_strlen(str) - 1] == ':' ? LABEL_TKN : get_opcode(str));
+	// {
+	// 	if (str[ft_strlen(str) - 1] == ':')
+	// 		return (LABEL_TKN);
+	// 	return (get_opcode(str));
+	// }
 	else if (*str == SEPARATOR_CHAR)
 		return (SEPARATOR_TKN);
 	else if (*str == '\n')
