@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 17:43:39 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 19:25:47 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@
 /*
 **			ERROR MACROS
 */
+
 #define SYNTAX_NO_NAME			"Syntax error: expected .name and .comment in\
 								header.\n"
 #define SYNTAX_NO_NAME_STR		"Syntax error: expected string after .name in\
@@ -91,6 +92,9 @@
 #define SYNTAX_MISSING_SEPARATOR "Syntax error: Missing comma\n"
 #define SYNTAX_EXPECTED_INSTRUCTION "Syntax error: Expected instruction\n"
 #define SYNTAX_EXPECTED_NL		"Syntax error: Missing newline character\n"
+#define SYNTAX_CMNT_LONG		"Syntax error: Champion comment is too long\n"
+#define SYNTAX_NAME_LONG		"Syntax error: Champion name is too long\n"
+#define SYNTAX_HEADER_INVALID	"Syntax error: Header is invalid\n"
 
 /*
 **		TOKENS:
@@ -161,11 +165,8 @@ typedef struct		header_s
 **	file_name			= name of file provided to asm executable
 **	champ_name			= name of champion contained in assebly file
 **	champ_comment		= comment of champion contained in assembly file
-**	instructions_head	= pointer to first token which is an intruction
 **	token_head			= head of t_token linked list
 **	token_tail			= tail of t_token linked list
-**	name_cmd_string		= name of champion contained in assebly file
-**	comment_cmd_string	= comment of champion contained in assembly file
 */
 
 typedef struct		s_asm
@@ -174,11 +175,8 @@ typedef struct		s_asm
 	char			*file_name;
 	char			*champ_name;
 	char			*champ_comment;
-	struct s_token	*instructions_head;
 	struct s_token	*token_head;
 	struct s_token	*token_tail;
-	char			*name_cmd_string;
-	char			*comment_cmd_string;
 }					t_asm;
 
 /*
