@@ -22,7 +22,7 @@ static void	del_cmd_str_and_nl(t_asm *asm_obj, t_token **token)
 	token_str = token_cmd->next;
 	token_nl = token_str->next;
 	if (token_nl == NULL)
-		print_error(SYNTAX_MISSING_NL)
+		print_error(SYNTAX_MISSING_NL);
 	*token = token_nl->next;
 	token_unlink_del(asm_obj, token_cmd);
 	token_unlink_del(asm_obj, token_str);
@@ -51,7 +51,7 @@ static int	valid_name_cmd(t_asm *asm_obj)
 		return (print_error(SYNTAX_NO_NAME_STR));
 	asm_obj->champ_name = ft_strdup(current->next->string);
 	del_cmd_str_and_nl(asm_obj, &current);
-	if (ft_strlen(asm_obj->champ_comment) > PROG_NAME_LENGTH) // prog_name can be len 0?
+	if (ft_strlen(asm_obj->champ_name) > PROG_NAME_LENGTH) // prog_name can be len 0?
 		print_error(SYNTAX_NAME_LONG);
 	return (TRUE);
 }
@@ -102,7 +102,7 @@ int			valid_header(t_asm *asm_obj)
 	t_token		*current;
 
 	current = asm_obj->token_head;
-	if (current->type != COMMAND_TKN)
+	if (current == NULL || current->type != COMMAND_TKN)
 		return (print_error(SYNTAX_NO_NAME));
 	else if (ft_strequ(current->string, NAME_CMD_STRING))
 	{

@@ -32,7 +32,7 @@ static int	skip_labels(t_token **token)
 	t_token	*current;
 
 	current = *token;
-	while (current->type == LABEL_TKN)
+	while (current && current->type == LABEL_TKN)
 	{
 		if (current->next && current->next->type == ENDLINE_TKN)
 			current = current->next->next;
@@ -63,6 +63,8 @@ static int	valid_arg(t_token *ins, int i)
 	while (j != i)
 	{
 		j++;
+		if (arg->next == NULL || arg->next->next == NULL)
+			return (FALSE);
 		arg = arg->next->next;
 	}
 	if (arg->type == REGISTRY_TKN && ins->t_op->args[i] & T_REG)
