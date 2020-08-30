@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 13:38:49 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 17:08:20 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,40 +118,4 @@ int				valid_token(t_token *token)
 	else if (token->type >= 1 && token->type <= 16)
 		return (TRUE);
 	return (FALSE);
-}
-
-
-
-
-/*
-**			******** REMOVED FUNCTIONS BELOW
-**			******** REMOVED FUNCTIONS BELOW
-**			******** REMOVED FUNCTIONS BELOW
-*/
-
-
-/*
-**	A separator token must have the string "," and nothing else
-**
-**	Called by:	valid_token()
-*/
-
-static int		valid_sep_tkn(char *str)
-{
-	if (*str != SEPARATOR_CHAR || ft_strlen(str) != 1)
-		return (FALSE);
-	return (TRUE);
-}
-
-/*
-**	A separator token must have the string "\n" and nothing else
-**
-**	Called by:	valid_token()
-*/
-
-static int		valid_nl_tkn(char *str)
-{
-	if (*str != ENDLINE_CHAR || ft_strlen(str) != 1)
-		return (FALSE);
-	return (TRUE);
 }

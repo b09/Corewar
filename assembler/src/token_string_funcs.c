@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 13:49:34 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 17:04:59 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,36 @@ char			*get_token_string(char *str, int *col)
 }
 
 /*
+**	func() checks number of quotes in the str
+**
+**	Params:	
+**			char *str	==> raw input str from gnl(). str can be long, containig
+**							multiple newlines made from multiple calls to gnl().
+**
+**	Return:
+**			FALSE (0)= odd pairs of quotes found (no ending quote)
+**			TRUE (1) = even pairs of quotes
+**
+**	Called by:
+**			find_end_quote()
+*/
+
+static int				guarantee_quote_pairs(char *str)
+{
+	int			quotes;
+
+	quotes = 0;
+	while (*str)
+	{
+		quotes += (*str == '"') ? 1 : 0;
+		++str;
+	}
+	if (quotes % 2 == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+/*
 **	func() guarantees that there will be a closing quote for every opened quote.
 **	If the current line doesn't not contain even pairs of quotes, gnl_newline()
 **	will be called, with the new string joining the old string
@@ -108,32 +138,3 @@ int				find_end_quote(int fd, char **str, int *row)
 	return (FALSE);
 }
 
-/*
-**	func() checks number of quotes in the str
-**
-**	Params:	
-**			char *str	==> raw input str from gnl(). str can be long, containig
-**							multiple newlines made from multiple calls to gnl().
-**
-**	Return:
-**			FALSE (0)= odd pairs of quotes found (no ending quote)
-**			TRUE (1) = even pairs of quotes
-**
-**	Called by:
-**			find_end_quote()
-*/
-
-int				guarantee_quote_pairs(char *str)
-{
-	int			quotes;
-
-	quotes = 0;
-	while (*str)
-	{
-		quotes += (*str == '"') ? 1 : 0;
-		++str;
-	}
-	if (quotes % 2 == 0)
-		return (TRUE);
-	return (FALSE);
-}

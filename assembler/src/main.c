@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 12:21:57 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 17:12:09 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,22 @@ static int		read_file(int argc, char **argv, t_asm *info)
 	return (TRUE);
 }
 
+static int		lexicon_valid(t_asm *info)
+{
+	t_token		*curr;
+
+	curr = info->token_head;
+	while (curr)
+	{
+		if (valid_token(curr) == FALSE)
+		{
+			ft_putendl_fd("Invalid token", 2);
+			exit (1);
+		}
+		curr = curr->next;
+	}
+	return (TRUE);
+}
 
 int				main(int argc, char **argv)
 {
@@ -64,9 +80,9 @@ int				main(int argc, char **argv)
 	ft_bzero(&asm_obj, sizeof(asm_obj));
 	if (read_file(argc, argv, &asm_obj) == FALSE)
 		return (1);
+	lexicon_valid(&asm_obj);
+	valid_syntax(&asm_obj);
 	create_and_write_file(&asm_obj);
-	// lexicon_valid(&asm_obj);
-	// syntax_valid();
 	// instructions_valid();
 	// params_valid();
 	// parse_assembly();
@@ -184,26 +200,7 @@ static int		only_label_chars(char *str)
 // 	}
 // }
 
-static int		lexicon_valid(t_asm *info)
-{
-	t_token		*curr;
 
-	curr = info->token_head;
-	while (curr)
-	{
-		// if (curr->type == 51)
-		// 	ft_printf("{%d}, {'nl'}\n", curr->type); // remove
-		// else
-		// 	ft_printf("{%d}, {%s}\n", curr->type, curr->string); // remove
-		if (valid_token(curr) == FALSE)
-		{
-			ft_putendl_fd("Invalid token", 2);
-			exit (1);
-		}
-		curr = curr->next;
-	}
-	return (TRUE);
-}
 
 //	********* DO NOT DELETE, COMMENTED OUT FOR COMPILATION ******
 // static int	syntax_valid(t_asm *asm_obj)

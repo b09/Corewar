@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 16:58:40 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 17:05:18 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,7 @@ void		token_unlink_del(t_asm *asm_obj, t_token *token);
 */
 
 int			find_end_quote(int fd, char **str, int *row);
-int			guarantee_quote_pairs(char *str);
+// int			guarantee_quote_pairs(char *str);
 char		*get_token_string(char *str, int *col);
 
 /*
