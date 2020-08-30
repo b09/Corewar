@@ -12,6 +12,23 @@
 
 #include "asm.h"
 
+static void	del_cmd_str_and_nl(t_asm *asm_obj, t_token **token)
+{
+	t_token	*token_cmd;
+	t_token	*token_str;
+	t_token	*token_nl;
+
+	token_cmd = *token;
+	token_str = token_cmd->next;
+	token_nl = token_str->next;
+	if (token_nl == NULL)
+		print_error(SYNTAX_MISSING_NL)
+	*token = token_nl->next;
+	token_unlink_del(asm_obj, token_cmd);
+	token_unlink_del(asm_obj, token_str);
+	token_unlink_del(asm_obj, token_nl);
+}
+
 /*
 **	Checks name_command token for validity.
 **	name_command is valid when followed by a string that can be size
@@ -23,7 +40,7 @@
 **	Called by:	valid_header()
 */
 
-static int		valid_name_cmd(t_asm *asm_obj)
+static int	valid_name_cmd(t_asm *asm_obj)
 {
 	t_token		*current;
 	t_token		*next;
@@ -33,12 +50,7 @@ static int		valid_name_cmd(t_asm *asm_obj)
 	if (current->next->type != STRING_TKN)
 		return (print_error(SYNTAX_NO_NAME_STR));
 	asm_obj->champ_name = ft_strdup(current->next->string);
-	next = current->next->next->next; // check if nl token // unlink name, string, nl
-	while (current != next)
-	{
-		token_unlink_del(asm_obj, current);
-		current = asm_obj->token_head;
-	}
+	del_cmd_str_and_nl(asm_obj, &current);
 	if (ft_strlen(asm_obj->champ_comment) > PROG_NAME_LENGTH)
 		print_error(SYNTAX_NAME_LONG);
 	return (TRUE);
@@ -55,7 +67,7 @@ static int		valid_name_cmd(t_asm *asm_obj)
 **	Called by:	valid_header()
 */
 
-static int		valid_comment_cmd(t_asm *asm_obj)
+static int	valid_comment_cmd(t_asm *asm_obj)
 {
 	t_token		*current;
 	t_token		*next;
@@ -64,12 +76,7 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 	if (current->next->type != STRING_TKN)
 		return (print_error(SYNTAX_NO_CMNT_STR));
 	asm_obj->champ_comment = ft_strdup(current->next->string);
-	next = current->next->next->next;
-	while (current != next)
-	{
-		token_unlink_del(asm_obj, current);
-		current = asm_obj->token_head;
-	}
+	del_cmd_str_and_nl(asm_obj, &current);
 	if (ft_strlen(asm_obj->champ_comment) > COMMENT_LENGTH)
 		print_error(SYNTAX_CMNT_LONG);
 	return (TRUE);
@@ -90,7 +97,7 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 **	Called by: valid_syntax()
 */
 
-int				valid_header(t_asm *asm_obj)
+int			valid_header(t_asm *asm_obj)
 {
 	t_token		*current;
 
