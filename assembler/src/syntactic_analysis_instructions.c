@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 22:22:37 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 22:35:23 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int			valid_instructions(t_asm *asm_obj)
 	while (current)
 	{
 		print_asm_obj(asm_obj);
-		skip_labels(&current);
+		skip_labels(&current); // bug here, try car.s and found invalid but with extras/asm it is valid
 		if (!is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));
 		validate_args(&current);
