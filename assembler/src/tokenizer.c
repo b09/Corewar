@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 13:57:35 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 14:05:59 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,6 @@ static int		get_type(char *str)
 		return (INDIRECT_TKN);
 	else if (ft_strchr(LABEL_CHARS, *str))
 		return (str[ft_strlen(str) - 1] == ':' ? LABEL_TKN : get_opcode(str));
-	// {
-	// 	if (str[ft_strlen(str) - 1] == ':')
-	// 		return (LABEL_TKN);
-	// 	return (get_opcode(str));
-	// }
 	else if (*str == SEPARATOR_CHAR)
 		return (SEPARATOR_TKN);
 	else if (*str == '\n')
