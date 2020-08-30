@@ -266,25 +266,33 @@ int			valid_ind_tkn(char *str);
 **	remove_filler_tokens.c
 */
 
+void		remove_separators_and_nl(t_asm *asm_obj);
 void		remove_comments_and_extra_nl(t_asm *asm_obj);
-void		token_del(t_token *token); // function not written
-
 
 /*
 **	syntactic_analysis_header.c
 */
 
 int			valid_header(t_asm *asm_obj);
-int			valid_instructions(t_asm *asm_obj); // function not written
 
+/*
+**	syntactic_analysis_instructions.c
+*/
+
+int			valid_instructions(t_asm *asm_obj);
 
 /*
 **	syntactic_analysis.c
 */
 
 int			valid_syntax(t_asm *asm_obj);
-int			valid_header(t_asm *asm_obj);
 
+/*
+**	token_del.c
+*/
+
+void		token_del(t_token *token);
+void		token_unlink_del(t_asm *asm_obj, t_token *token);
 
 /*
 **	token_string_functions.c

@@ -6,16 +6,21 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 12:34:22 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 16:44:08 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
 /*
+**	Checks name_command token for validity.
+**	name_command is valid when followed by a string that can be size
+**	of 1 up to PROG_NAME_LENGTH, which is currently set to 128.
 **
+**	Input: asm_obj
+**
+**	Return: True or False
 **	Called by:	valid_header()
-**
 */
 
 static int		valid_name_cmd(t_asm *asm_obj)
@@ -39,9 +44,14 @@ static int		valid_name_cmd(t_asm *asm_obj)
 }
 
 /*
+**	Checks comment_command token for validity.
+**	comment_command is valid when followed by a string that can be size
+**	of 0 up to COMMENT_LENGTH, which is currently set to 2048.
 **
+**	Input: asm_obj
+**
+**	Return: True or False
 **	Called by:	valid_header()
-**
 */
 
 static int		valid_comment_cmd(t_asm *asm_obj)
@@ -72,8 +82,11 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 **	Header is formatted properly if it has .name and .comment in any order,
 **	both with their properly formatted strings.
 **
-**	Called by:	valid_syntax()
+**	Input: asm_obj
 **
+**	Return: True or False
+**
+**	Called by: valid_syntax()
 */
 
 int				valid_header(t_asm *asm_obj)
