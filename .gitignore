@@ -1,0 +1,9 @@
+asm
+corewar
+*.o
+*json*
+*.c~
+.DS_Store
+*.gch
+*.a
+*.cor

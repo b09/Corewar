@@ -3,53 +3,81 @@
 /*                                                        ::::::::            */
 /*   ft_strsplit.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: bprado <bprado@student.codam.nl>             +#+                     */
+/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/17 17:53:45 by bprado        #+#    #+#                 */
-/*   Updated: 2019/01/25 17:04:53 by bprado        ########   odam.nl         */
+/*   Created: 2019/01/25 14:41:45 by fmiceli       #+#    #+#                 */
+/*   Updated: 2019/01/31 13:47:09 by fmiceli       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char		**make_array(char const *s, char c, char **ary)
+static int	strsplit_count_words(char const *s, char c)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	n;
 
-	j = 0;
+	n = 0;
 	i = 0;
-	while ((*s != 0) || (s[i] != 0))
+	while (s[i] != '\0')
 	{
-		if (*s == c)
-			++s;
-		while (*s != c && *s != 0)
+		if (s[i] != c)
 		{
-			++s;
-			++i;
-			if ((*s == c) || (*s == 0))
-			{
-				ary[j] = (char*)malloc(sizeof(char) * i + 1);
-				ary[j] = ft_strncpy(ary[j], &s[-i], i);
-				ary[j][i] = 0;
-				++j;
-			}
+			n++;
+			while (s[i + 1] != c && s[i + 1] != '\0')
+				i++;
 		}
-		i = 0;
+		i++;
 	}
-	return (ary);
+	return (n);
 }
 
-char			**ft_strsplit(char const *s, char c)
+static int	strsplit_next_word_start(char const *s, int start, char c)
 {
-	char	**ary;
+	int i;
 
-	if (!s)
+	i = start;
+	while (s[i] == c)
+		i++;
+	return (i);
+}
+
+static int	strsplit_next_word_len(char const *s, int start, char c)
+{
+	int		len;
+	char	*str;
+
+	len = 0;
+	str = (char *)&s[start];
+	while (str[len] != c && str[len] != '\0')
+		len++;
+	return (len);
+}
+
+char		**ft_strsplit(char const *s, char c)
+{
+	char	**arr;
+	int		nwords;
+	int		i;
+	int		start;
+	int		wordlen;
+
+	nwords = strsplit_count_words(s, c);
+	arr = (char **)malloc(sizeof(char **) * (nwords + 1));
+	if (arr == NULL)
 		return (NULL);
-	ary = (char**)malloc(sizeof(char*) * ft_wordcnt(s, c) + 1);
-	if (ary == NULL)
-		return (NULL);
-	ary[ft_wordcnt(s, c)] = 0;
-	ary = make_array(s, c, ary);
-	return (ary);
+	i = 0;
+	start = 0;
+	while (s[start] == c)
+		start++;
+	while (i < nwords)
+	{
+		start = strsplit_next_word_start(s, start, c);
+		wordlen = strsplit_next_word_len(s, start, c);
+		arr[i] = ft_strsub(s, start, wordlen);
+		start += wordlen;
+		i++;
+	}
+	arr[i] = NULL;
+	return (arr);
 }
