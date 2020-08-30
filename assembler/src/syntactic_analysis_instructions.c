@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 22:15:13 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 22:22:37 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ static int	skip_labels(t_token **token)
 		if (current->next && current->next->type == ENDLINE_TKN)
 			current = current->next->next;
 		else
+		{
+			printf("positon %d:%d\n", current->row, current->col);
 			return (print_error(SYNTAX_EXPECTED_NL));
+		}
 	}
 	*token = current;
 	return (TRUE);
@@ -141,6 +144,7 @@ int			valid_instructions(t_asm *asm_obj)
 	current = asm_obj->token_head;
 	while (current)
 	{
+		print_asm_obj(asm_obj);
 		skip_labels(&current);
 		if (!is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));
