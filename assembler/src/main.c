@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 18:01:35 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 18:33:25 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int				main(int argc, char **argv)
 	ft_bzero(&asm_obj, sizeof(asm_obj));
 	if (read_file(argc, argv, &asm_obj) == FALSE) // were here
 		return (1);
-	// lexicon_valid(&asm_obj);
-	// valid_syntax(&asm_obj);
+	lexicon_valid(&asm_obj);
+	valid_syntax(&asm_obj);
 	// create_and_write_file(&asm_obj);
 	print_asm_obj(&asm_obj);
 	// instructions_valid();

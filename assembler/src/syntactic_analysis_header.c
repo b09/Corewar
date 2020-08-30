@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 16:44:08 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 18:59:58 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ static int		valid_name_cmd(t_asm *asm_obj)
 	if (current->next->type != STRING_TKN)
 		return (print_error(SYNTAX_NO_NAME_STR));
 	asm_obj->name_cmd_string = ft_strdup(current->next->string);
-	next = current->next->next->next;
+	next = current->next->next->next; // check if nl token // unlink name, string, nl
 	while (current != next)
 	{
 		token_unlink_del(asm_obj, current);
 		current = asm_obj->token_head;
 	}
 	len = ft_strlen(asm_obj->name_cmd_string);
-	return (len > 0 && len <= PROG_NAME_LENGTH ? TRUE : FALSE);
+	return (len > 0 && len <= PROG_NAME_LENGTH ? TRUE : FALSE); // add print_error()
 }
 
 /*
@@ -71,7 +71,7 @@ static int		valid_comment_cmd(t_asm *asm_obj)
 		current = asm_obj->token_head;
 	}
 	len = ft_strlen(asm_obj->comment_cmd_string);
-	return (len <= COMMENT_LENGTH ? TRUE : FALSE);
+	return (len <= COMMENT_LENGTH ? TRUE : FALSE); // add print_error()
 }
 
 /*
@@ -110,5 +110,5 @@ int				valid_header(t_asm *asm_obj)
 		if (ft_strequ(current->string, NAME_CMD_STRING))
 			return (valid_name_cmd(asm_obj));
 	}
-	return (FALSE);
+	return (FALSE); // print_error() header not formatted properly
 }

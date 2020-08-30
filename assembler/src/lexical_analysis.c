@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 17:08:20 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/30 18:31:32 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static int		valid_str_tkn(char *str)
 	str++;
 	while (*str && *str != '"')
 		str++;
-	if (ft_strchr(str, '"') < str + (ft_strlen(str) - 1))
+	str++;
+	if (*str != '\0')
 		return (FALSE);
 	return (TRUE);
 }
@@ -75,7 +76,7 @@ static int		valid_dir_lbl_tkn(char *str)
 	str++;
 	if (*str != ':')
 		return (FALSE);
-		str++;
+	str++;
 	while (*str)
 	{
 		if (!ft_strchr(LABEL_CHARS, *str))
