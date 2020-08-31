@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 16:09:20 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 16:44:49 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 **
 **	Called by:
 **			argument_size()
-**
 */
 
 static int		find_label_definition(t_token *lab_arg, t_token *tokens, int i,\
@@ -79,7 +78,6 @@ static int		find_label_definition(t_token *lab_arg, t_token *tokens, int i,\
 **
 **	Called by:
 **			argument_size()
-**
 */
 
 static int		get_number(char *str)
@@ -111,7 +109,6 @@ static int		get_number(char *str)
 **
 **	Called by:
 **			get_argument_size()
-**
 */
 
 static void		argument_size(t_token *instruction, t_token *arg, size_t i)
@@ -150,7 +147,6 @@ static void		argument_size(t_token *instruction, t_token *arg, size_t i)
 **
 **	Called by:
 **			none
-**
 */
 
 void			get_argument_size(t_asm *asm_obj)
