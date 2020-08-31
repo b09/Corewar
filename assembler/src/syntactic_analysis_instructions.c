@@ -144,7 +144,7 @@ int			valid_instructions(t_asm *asm_obj)
 	current = asm_obj->token_head;
 	while (current)
 	{
-		print_asm_obj(asm_obj);
+		// print_asm_obj(asm_obj);
 		skip_labels(&current); // bug here, try car.s and found invalid but with extras/asm it is valid
 		if (!is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));

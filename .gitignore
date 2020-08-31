@@ -7,3 +7,4 @@ corewar
 *.gch
 *.a
 *.cor
+leaks.txt

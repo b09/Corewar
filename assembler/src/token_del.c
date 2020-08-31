@@ -12,13 +12,19 @@
 
 #include "asm.h"
 
-void		token_del(t_token *token)
+void	token_del(t_token *token)
 {
 	free((void*)token->string);
+	if (token->t_op)
+	{
+		// free(token->t_op->op_str);
+		// free(token->t_op->description);
+		free(token->t_op);
+	}
 	free((void*)token);
 }
 
-void		token_unlink_del(t_asm *asm_obj, t_token *token)
+void	token_unlink_del(t_asm *asm_obj, t_token *token)
 {
 	if (token == asm_obj->token_head)
 	{
@@ -32,4 +38,18 @@ void		token_unlink_del(t_asm *asm_obj, t_token *token)
 			token->next->prev = token->prev;
 	}
 	token_del(token);
+}
+
+void	token_lst_del(t_token *head)
+{
+	t_token *current;
+	t_token *next;
+
+	current = head;
+	while (current)
+	{
+		next = current->next;
+		token_del(current);
+		current = next;
+	}
 }

@@ -301,6 +301,7 @@ int			valid_syntax(t_asm *asm_obj);
 
 void		token_del(t_token *token);
 void		token_unlink_del(t_asm *asm_obj, t_token *token);
+void		token_lst_del(t_token *head);
 
 /*
 **	token_string_functions.c

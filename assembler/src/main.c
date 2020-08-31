@@ -81,6 +81,14 @@ static int		lexicon_valid(t_asm *info)
 	return (TRUE);
 }
 
+static void 	asm_obj_content_del(t_asm *asm_obj)
+{
+	token_lst_del(asm_obj->token_head);
+	free(asm_obj->file_name);
+	free(asm_obj->champ_name);
+	free(asm_obj->champ_comment);
+}
+
 int				main(int argc, char **argv)
 {
 	t_asm		asm_obj;
@@ -94,5 +102,6 @@ int				main(int argc, char **argv)
 	// instructions_valid();
 	// params_valid();
 	// parse_assembly();
+	asm_obj_content_del(&asm_obj);
 	return (0);
 }
