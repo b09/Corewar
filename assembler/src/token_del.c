@@ -15,8 +15,7 @@
 void	token_del(t_token *token)
 {
 	free((void*)token->string);
-	if (token->t_op)
-		free(token->t_op);
+	free((void*)token->t_op);
 	free((void*)token);
 }
 
