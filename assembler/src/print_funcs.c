@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 18:11:18 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 19:19:30 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 /*
 **	Debub function, prints values of t_asm *obj members and linked list of tokns
 **
-**  Params:	
+**  Params:
 **			t_asm *obj	==> main assembler struct
-**
 */
 
 void			print_asm_obj(t_asm *asm_obj)
@@ -36,16 +35,16 @@ void			print_asm_obj(t_asm *asm_obj)
 		ft_printf("t type: %-5d ", tokens->type);
 		ft_printf("position:[%d:%d] ", tokens->row, tokens->col);
 		ft_printf("t type: %-5d ", tokens->translation_size);
-		if (tokens->t_op)
+		if (tokens->t_oper)
 		{
-			ft_printf(C_CYAN"op_str:%s ", tokens->t_op->op_str);
-			ft_printf("# args:%d ", tokens->t_op->number_of_args);
-			ft_printf("args[0]:%d ", tokens->t_op->args[0]);
-			ft_printf("opcode:%d ", tokens->t_op->opcode);
-			ft_printf("cycles:%d ", tokens->t_op->cycles);
-			ft_printf("descript:%s ", tokens->t_op->description);
-			ft_printf("encoding:%d ", tokens->t_op->encoding);
-			ft_printf("label_2_byt:%d"C_RESET, tokens->t_op->label_is_twobytes);
+			ft_printf(C_CYAN"op_str:%s ", tokens->t_oper->op_str);
+			ft_printf("# args:%d ", tokens->t_oper->number_of_args);
+			ft_printf("args[0]:%d ", tokens->t_oper->args[0]);
+			ft_printf("opcode:%d ", tokens->t_oper->opcode);
+			ft_printf("cycles:%d ", tokens->t_oper->cycles);
+			ft_printf("descript:%s ", tokens->t_oper->description);
+			ft_printf("encoding:%d ", tokens->t_oper->encoding);
+			ft_printf("lbl_2_byt:%d"C_RESET, tokens->t_oper->label_is_twobytes);
 		}
 		ft_printf("\n\n");
 		tokens = tokens->next;
