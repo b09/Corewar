@@ -36,6 +36,8 @@ static int	skip_labels(t_token **token)
 	{
 		if (current->next && current->next->type == ENDLINE_TKN)
 			current = current->next->next;
+		else if (current->next && is_opcode(current->next->type))
+			current = current->next;
 		else
 		{
 			printf("positon %d:%d\n", current->row, current->col);
