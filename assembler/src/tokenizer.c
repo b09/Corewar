@@ -6,13 +6,13 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 18:13:53 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 16:27:11 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-t_op	op_tab[17] =
+t_op	g_op_tab[17] =
 {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0},
@@ -61,8 +61,8 @@ static int		get_opcode(char *str)
 
 	while (i < N_OPCODES)
 	{
-		if (ft_strequ(str, op_tab[i].op_str))
-			return(op_tab[i].opcode);
+		if (ft_strequ(str, g_op_tab[i].op_str))
+			return(g_op_tab[i].opcode);
 		++i;
 	}
 	return (0);
@@ -143,7 +143,7 @@ static void			create_token(int row, int *col, char *str, t_asm *info)
 	if (token->type < 17)
 	{
 		token->t_op = (t_op *)ft_memalloc(sizeof(t_op));
-		ft_memcpy((void*)token->t_op, (void *)&op_tab[token->type - 1],\
+		ft_memcpy((void*)token->t_op, (void *)&g_op_tab[token->type - 1],\
 		sizeof(t_op));
 		token->translation_size = 1 + token->t_op->encoding;
 	}
@@ -172,12 +172,8 @@ static void			create_token(int row, int *col, char *str, t_asm *info)
 **
 **	Called by:
 **			read_file()
-**
-**		DEBUG
-	int		ch;
-	while ((ch = getchar()) != '\n' && ch != EOF)
-		continue;
 */
+
 void			tokenize(char *str, t_asm *info, int i)
 {
 	static int		row;

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 22:11:54 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 15:14:13 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static int		read_file(int argc, char **argv, t_asm *info)
 }
 
 /*
-**
 **	Params:		info struct
 **
 **	Return:		TRUE or FALSE depending on validity
@@ -74,7 +73,7 @@ static int		lexicon_valid(t_asm *info)
 		if (valid_token(curr) == FALSE)
 		{
 			ft_putendl_fd("Invalid token", 2);
-			exit (1);
+			exit(1);
 		}
 		curr = curr->next;
 	}
@@ -94,7 +93,7 @@ int				main(int argc, char **argv)
 	t_asm		asm_obj;
 
 	ft_bzero(&asm_obj, sizeof(asm_obj));
-	if (read_file(argc, argv, &asm_obj) == FALSE) // were here
+	if (read_file(argc, argv, &asm_obj) == FALSE)
 		return (1);
 	lexicon_valid(&asm_obj);
 	valid_syntax(&asm_obj);

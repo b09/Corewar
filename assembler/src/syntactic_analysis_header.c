@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 21:47:41 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 15:15:29 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	valid_name_cmd(t_asm *asm_obj)
 		return (print_error(SYNTAX_NO_NAME_STR));
 	asm_obj->champ_name = ft_strdup(current->next->string);
 	del_cmd_str_and_nl(asm_obj, &current);
-	if (ft_strlen(asm_obj->champ_name) > PROG_NAME_LENGTH) // prog_name can be len 0?
+	if (ft_strlen(asm_obj->champ_name) > PROG_NAME_LENGTH)
 		print_error(SYNTAX_NAME_LONG);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 19:16:50 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 16:09:20 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,31 +114,31 @@ static int		get_number(char *str)
 **
 */
 
-static void		argument_size(t_token *instruction, t_token *args, size_t i)
+static void		argument_size(t_token *instruction, t_token *arg, size_t i)
 {
-	if (args->type == REGISTRY_TKN)
+	if (arg->type == REGISTRY_TKN)
 	{
 		instruction->codage |= 1 << (i * 2);
-		args->translation_size = 1;
-		args->bytecode = get_number(args->string);
+		arg->translation_size = 1;
+		arg->bytecode = get_number(arg->string);
 	}
-	else if (args->type == DIRECT_TKN || args->type == DIR_LBL_TKN)
+	else if (arg->type == DIRECT_TKN || arg->type == DIR_LBL_TKN)
 	{
 		instruction->codage |= 2 << (i * 2);
 		if (instruction->t_op->label_is_twobytes == 1)
-			args->translation_size = 2;
+			arg->translation_size = 2;
 		else
-			args->translation_size = 4;
-		args->bytecode = args->type == DIRECT_TKN ? get_number(args->string): 0;
+			arg->translation_size = 4;
+		arg->bytecode = arg->type == DIRECT_TKN ? get_number(arg->string) : 0;
 	}
-	else if (args->type == INDIRECT_TKN || args->type == INDIR_LBL_TKN)
+	else if (arg->type == INDIRECT_TKN || arg->type == INDIR_LBL_TKN)
 	{
 		instruction->codage |= 3 << (i * 2);
-		args->translation_size = 2;
-		args->bytecode = args->type == 43 ? get_number(args->string) : 0;
+		arg->translation_size = 2;
+		arg->bytecode = arg->type == 43 ? get_number(arg->string) : 0;
 	}
-	if (args->type == INDIR_LBL_TKN || args->type == DIR_LBL_TKN)
-		args->bytecode = find_label_definition(args, NULL, 0, NULL);
+	if (arg->type == INDIR_LBL_TKN || arg->type == DIR_LBL_TKN)
+		arg->bytecode = find_label_definition(arg, NULL, 0, NULL);
 }
 
 /*

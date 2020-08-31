@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 18:31:32 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 15:13:02 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int		valid_character_tkn(char *str, char character)
 		return (FALSE);
 	return (TRUE);
 }
-
 
 /*
 **	A string token must begin and end with the quote character

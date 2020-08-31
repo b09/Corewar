@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:54:56 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 18:43:55 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 16:36:13 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,7 @@ void	token_del(t_token *token)
 {
 	free((void*)token->string);
 	if (token->t_op)
-	{
-		// free(token->t_op->op_str);
-		// free(token->t_op->description);
 		free(token->t_op);
-	}
 	free((void*)token);
 }
 

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/29 21:06:58 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 16:09:51 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	(which are not a string as they are not null terminated). The amout of bytes
 **	written into the file is specified by a size_t param.
 **
-**	Params:	
+**	Params:
 **			int fd		==> file descriptor of file being written into
 **			uchar *value==> array of u_chars (not a string as not null
 **							terminated) to be written into the file
@@ -46,7 +46,7 @@ static void		write_to_file(int fd, unsigned char *value, size_t size)
 **	After the string, a number of trailing zeroes are added the file which are
 **	specified by the param 'null_count'
 **
-**	Params:	
+**	Params:
 **			t_asm *asm_obj	==> assembler struct initialized by main()
 **			char *str		==> string to be written into the file
 **			size_t null_cnt	==> amount of zeros to be written after the string
@@ -61,14 +61,12 @@ static void		write_to_file(int fd, unsigned char *value, size_t size)
 static void		write_string(t_asm *asm_obj, char *str, size_t null_count)
 {
 	size_t		size;
-	
+
 	size = ft_strlen(str);
-	// write_to_file(asm_obj->fd, (unsigned char *)str, size);
 	write_to_file(asm_obj->fd, (unsigned char *)str, size);
 	str = "";
 	while (size < null_count)
 	{
-		// write_to_file(asm_obj->fd, (unsigned char *)str, 1);
 		write_to_file(asm_obj->fd, (unsigned char *)str, 1);
 		++size;
 	}
@@ -78,7 +76,7 @@ static void		write_string(t_asm *asm_obj, char *str, size_t null_count)
 **	Writes into the '.cor' file the magic number that identifies the file
 **	format as one being a '.cor' file.
 **
-**	Params:	
+**	Params:
 **			t_asm *info	==> assembler struct initialized by main()
 **
 **	Return:
@@ -103,7 +101,6 @@ static void		write_exec_size(t_asm *asm_obj)
 	write_to_file(asm_obj->fd, (unsigned char *)&size, 4);
 }
 
-
 static void		write_exec_code(t_asm *asm_obj)
 {
 	t_token		*token;
@@ -119,7 +116,6 @@ static void		write_exec_code(t_asm *asm_obj)
 		else
 			write_to_file(asm_obj->fd, (unsigned char *)&token->bytecode,\
 			token->translation_size);
-
 		token = token->next;
 	}
 }
@@ -129,8 +125,8 @@ static void		write_exec_code(t_asm *asm_obj)
 **	'.cor' extension instead of the '.s' extension. Calls all the funcs
 **	responsible for adding different values to the file.
 **
-**	Params:	
-**			t_asm *info	==> assembler struct initialized by main()
+**	Params:
+**			t_asm *info	==> assembler struct initialized by main ()
 **
 **	Notes:
 **			write_string() will add the strings related to '.name' and 'comment'
@@ -142,7 +138,7 @@ static void		write_exec_code(t_asm *asm_obj)
 **			int
 **
 **	Called by:
-**			main()
+**			main ():
 */
 
 int				create_and_write_file(t_asm *asm_obj)
@@ -156,8 +152,5 @@ int				create_and_write_file(t_asm *asm_obj)
 	asm_obj->fd = fd;
 	magic_number = COREWAR_EXEC_MAGIC;
 	write_to_file(fd, (unsigned char *)&magic_number, 4);
-	// write_string(asm_obj, asm_obj->champ_name, PROG_NAME_LENGTH + 4); // write_name with 4 byte null
-	// write_string(asm_obj, asm_obj->champ_name, COMMENT_LENGTH + 4); // write comment
-	// write_exec_size(asm_obj);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 22:35:23 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 16:30:20 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static int	validate_args(t_token **token)
 	int		i;
 
 	ins = *token;
-	current = ins->next;;
+	current = ins->next;
 	i = 0;
 	while (i < ins->t_op->number_of_args)
 	{

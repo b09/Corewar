@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 18:01:47 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 16:31:50 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 **	Finds substring in str, returns duplicated substring.
 **	*col is the character count in string for when token begins (not index!)
 **	*col's incremented value is for the next token, not current token
-**	
+**
 **	Rules:
 **			if *str == '\n', increase *col++, copy '\n'
 **			if *str == '"', copy til next '"', *col = length of quoted string
@@ -62,7 +62,7 @@ char			*get_token_string(char *str, int *col)
 /*
 **	func() checks number of quotes in the str
 **
-**	Params:	
+**	Params:
 **			char *str	==> raw input str from gnl(). str can be long, containig
 **							multiple newlines made from multiple calls to gnl().
 **
@@ -74,7 +74,7 @@ char			*get_token_string(char *str, int *col)
 **			find_end_quote()
 */
 
-static int				guarantee_quote_pairs(char *str)
+static int		guarantee_quote_pairs(char *str)
 {
 	int			quotes;
 
@@ -94,8 +94,8 @@ static int				guarantee_quote_pairs(char *str)
 **	If the current line doesn't not contain even pairs of quotes, gnl_newline()
 **	will be called, with the new string joining the old string
 **
-**	Params:	
-**			char **str	==> pointer to raw string from file, provided by 
+**	Params:
+**			char **str	==> pointer to raw string from file, provided by
 **							gnl_with_newline().
 **			int fd		==> assembler struct initialized by main()
 **			int *row	==> current line number (row) in file being read
@@ -137,4 +137,3 @@ int				find_end_quote(int fd, char **str, int *row)
 	*str = joined_string;
 	return (FALSE);
 }
-
