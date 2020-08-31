@@ -5,119 +5,132 @@
 /*                                                     +:+                    */
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/07 01:14:32 by bprado        ########   odam.nl         */
+/*   Created: 2019/11/05 14:18:01 by bprado        #+#    #+#                 */
+/*   Updated: 2019/12/14 17:32:17 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-
-void	print_dioupxxc(t_pf_object *obj)
+static void		no_minus_flag(t_pf_sect *s)
 {
-	int		i;
+	int			i;
 
-	i = ft_strchr_int("idc", obj->spc);
-	if (obj->spc == 'p')
-		obj->val.ptr = va_arg(obj->ap, void*);
+	i = ft_strchr_int("idc", s->spc);
+	if (s->len >= s->width || s->prcs >= s->width ||
+						(!(s->fl & PRECISN) && s->fl & ZERO_F))
+		i > -1 ? print_sign(s) : print_hash_flag(s);
+	if (s->width > s->prcs && s->fl & PRECISN)
+		print_padding(s, s->len > s->prcs ? s->len : s->prcs, ' ', 0);
 	else
-		parse_length(obj);
-	obj->i = i > -1 ? length_of_number(obj) : length_of_unsigned(obj);
-	if (obj->flags & MINUS_F)
-	{
-		if (i > -1 || (obj->flags & HASH_F && obj->spc != 'u') || obj->spc == 'p')
-			i > -1 ? print_sign(obj) : print_hash_flag(obj);
-		print_padding(obj, obj->i, '0', 1);
-		if (obj->spc != 'c')
-			i > -1 ? ft_putnbr_signed(obj->val.llong, get_base(obj->spc), obj) :
-					ft_putnbr_unsigned(obj->val.ll, get_base(obj->spc), obj);
-		else if (obj->spc == 'c')
-			print_character(obj->val.llong, obj);
-		print_padding(obj, (obj->i > obj->prcs) ? obj->i : obj->prcs, ' ', 0);
-	}
-	else
-		no_minus_flag(obj);
+		print_padding(s, s->len > s->prcs ? s->len : s->prcs,
+										s->fl & ZERO_F ? '0' : ' ', 0);
+	if (!(s->fl & PRTSIGN))
+		i > -1 ? print_sign(s) : print_hash_flag(s);
+	if ((s->fl & ZERO_F) || s->prcs >= s->len || (s->prcs + 1 == s->len &&
+					s->fl & HASH && (s->spc == 'x' || s->spc == 'X')))
+		print_padding(s, s->len, s->spc != 'c' ? '0' : ' ', 1);
+	if (s->spc != 'c')
+		i > -1 ? ft_putnbr_signed(s->v.llong, get_base(s->spc), s) :
+					ft_putnbr_unsigned(s->v.ull, get_base(s->spc), s);
+	else if (s->spc == 'c')
+		print_character(s->v.ull, s);
 }
 
-void	print_str(t_pf_object *obj)
+void			print_dioupxxc(t_pf_sect *s)
+{
+	int			i;
+
+	i = ft_strchr_int("idc", s->spc);
+	if (s->spc == 'p')
+		s->v.ptr = va_arg(s->ap, void*);
+	else
+		parse_length(s);
+	s->len = i > -1 ? length_of_number(s) : length_of_unsigned(s);
+	if (s->fl & MINUS_F)
+	{
+		if (i > -1 || (s->fl & HASH && s->spc != 'u') || s->spc == 'p')
+			i > -1 ? print_sign(s) : print_hash_flag(s);
+		print_padding(s, s->len, '0', 1);
+		if (s->spc != 'c')
+			i > -1 ? ft_putnbr_signed(s->v.llong, get_base(s->spc), s) :
+					ft_putnbr_unsigned(s->v.ull, get_base(s->spc), s);
+		else if (s->spc == 'c')
+			print_character(s->v.llong, s);
+		print_padding(s, (s->len > s->prcs) ? s->len : s->prcs, ' ', 0);
+	}
+	else
+		no_minus_flag(s);
+}
+
+void			print_str(t_pf_sect *s)
 {
 	int			str_length;
 
 	str_length = 0;
-	if (obj->spc == 's')
+	if (s->spc == 's')
 	{
-		obj->val.ptr = va_arg(obj->ap, char*);
-		if (!obj->val.ptr)
-			obj->val.ptr = "(null)";
-		str_length = obj->prcs < (int)ft_strlen(obj->val.ptr) && obj->flags & PRECISN ?
-										obj->prcs : (int)ft_strlen(obj->val.ptr);
-		obj->flags |= STRNG;
+		s->v.ptr = va_arg(s->ap, char*);
+		if (!s->v.ptr)
+			s->v.ptr = "(null)";
+		str_length = s->prcs < (int)ft_strlen(s->v.ptr) && s->fl & PRECISN ?
+										s->prcs : ft_strlen(s->v.ptr);
+		s->fl |= STRNG;
 	}
-	if (obj->flags & MINUS_F)
+	if (s->fl & MINUS_F)
 	{
-		obj->spc == 's' ? print_string(obj) : print_character(obj->spc, obj);
-		print_padding(obj, obj->spc == 's' ? str_length : 1, ' ', 0);
+		s->spc == 's' ? print_string(s) : print_character(s->spc, s);
+		print_padding(s, s->spc == 's' ? str_length : 1, ' ', 0);
 	}
 	else
 	{
-		print_padding(obj,
-			obj->spc == 's' ? str_length : 1,
-			(obj->flags & ZERO_F) ? '0' : ' ',
+		print_padding(s,
+			s->spc == 's' ? str_length : 1,
+			(s->fl & ZERO_F) ? '0' : ' ',
 			0);
-		obj->spc == 's' ? print_string(obj) : print_character(obj->spc, obj);
+		s->spc == 's' ? print_string(s) : print_character(s->spc, s);
 	}
 }
 
-void	print_f(t_pf_object *obj)
+static void		minus_flag_float(t_pf_sect *s)
+{
+	sign_float(s);
+	putfloat(s, s->prcs + 1, 0);
+	if ((((s->v.sh[4] & NZERO) == NZERO) && s->v.llong == 0))
+	{
+		print_character('.', s);
+		while (s->prcs)
+		{
+			ft_printf("%d", 0);
+			--s->prcs;
+		}
+	}
+	else
+		print_padding(s, (s->len > s->prcs) ? s->len : s->prcs, ' ', 0);
+}
+
+void			print_f(t_pf_sect *s)
 {
 	long double	copy;
 
-	// parse_length(obj);
-	copy = (obj->flags & CAP_L_F) ? va_arg(obj->ap, long double) : va_arg(obj->ap, double);
-	obj->val.lngdbl = copy;
-	obj->prcs = !(obj->flags & PRECISN) ? 6 : obj->prcs;
-	obj->i = length_of_float(obj);		// must implement correctly, ie. what is the length of a float
-	if (obj->flags & MINUS_F)
-	{
-		print_sign_float(obj);
-		putfloat(obj, obj->prcs + 1, 0);
-		print_padding(obj, (obj->i > obj->prcs) ? obj->i : obj->prcs, ' ', 0);
-	}
+	copy = (s->fl & CAP_L_F) ?
+					va_arg(s->ap, long double) : va_arg(s->ap, double);
+	s->v.lngd = copy;
+	s->prcs = !(s->fl & PRECISN) ? 6 : s->prcs;
+	s->len = length_of_float(s);
+	if (s->fl & MINUS_F)
+		minus_flag_float(s);
 	else
 	{
-		obj->i >= obj->width || obj->prcs >= obj->width || obj->flags & ZERO_F ? print_sign_float(obj) : 0;
-		if (obj->width > obj->prcs && obj->flags & PRECISN)
-			print_padding(obj, obj->i > obj->prcs ? obj->i : obj->prcs, ' ', 0);
+		s->len >= s->width || s->prcs >= s->width || s->fl & ZERO_F ?
+													sign_float(s) : 0;
+		if (s->len < s->width && s->fl & PRECISN && !(s->fl & ZERO_F))
+			print_padding(s, s->len, ' ', 0);
 		else
-			print_padding(obj, obj->i, obj->flags & ZERO_F ? '0' : ' ', 0);
-		!(obj->flags & ZERO_F) && obj->i < obj->width ? print_sign_float(obj) : 0;
-		if ((obj->flags & ZERO_F) || obj->width > obj->i)
-			print_padding(obj, obj->i, '0', 1);
-		putfloat(obj, obj->prcs + 1, 0);
+			print_padding(s, s->len, s->fl & ZERO_F ? '0' : ' ', 0);
+		!(s->fl & ZERO_F) && s->len < s->width ? sign_float(s) : 0;
+		if ((s->fl & ZERO_F) || s->width > s->len)
+			print_padding(s, s->len, '0', 1);
+		putfloat(s, s->prcs + 1, 0);
 	}
-}
-
-void	no_minus_flag(t_pf_object *obj)
-{
-	int		i;
-
-	i = ft_strchr_int("idc", obj->spc);
-
-	if (obj->i >= obj->width || obj->prcs >= obj->width ||
-						(!(obj->flags & PRECISN) && obj->flags & ZERO_F))
-		i > -1 ? print_sign(obj) : print_hash_flag(obj);
-	if (obj->width > obj->prcs && obj->flags & PRECISN)
-		print_padding(obj, obj->i > obj->prcs ? obj->i : obj->prcs, ' ', 0);
-	else
-		print_padding(obj, obj->i > obj->prcs ? obj->i : obj->prcs,
-										obj->flags & ZERO_F ? '0' : ' ', 0);
-	if (!(obj->flags & PRTSIGN))
-		i > -1 ? print_sign(obj) : print_hash_flag(obj);
-	if ((obj->flags & ZERO_F) || obj->prcs > obj->i)
-		print_padding(obj, obj->i, obj->spc != 'c' ? '0' : ' ', 1);
-	if (obj->spc != 'c')
-		i > -1 ? ft_putnbr_signed(obj->val.llong, get_base(obj->spc), obj) :
-					ft_putnbr_unsigned(obj->val.ll, get_base(obj->spc), obj);
-	else if (obj->spc == 'c')
-		print_character(obj->val.ll, obj);
 }

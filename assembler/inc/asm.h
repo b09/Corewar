@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 19:29:42 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 20:04:47 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,13 @@ typedef char	t_arg_type;
 # define COMMENT_LENGTH			2048
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-typedef struct			header_s
+typedef struct					s_header
 {
-	unsigned int		magic;
-	char				prog_name[PROG_NAME_LENGTH + 1];
-	unsigned int		prog_size;
-	char				comment[COMMENT_LENGTH + 1];
-}						header_t;
+	unsigned int				magic;
+	char						prog_name[PROG_NAME_LENGTH + 1];
+	unsigned int				prog_size;
+	char						comment[COMMENT_LENGTH + 1];
+}								t_header;
 
 /*
 **			Main Assembler Struct
@@ -151,15 +151,15 @@ typedef struct			header_s
 **	token_tail			= tail of t_token linked list
 */
 
-typedef struct		s_asm
+typedef struct					s_asm
 {
-	int				fd;
-	char			*file_name;
-	char			*champ_name;
-	char			*champ_comment;
-	struct s_token	*token_head;
-	struct s_token	*token_tail;
-}					t_asm;
+	int							fd;
+	char						*file_name;
+	char						*champ_name;
+	char						*champ_comment;
+	struct s_token				*token_head;
+	struct s_token				*token_tail;
+}								t_asm;
 
 /*
 **			Tokenizer
@@ -169,143 +169,137 @@ typedef struct		s_asm
 **	type	= unique integer indentifier
 **	row		= line number where token string starts
 **	col		= character count from start of line to start of token string
-**	translation_size = if instruction, size in bytes of instruction with arguments
+**	translation_size = if instruction, size in bytes of instruction with args
 **	t_oper	= if instruction, operation struct containing rules for instruction
 **	bytecode= value of the string translated to the appropriate int value used
 **				final translation of assembly file into bytecode
 **	codage	= single byte used as flag to specify the types of arguments an
-				instruction will have, added to translated bytecode for vm
+**				instruction will have, added to translated bytecode for vm
 */
 
-typedef struct		s_token
+typedef struct					s_token
 {
-	char			*string;
-	struct s_token	*next;
-	struct s_token	*prev;
-	int				type;
-	int				row;
-	int				col;
-	int				translation_size;
-	struct s_op		*t_oper;
-	int				bytecode;
-	unsigned char	codage;
-}					t_token;
+	char						*string;
+	struct s_token				*next;
+	struct s_token				*prev;
+	int							type;
+	int							row;
+	int							col;
+	int							translation_size;
+	struct s_op					*t_oper;
+	int							bytecode;
+	unsigned char				codage;
+}								t_token;
 
 /*
 **	struct provided as resource, found in project spec
 */
 
-typedef struct		s_op
+typedef struct					s_op
 {
-	char			*op_str;
-	int				number_of_args;
-	char			args[3];
-	int				opcode;
-	int				cycles;
-	char			*description;
-	char			encoding;
-	char			label_is_twobytes;
-}					t_op;
+	char						*op_str;
+	int							number_of_args;
+	char						args[3];
+	int							opcode;
+	int							cycles;
+	char						*description;
+	char						encoding;
+	char						label_is_twobytes;
+}								t_op;
 
 /*
 **	tokenizer.c
 */
 
-void				tokenize(char *str, t_asm *info);
-// void		create_token(int row, int *col, char **str, t_asm *info);
-// int			find_label_definition(t_token *lab_arg);
-
+void							tokenize(char *str, t_asm *info);
 
 /*
 **	token_arg_size.c
 */
 
-void				get_argument_size(t_asm *asm_obj);
+void							get_argument_size(t_asm *asm_obj);
 
 /*
 **	print_functions.c
 */
 
-void				print_asm_obj(t_asm *asm_obj);
-int					print_error(char *str);
+void							print_asm_obj(t_asm *asm_obj);
+int								print_error(char *str);
 
 /*
 **	lexical_analysis.c
 */
 
-int					valid_token(t_token *token);
+int								valid_token(t_token *token);
 
 /*
 **	lexical_analysis_helpers.c
 */
 
-int					valid_cmd_tkn(char *str);
-int					valid_dir_tkn(char *str);
-int					valid_reg_tkn(char *str);
-int					valid_ilbl_tkn(char *str);
-int					valid_ind_tkn(char *str);
-
+int								valid_cmd_tkn(char *str);
+int								valid_dir_tkn(char *str);
+int								valid_reg_tkn(char *str);
+int								valid_ilbl_tkn(char *str);
+int								valid_ind_tkn(char *str);
 
 /*
 **	remove_filler_tokens.c
 */
 
-void				remove_separators_and_nl(t_asm *asm_obj);
-void				remove_comments_and_extra_nl(t_asm *asm_obj);
+void							remove_separators_and_nl(t_asm *asm_obj);
+void							remove_comments_and_extra_nl(t_asm *asm_obj);
 
 /*
 **	syntactic_analysis_header.c
 */
 
-int					valid_header(t_asm *asm_obj);
+int								valid_header(t_asm *asm_obj);
 
 /*
 **	syntactic_analysis_instructions.c
 */
 
-int					valid_instructions(t_asm *asm_obj);
-int					is_opcode(int type);
-
+int								valid_instructions(t_asm *asm_obj);
+int								is_opcode(int type);
 
 /*
 **	syntactic_analysis.c
 */
 
-int					valid_syntax(t_asm *asm_obj);
+int								valid_syntax(t_asm *asm_obj);
 
 /*
 **	token_del.c
 */
 
-void				token_del(t_token *token);
-void				token_unlink_del(t_asm *asm_obj, t_token *token);
-void				token_lst_del(t_token *head);
+void							token_del(t_token *token);
+void							token_unlink_del(t_asm *asm_obj, t_token *tokn);
+void							token_lst_del(t_token *head);
 
 /*
 **	token_string_functions.c
 */
 
-int					find_end_quote(int fd, char **str, int *row);
-// int			guarantee_quote_pairs(char *str);
-char				*get_token_string(char *str, int *col);
+int								find_end_quote(int fd, char **str, int *row);
+char							*get_token_string(char *str, int *col);
 
 /*
 **	token_del.c
 */
 
-void				token_del(t_token *token);
-void				token_unlink_del(t_asm *asm_obj, t_token *token);
+void							token_del(t_token *token);
+void							token_unlink_del(t_asm *asm_obj, t_token *tokn);
 
 /*
 **	translator.c
 */
 
-int					little_to_big_endian(int number, size_t size);
+int								little_to_big_endian(int number, size_t size);
 
 /*
 **	translation_write_funcs.c
 */
 
-int					create_and_write_file(t_asm *asm_obj);
+int								create_and_write_file(t_asm *asm_obj);
 
 #endif

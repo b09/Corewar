@@ -5,134 +5,110 @@
 /*                                                     +:+                    */
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/06 16:29:21 by bprado        ########   odam.nl         */
+/*   Created: 2019/11/05 14:07:25 by bprado        #+#    #+#                 */
+/*   Updated: 2019/12/14 18:01:43 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	print_sign(t_pf_object *obj)
+void			print_sign(t_pf_sect *s)
 {
-	if (obj->spc != 'c')
+	if (s->spc != 'c')
 	{
-		if (((obj->flags & PLUS_F || obj->flags & SIGNED_F) &&
-					!(obj->flags & SPACE_F)) || obj->val.llong < 0)
+		if (((s->fl & PLUS || s->fl & SIGNED_F) &&
+					!(s->fl & SPACE)) || s->v.llong < 0)
 		{
-			if ((long long)obj->val.ll >= 0 && obj->flags & PLUS_F)
-				print_character('+', obj);
-			else if ((long long)obj->val.ll < 0)
-				print_character('-', obj);
+			if ((long long)s->v.llong >= 0 && s->fl & PLUS)
+				print_character('+', s);
+			else if ((long long)s->v.llong < 0)
+				print_character('-', s);
 		}
-		else if (obj->flags & SPACE_F)
-			print_character(' ', obj);
-		obj->flags |= PRTSIGN;
+		else if (s->fl & SPACE)
+			print_character(' ', s);
+		s->fl |= PRTSIGN;
 	}
 }
 
-void	print_sign_float(t_pf_object *obj)
+void			sign_float(t_pf_sect *s)
 {
-	if (((obj->flags & PLUS_F) && !(obj->flags & SPACE_F)) || obj->val.lngdbl < 0)
+	if (s->fl ^ FLOATEXCP && ((s->fl & PLUS && !(s->fl & SPACE))
+											|| s->v.lngd < 0))
 	{
-		if (obj->val.lngdbl >= 0 && obj->flags & PLUS_F)
-			print_character('+', obj);
-		else if (obj->val.lngdbl < 0)
-			print_character('-', obj);
+		if (s->v.lngd >= 0 && s->fl & PLUS)
+			print_character('+', s);
+		else if (s->v.lngd < 0)
+			print_character('-', s);
 	}
-	else if (obj->flags & SPACE_F)
-		print_character(' ', obj);
+	else if (s->fl & SPACE)
+		print_character(' ', s);
 }
 
-void	print_hash_flag(t_pf_object *obj)
+void			print_hash_flag(t_pf_sect *s)
 {
-	// pointers do print 0x0 for 0 conversions
-	// if PRTSIGN used here, make sure pointers don't cause that to be turned on
-	// if (obj->val.ll != 0 && (obj->flags & HASH_F || obj->spc == 'p'))
-	if ((obj->val.ll != 0 && obj->flags & HASH_F) || obj->spc == 'p')
+	if ((s->v.ull != 0 && s->fl & HASH) || s->spc == 'p')
 	{
-		if (obj->spc == 'o')
-			print_character('0', obj);
-		if (obj->spc == 'x' || obj->spc == 'p')
+		if (s->spc == 'x' || s->spc == 'p')
 		{
-			print_character('0', obj);
-			print_character('x', obj);
+			print_character('0', s);
+			print_character('x', s);
 		}
-		else if (obj->spc == 'X')
+		else if (s->spc == 'X')
 		{
-			print_character('0', obj);
-			print_character('X', obj);
+			print_character('0', s);
+			print_character('X', s);
 		}
+		else if (s->spc == 'o')
+			print_character('0', s);
 	}
-	obj->flags |= PRTSIGN;
+	s->fl |= PRTSIGN;
 }
 
-void	print_padding(t_pf_object *obj, int length, char character, char flip)
+static void		print_padding2(t_pf_sect *s, int padd, char character)
+{
+	if (s->v.ull != 0)
+	{
+		padd += s->spc == 'p' && character == ' ' &&
+									padd >= 0 && s->prcs >= s->len ? -2 : 0;
+		padd += s->spc == 'p' && character == '0' &&
+									padd >= 0 && s->prcs >= s->len ? 2 : 0;
+		padd += s->spc == 'x' && character == ' ' && (s->fl & HASH) &&
+									padd >= 0 && 1 + s->prcs >= s->len ? -2 : 0;
+		padd += s->spc == 'x' && character == '0' && (s->fl & HASH) &&
+									padd >= 0 && s->prcs >= s->len ? 2 : 0;
+		padd += s->spc == 'X' && character == ' ' && (s->fl & HASH) &&
+									padd >= 0 && 1 + s->prcs >= s->len ? -2 : 0;
+		padd += s->spc == 'X' && character == '0' && (s->fl & HASH) &&
+									padd >= 0 && s->prcs >= s->len ? 2 : 0;
+	}
+	while (padd > 0)
+	{
+		print_character(character, s);
+		padd--;
+	}
+}
+
+void			print_padding(t_pf_sect *s, int length, char chr, char flip)
 {
 	int		padd;
 
 	padd = 0;
 	if (flip)
-	{		
-		padd = obj->prcs - length;
-		// if ((obj->flags & PLUS_F && obj->flags & SIGNED_F) || (obj->flags & SIGNED_F && obj->val.llong < 0))
-		if (obj->flags & SIGNED_F && obj->val.llong < 0)
+	{
+		if ((s->prcs + 1 == s->len && s->fl & HASH && (s->spc == 'x' ||
+															s->spc == 'X')))
+			length -= 2;
+		padd = s->prcs - length;
+		if (s->fl & SIGNED_F && s->v.llong < 0)
 			++padd;
-		padd = obj->spc == 'c' && obj->val.ll == 0 ? 0 : padd;
+		padd = s->spc == 'c' && s->v.ull == 0 ? 0 : padd;
 	}
 	else
 	{
-		padd = obj->width - length;
-
-		// if (obj->flags & SIGNED_F && character == ' ' && !(obj->flags & MINUS_F) && (obj->flags & PLUS_F || obj->flags & SPACE_F || obj->val.llong < 0))
-		// if ((obj->flags & SIGNED_F && character == ' ') && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x810))) //0x810 PRECISN & PLUS
-	
-		// if ((obj->flags & SIGNED_F && character == ' ' && obj->prcs) && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x18))) //0x18 SPACE & PLUS
-		// if ((obj->flags & SIGNED_F && character == ' ') && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x18)))
-		// if ((obj->flags & SIGNED_F && character == ' ') && ((obj->val.llong >= 0 && obj->flags & 0x18) || (obj->val.llong < 0 && obj->flags & ZERO_F)))
-		if ((obj->flags & SIGNED_F && character == ' ') && ((obj->val.llong >= 0 && obj->flags & 0x18) || (obj->val.llong < 0 && obj->prcs >= obj->i)))// && obj->flags & ZERO_F)))
-			--padd;
-		else if (obj->flags & SIGNED_F && character == '0' && obj->flags & PLUS_F && obj->val.llong >= 0)
+		padd = s->width - length;
+		if (s->fl & SIGNED_F && ((s->v.llong >= 0 && s->fl & 0x18) ||
+		(chr == ' ' && s->v.llong < 0 && s->prcs >= s->len)))
 			--padd;
 	}
-	padd += obj->spc == 'p' && character == ' ' && obj->prcs > obj->i ? -2 : 0;
-	padd += obj->spc == 'p' && character == '0' && obj->prcs > obj->i ? 2 : 0;
-	while (padd > 0)
-	{
-		print_character(character, obj);
-		padd--;
-	}
+	print_padding2(s, padd, chr);
 }
-
-void	print_string(t_pf_object *obj)
-{
-	char 		*str;
-
-	str = "(null)";
-	if (obj->spc == 's')
-	{
-		if (obj->val.ptr == 0)
-		{
-			while (*str)
-				print_character(*str++, obj);
-			return ;
-		}
-		if (obj->flags & PRECISN)
-		{
-			while (*(char*)obj->val.ptr && obj->prcs-- > 0)
-				print_character(*(char*)obj->val.ptr++, obj);
-		}
-		else
-		{
-			while (*(char*)obj->val.ptr)
-				print_character(*(char*)obj->val.ptr++, obj);
-		}
-	}
-	else
-	{
-		while (*(char*)obj->val.ptr)
-			print_character(*(char*)obj->val.ptr++, obj);
-	}
-	
-}
-
-
