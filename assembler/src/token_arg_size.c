@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 18:12:59 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 19:17:12 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static void		argument_size(t_token *instruction, t_token *arg, size_t i)
 	else if (arg->type == DIRECT_TKN || arg->type == DIR_LBL_TKN)
 	{
 		instruction->codage |= 2 << (i * 2);
-		if (instruction->t_op->label_is_twobytes == 1)
+		if (instruction->t_oper->label_is_twobytes == 1)
 			arg->translation_size = 2;
 		else
 			arg->translation_size = 4;
@@ -158,12 +158,12 @@ void			get_argument_size(t_asm *asm_obj)
 	instruction = asm_obj->token_head;
 	while (instruction)
 	{
-		if (instruction->t_op)
+		if (instruction->t_oper)
 		{
 			i = 0;
 			args = NULL;
 			instruction->bytecode = instruction->type;
-			while (i < instruction->t_op->number_of_args)
+			while (i < instruction->t_oper->number_of_args)
 			{
 				if (!args)
 					args = instruction->next;

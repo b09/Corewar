@@ -6,13 +6,13 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 18:10:05 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 19:14:04 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-t_op	g_op_tab[17] =
+t_op				g_op_tab[17] =
 {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0},
@@ -53,23 +53,21 @@ t_op	g_op_tab[17] =
 **			get_type()
 */
 
-static int		get_opcode(char *str)
+static int			get_opcode(char *str)
 {
-	int			i;
+	int				i;
 
 	i = 0;
-
 	while (i < N_OPCODES)
 	{
 		if (ft_strequ(str, g_op_tab[i].op_str))
-			return(g_op_tab[i].opcode);
+			return (g_op_tab[i].opcode);
 		++i;
 	}
 	return (0);
 }
 
 /*
-**
 **	Params:
 **			char *str	==> parsed string provided by get_token_string()
 **
@@ -83,7 +81,7 @@ static int		get_opcode(char *str)
 **			tokenize()
 */
 
-static int		get_type(char *str)
+static int			get_type(char *str)
 {
 	if (*str == COMMENT_CHAR || *str == ';')
 		return (COMMENT_TKN);
@@ -125,9 +123,6 @@ static int		get_type(char *str)
 **	Notes:
 **			If token is an instruction, the intruction's struct is copied from
 **			the op_tab[17].
-**
-**		DEBUG
-	ft_printf("func: %s len:%d str: [%s] addr:%p\n", __func__, ft_strlen(*str), *str, *str);
 */
 
 static void			create_token(int row, int *col, char *str, t_asm *info)
@@ -142,10 +137,10 @@ static void			create_token(int row, int *col, char *str, t_asm *info)
 	token->type = get_type(token->string);
 	if (token->type < 17)
 	{
-		token->t_op = (t_op *)ft_memalloc(sizeof(t_op));
-		ft_memcpy((void*)token->t_op, (void *)&g_op_tab[token->type - 1],\
+		token->t_oper = (t_op *)ft_memalloc(sizeof(t_op));
+		ft_memcpy((void*)token->t_oper, (void *)&g_op_tab[token->type - 1],\
 		sizeof(t_op));
-		token->translation_size = 1 + token->t_op->encoding;
+		token->translation_size = 1 + token->t_oper->encoding;
 	}
 	if (info->token_head == NULL)
 		info->token_head = token;
@@ -174,7 +169,7 @@ static void			create_token(int row, int *col, char *str, t_asm *info)
 **			read_file()
 */
 
-void			tokenize(char *str, t_asm *info)
+void				tokenize(char *str, t_asm *info)
 {
 	static int		row;
 	int				col;

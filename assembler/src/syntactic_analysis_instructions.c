@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 16:30:20 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 19:16:40 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ static int	valid_arg(t_token *ins, int i)
 			return (FALSE);
 		arg = arg->next->next;
 	}
-	if (arg->type == REGISTRY_TKN && ins->t_op->args[i] & T_REG)
+	if (arg->type == REGISTRY_TKN && ins->t_oper->args[i] & T_REG)
 		return (TRUE);
 	else if ((arg->type == DIRECT_TKN || arg->type == DIR_LBL_TKN) &&
-		ins->t_op->args[i] & T_DIR)
+		ins->t_oper->args[i] & T_DIR)
 		return (TRUE);
 	else if ((arg->type == INDIRECT_TKN || arg->type == INDIR_LBL_TKN) &&
-		ins->t_op->args[i] & T_IND)
+		ins->t_oper->args[i] & T_IND)
 		return (TRUE);
 	return (FALSE);
 }
@@ -102,13 +102,13 @@ static int	validate_args(t_token **token)
 	ins = *token;
 	current = ins->next;
 	i = 0;
-	while (i < ins->t_op->number_of_args)
+	while (i < ins->t_oper->number_of_args)
 	{
 		if (valid_arg(ins, i) == FALSE)
 			return (print_error(SYNTAX_INVALID_ARG));
 		i++;
 		current = current->next;
-		if (i < ins->t_op->number_of_args)
+		if (i < ins->t_oper->number_of_args)
 		{
 			if (current->type != SEPARATOR_TKN)
 				return (print_error(SYNTAX_MISSING_SEPARATOR));

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 16:09:51 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 19:45:20 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ static void		write_exec_code(t_asm *asm_obj)
 **	responsible for adding different values to the file.
 **
 **	Params:
-**			t_asm *info	==> assembler struct initialized by main ()
+**			t_asm *info	==> assembler struct initialized by main()
 **
 **	Notes:
 **			write_string() will add the strings related to '.name' and 'comment'
@@ -138,7 +138,7 @@ static void		write_exec_code(t_asm *asm_obj)
 **			int
 **
 **	Called by:
-**			main ():
+**			main()
 */
 
 int				create_and_write_file(t_asm *asm_obj)
