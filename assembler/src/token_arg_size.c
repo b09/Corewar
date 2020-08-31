@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 16:44:49 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 18:12:59 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void			get_argument_size(t_asm *asm_obj)
 {
 	t_token		*args;
 	t_token		*instruction;
-	size_t		i;
+	int			i;
 
 	instruction = asm_obj->token_head;
 	while (instruction)

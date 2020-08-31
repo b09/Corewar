@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 15:15:29 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 18:12:18 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static void	del_cmd_str_and_nl(t_asm *asm_obj, t_token **token)
 static int	valid_name_cmd(t_asm *asm_obj)
 {
 	t_token		*current;
-	t_token		*next;
-	size_t		len;
 
 	current = asm_obj->token_head;
 	if (current->next == NULL || current->next->type != STRING_TKN)
@@ -70,7 +68,6 @@ static int	valid_name_cmd(t_asm *asm_obj)
 static int	valid_comment_cmd(t_asm *asm_obj)
 {
 	t_token		*current;
-	t_token		*next;
 
 	current = asm_obj->token_head;
 	if (current->next == NULL || current->next->type != STRING_TKN)

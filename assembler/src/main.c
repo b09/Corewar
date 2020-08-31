@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 15:14:13 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 18:11:03 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int		read_file(int argc, char **argv, t_asm *info)
 {
 	char		*str;
 	int			name_len;
-	int			fd;
 
 	if (argc != 2)
 		return (print_error(NUM_ARGS_INVALID));
@@ -51,7 +50,7 @@ static int		read_file(int argc, char **argv, t_asm *info)
 		return (print_error(FILE_TYPE_INVALID));
 	info->file_name = ft_strndup(str, name_len - 2);
 	info->fd = open(str, O_RDONLY);
-	tokenize(str, info, 0);
+	tokenize(str, info);
 	return (TRUE);
 }
 
@@ -80,7 +79,7 @@ static int		lexicon_valid(t_asm *info)
 	return (TRUE);
 }
 
-static void 	asm_obj_content_del(t_asm *asm_obj)
+static void		asm_obj_content_del(t_asm *asm_obj)
 {
 	token_lst_del(asm_obj->token_head);
 	free(asm_obj->file_name);

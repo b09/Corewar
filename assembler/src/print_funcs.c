@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/30 20:50:58 by macbook       ########   odam.nl         */
+/*   Updated: 2020/08/31 18:11:18 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 void			print_asm_obj(t_asm *asm_obj)
 {
 	t_token		*tokens;
-	t_op		*op;
 	int			token_number;
 
 	token_number = 0;

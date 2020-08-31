@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 16:27:11 by bprado        ########   odam.nl         */
+/*   Updated: 2020/08/31 18:10:05 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_op	g_op_tab[17] =
 
 static int		get_opcode(char *str)
 {
-	char	i;
+	int			i;
 
 	i = 0;
 
@@ -174,7 +174,7 @@ static void			create_token(int row, int *col, char *str, t_asm *info)
 **			read_file()
 */
 
-void			tokenize(char *str, t_asm *info, int i)
+void			tokenize(char *str, t_asm *info)
 {
 	static int		row;
 	int				col;
