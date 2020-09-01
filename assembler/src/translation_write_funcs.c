@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 19:45:20 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/01 18:45:29 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,23 @@
 **			create_and_write_file()
 */
 
-static void		write_to_file(int fd, unsigned char *value, size_t size)
+static void		write_to_file(int fd, unsigned char *val, size_t size, int rev)
 {
-	while (size)
+	if (rev)
 	{
-		--size;
-		ft_putchar_fd(value[size], fd);
+		while (size)
+		{
+			--size;
+			ft_putchar_fd(val[size], fd);
+		}
+	}
+	else
+	{
+		while (rev < size)
+		{
+			ft_putchar_fd(val[rev], fd);
+			++rev;
+		}
 	}
 }
 
@@ -62,12 +73,13 @@ static void		write_string(t_asm *asm_obj, char *str, size_t null_count)
 {
 	size_t		size;
 
-	size = ft_strlen(str);
-	write_to_file(asm_obj->fd, (unsigned char *)str, size);
-	str = "";
+	size = ft_strlen(str) - 2;
+	size = size < 0 ? 0 : size;
+	write_to_file(asm_obj->fd, (unsigned char *)str + 1, size, 0);
+	str = "\0";
 	while (size < null_count)
 	{
-		write_to_file(asm_obj->fd, (unsigned char *)str, 1);
+		write_to_file(asm_obj->fd, (unsigned char *)str, 1, 0);
 		++size;
 	}
 }
@@ -98,8 +110,22 @@ static void		write_exec_size(t_asm *asm_obj)
 		size += tokens->translation_size;
 		tokens = tokens->next;
 	}
-	write_to_file(asm_obj->fd, (unsigned char *)&size, 4);
+	write_to_file(asm_obj->fd, (unsigned char *)&size, 4, 1);
 }
+
+/*
+**	Writes into the '.cor' file all the instructions and arguments provided in
+**	assembly file.
+**
+**	Params:
+**			t_asm *info	==> assembler struct initialized by main()
+**
+**	Return:
+**			Void
+**
+**	Called by:
+**			create_and_write_file()
+*/
 
 static void		write_exec_code(t_asm *asm_obj)
 {
@@ -108,14 +134,16 @@ static void		write_exec_code(t_asm *asm_obj)
 	token = asm_obj->token_head;
 	while (token)
 	{
-		if (token->type < 20 && token->translation_size == 2)
+		if (is_opcode(token->type) && token->translation_size == 2)
 		{
-			write_to_file(asm_obj->fd, (unsigned char *)&token->bytecode, 1);
-			write_to_file(asm_obj->fd, (unsigned char *)&token->codage, 1);
+			write_to_file(asm_obj->fd, (unsigned char *)&token->bytecode, 1, 0);
+			write_to_file(asm_obj->fd, (unsigned char *)&token->codage, 1, 0);
 		}
 		else
+		{
 			write_to_file(asm_obj->fd, (unsigned char *)&token->bytecode,\
-			token->translation_size);
+			token->translation_size, 1);
+		}
 		token = token->next;
 	}
 }
@@ -151,6 +179,10 @@ int				create_and_write_file(t_asm *asm_obj)
 	fd = open(file, O_RDWR | O_APPEND | O_CREAT | O_TRUNC, 0644);
 	asm_obj->fd = fd;
 	magic_number = COREWAR_EXEC_MAGIC;
-	write_to_file(fd, (unsigned char *)&magic_number, 4);
+	write_to_file(fd, (unsigned char *)&magic_number, 4, 1);
+	write_string(asm_obj, asm_obj->champ_name, PROG_NAME_LENGTH + 4);
+	write_exec_size(asm_obj);
+	write_string(asm_obj, asm_obj->champ_comment, COMMENT_LENGTH + 4);
+	write_exec_code(asm_obj);
 	return (1);
 }

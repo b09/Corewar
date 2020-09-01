@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 19:16:40 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/01 18:29:56 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int			is_opcode(int type)
 {
-	if (type < 20)
+	if (type && type < 20)
 		return (TRUE);
 	return (FALSE);
 }
@@ -39,10 +39,7 @@ static int	skip_labels(t_token **token)
 		else if (current->next && is_opcode(current->next->type))
 			current = current->next;
 		else
-		{
-			printf("positon %d:%d\n", current->row, current->col);
 			return (print_error(SYNTAX_EXPECTED_NL));
-		}
 	}
 	*token = current;
 	return (TRUE);
@@ -146,7 +143,6 @@ int			valid_instructions(t_asm *asm_obj)
 	current = asm_obj->token_head;
 	while (current)
 	{
-		// print_asm_obj(asm_obj);
 		skip_labels(&current); // bug here, try car.s and found invalid but with extras/asm it is valid
 		if (!is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));

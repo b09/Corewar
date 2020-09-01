@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 20:04:47 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/01 15:47:31 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@
 # define FILE_TYPE_INVALID		"File type is invalid\n"
 # define NUM_ARGS_INVALID		"Use one assembly file at a time.\n"
 # define SYNTAX_MISSING_NL		"Syntax error: Missing new line\n"
+# define INVALID_TKN_TYPE		"Operation is invalid for some reason\n"
 
 /*
 **		TOKENS:
@@ -218,6 +219,8 @@ void							tokenize(char *str, t_asm *info);
 */
 
 void							get_argument_size(t_asm *asm_obj);
+void							populate_label_size(t_asm *asm_obj);
+
 
 /*
 **	print_functions.c

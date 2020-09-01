@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 19:17:12 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/01 18:42:21 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,12 @@
 **
 **	Notes:
 **			if label definition not found, error printed and program exited.
-**			When func() traverses the linked list backwards, the instruction
-**			string which uses lab_arg as one of its arguments must be skipped
-**			when counting token->translation_size bytes, for which the second
-**			while loop is used.
-**			ex:
-**			line 1[instruction size = 1][arg1 size = 2][arg2 size = 4]
-**														^^ start counting here
-**			line 2[instruction size = 1][arg1 size = 2][arg2 (lab_arg) size = 4]
-**										^^ do not start counting here
+**			Before func() traverses the linked list seeking the label definition
+**			it must first start counting token_translation_size from the
+**			the beginning of the instruction line in which it was called. If
+**			instruction line is as follows:
+**	ins line -- [block1, size = 1][block2, size = 2][block3 (lab_arg), size = 4]
+**			then it must start counting from block1
 **
 **	Called by:
 **			argument_size()
@@ -43,7 +40,8 @@
 static int		find_label_definition(t_token *lab_arg, t_token *tokens, int i,\
 				char *str)
 {
-	str = lab_arg->type == 44 ? lab_arg->string + 2 : lab_arg->string + 1;
+	while (tokens && is_opcode(tokens->type) == FALSE)
+		tokens = tokens->prev;
 	while (tokens)
 	{
 		i += tokens->translation_size;
@@ -52,8 +50,8 @@ static int		find_label_definition(t_token *lab_arg, t_token *tokens, int i,\
 			return (i);
 		tokens = tokens->next;
 	}
-	tokens = lab_arg->prev;
-	while (tokens && tokens->type > 19)
+	tokens = lab_arg;
+	while (tokens && is_opcode(tokens->type) == FALSE)
 		tokens = tokens->prev;
 	tokens = tokens->prev;
 	i = 0;
@@ -82,7 +80,7 @@ static int		find_label_definition(t_token *lab_arg, t_token *tokens, int i,\
 
 static int		get_number(char *str)
 {
-	while (*str && !ft_isdigit(*str))
+	while (*str && !ft_isdigit(*str) && *str != '-')
 		++str;
 	return (ft_atoi(str));
 }
@@ -115,13 +113,13 @@ static void		argument_size(t_token *instruction, t_token *arg, size_t i)
 {
 	if (arg->type == REGISTRY_TKN)
 	{
-		instruction->codage |= 1 << (i * 2);
+		instruction->codage |= 1 << (6 - (i * 2));
 		arg->translation_size = 1;
 		arg->bytecode = get_number(arg->string);
 	}
 	else if (arg->type == DIRECT_TKN || arg->type == DIR_LBL_TKN)
 	{
-		instruction->codage |= 2 << (i * 2);
+		instruction->codage |= 2 << (6 - (i * 2));
 		if (instruction->t_oper->label_is_twobytes == 1)
 			arg->translation_size = 2;
 		else
@@ -130,12 +128,10 @@ static void		argument_size(t_token *instruction, t_token *arg, size_t i)
 	}
 	else if (arg->type == INDIRECT_TKN || arg->type == INDIR_LBL_TKN)
 	{
-		instruction->codage |= 3 << (i * 2);
+		instruction->codage |= 3 << (6 - (i * 2));
 		arg->translation_size = 2;
 		arg->bytecode = arg->type == 43 ? get_number(arg->string) : 0;
 	}
-	if (arg->type == INDIR_LBL_TKN || arg->type == DIR_LBL_TKN)
-		arg->bytecode = find_label_definition(arg, NULL, 0, NULL);
 }
 
 /*
@@ -146,7 +142,7 @@ static void		argument_size(t_token *instruction, t_token *arg, size_t i)
 **			t_asm *info	==> assembler struct initialized by main()
 **
 **	Called by:
-**			none
+**			main ()
 */
 
 void			get_argument_size(t_asm *asm_obj)
@@ -174,5 +170,30 @@ void			get_argument_size(t_asm *asm_obj)
 			}
 		}
 		instruction = instruction->next;
+	}
+}
+
+/*
+**	Iterates through all tokens, populating t_token->bycode member with correct
+**	int value based on token being an indirect label or a direct label.
+**
+**	Params:
+**			t_asm *info	==> assembler struct initialized by main()
+**
+**	Called by:
+**			main ()
+*/
+
+void			populate_label_size(t_asm *asm_obj)
+{
+	t_token		*tokens;
+
+	tokens = asm_obj->token_head;
+	while (tokens)
+	{
+		if (tokens->type == INDIR_LBL_TKN || tokens->type == DIR_LBL_TKN)
+			tokens->bytecode = find_label_definition(tokens, tokens, 0,\
+			tokens->type == 44 ? tokens->string + 2 : tokens->string + 1);
+		tokens = tokens->next;
 	}
 }

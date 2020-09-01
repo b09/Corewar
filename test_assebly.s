@@ -152,3 +152,4 @@ save:
 		fork	%:attak
 		st      r4, 254
 		zjmp %:save
+		

@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/18 15:31:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 19:14:04 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/01 12:29:18 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int			get_opcode(char *str)
 			return (g_op_tab[i].opcode);
 		++i;
 	}
-	return (0);
+	return (print_error(INVALID_TKN_TYPE));
 }
 
 /*
@@ -97,7 +97,7 @@ static int			get_type(char *str)
 		return (INDIR_LBL_TKN);
 	else if (*str == '-' || ft_isdigit(*str))
 		return (INDIRECT_TKN);
-	else if (ft_strchr(LABEL_CHARS, *str))
+	else if (*str && ft_strchr(LABEL_CHARS, *str))
 		return (str[ft_strlen(str) - 1] == ':' ? LABEL_TKN : get_opcode(str));
 	else if (*str == SEPARATOR_CHAR)
 		return (SEPARATOR_TKN);
@@ -105,7 +105,7 @@ static int			get_type(char *str)
 		return (ENDLINE_TKN);
 	else if (*str == '"')
 		return (STRING_TKN);
-	return (-1);
+	return (print_error(INVALID_TKN_TYPE));
 }
 
 /*
@@ -135,7 +135,7 @@ static void			create_token(int row, int *col, char *str, t_asm *info)
 	token->col = *col;
 	token->string = get_token_string(&str[*col - 1], col);
 	token->type = get_type(token->string);
-	if (token->type < 17)
+	if (is_opcode(token->type))
 	{
 		token->t_oper = (t_op *)ft_memalloc(sizeof(t_op));
 		ft_memcpy((void*)token->t_oper, (void *)&g_op_tab[token->type - 1],\
@@ -185,7 +185,8 @@ void				tokenize(char *str, t_asm *info)
 		{
 			while (str[col - 1] != '\n' && ft_isspace(str[col - 1]))
 				col++;
-			create_token(row, &col, str, info);
+			if (str[col - 1])
+				create_token(row, &col, str, info);
 		}
 		free((void*)str);
 		row++;

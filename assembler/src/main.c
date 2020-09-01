@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/08/31 18:11:03 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/01 18:27:38 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,9 @@ int				main(int argc, char **argv)
 		return (1);
 	lexicon_valid(&asm_obj);
 	valid_syntax(&asm_obj);
-	// create_and_write_file(&asm_obj);
-	// instructions_valid();
-	// params_valid();
-	// parse_assembly();
+	get_argument_size(&asm_obj);
+	populate_label_size(&asm_obj);
+	create_and_write_file(&asm_obj);
 	asm_obj_content_del(&asm_obj);
 	return (0);
 }
