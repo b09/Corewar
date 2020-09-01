@@ -184,5 +184,6 @@ int				create_and_write_file(t_asm *asm_obj)
 	write_exec_size(asm_obj);
 	write_string(asm_obj, asm_obj->champ_comment, COMMENT_LENGTH + 4);
 	write_exec_code(asm_obj);
+	free(file);
 	return (1);
 }
