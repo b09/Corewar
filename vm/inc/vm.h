@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/02 12:58:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/02 21:34:03 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include <stdbool.h>
+# include <fcntl.h>
 
 /*
 **	COLORS FOR FT_PRINTF
@@ -44,7 +45,8 @@
 # define MAX_PLAYERS			4
 # define MEM_SIZE				4096
 # define IDX_MOD				512
-# define CHAMP_MAX_SIZE			768
+# define EXEC_CODE_MAX_SIZE		682
+# define CHAMP_MINIMUM_SIZE		2192
 # define N_OPCODES				16
 # define N_LABEL_CHARS			38
 # define REG_NUMBER				16
@@ -60,14 +62,23 @@
 # define COMMENT_LENGTH			2048
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-typedef struct					s_champs
+typedef struct					s_champ
 {
 	int							fd;
-}								t_champs;
+	unsigned char				*orig_file;
+	int							file_size;
+	unsigned char				*name;
+	unsigned char				*comment;
+	unsigned char				*exec_size;
+	char						*file_name;
+	int							id;
+	unsigned char				*exec_code;
+}								t_champ;
 
 typedef struct					s_arena
 {
-	int							fd;
+	struct s_champs				**champs;
+	int							num_champs;
 }								t_arena;
 
 
