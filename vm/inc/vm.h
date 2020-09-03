@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/02 21:34:03 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/03 17:36:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@
 # define PROG_NAME_LENGTH		128
 # define COMMENT_LENGTH			2048
 # define COREWAR_EXEC_MAGIC		0xea83f3
+# define MAGIC_BACKWARDS		0xf383ea00
 
 typedef struct					s_champ
 {
@@ -70,16 +71,22 @@ typedef struct					s_champ
 	unsigned char				*name;
 	unsigned char				*comment;
 	unsigned char				*exec_size;
+	unsigned char				*exec_code;
 	char						*file_name;
 	int							id;
-	unsigned char				*exec_code;
 }								t_champ;
 
 typedef struct					s_arena
 {
-	struct s_champs				**champs;
+	struct s_champ				**champs;
 	int							num_champs;
 }								t_arena;
+
+/*
+**		print_funcs.c
+*/
+
+void		print_champs(t_arena *arena);
 
 
 #endif

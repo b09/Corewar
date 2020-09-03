@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/01/11 11:56:34 by fmiceli       #+#    #+#                 */
-/*   Updated: 2019/06/20 18:41:27 by fmiceli       ########   odam.nl         */
+/*   Updated: 2020/09/03 17:13:40 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct		s_magicmask
 
 int					get_next_line(const int fd, char **line);
 int					gnl_with_newline(int fd, char **line);
+int					ft_memcmp_rev(const void *s1, const void *s2_will_b_rev,\
+					size_t n);
 
 void				ft_putnbr(int n);
 void				ft_putchar(char	c);
