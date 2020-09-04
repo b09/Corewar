@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/03 17:36:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/04 19:59:25 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,19 @@
 # define COREWAR_EXEC_MAGIC		0xea83f3
 # define MAGIC_BACKWARDS		0xf383ea00
 
+/*
+**		ERROR MACROS
+*/
+
+# define FEW_ARGS				"Too few arguments provided\n"
+# define INVALID_ARG			"Wrong type of argument provided\n"
+# define SAME_N_VALUE			"Error: Multiple -n have same value or value to\
+								large\n"
+# define MULTIPLE_N				"Error, -n or -dump already provided\n"
+# define INVALID_N				"Invalid argument provided to -n\n"
+# define INVALID_DUMP			"Invalid argument provided to -dump\n"
+# define INV_ARG_N_DUMP			"Argument is not a number\n"
+
 typedef struct					s_champ
 {
 	int							fd;
@@ -74,11 +87,14 @@ typedef struct					s_champ
 	unsigned char				*exec_code;
 	char						*file_name;
 	int							id;
+	size_t						n_provided;
 }								t_champ;
 
 typedef struct					s_arena
 {
-	struct s_champ				**champs;
+	t_champ						*champs;
+	int							dump;
+	int							n_flag;
 	int							num_champs;
 }								t_arena;
 
@@ -87,6 +103,6 @@ typedef struct					s_arena
 */
 
 void		print_champs(t_arena *arena);
-
+int			print_error(char *str);
 
 #endif
