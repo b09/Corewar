@@ -36,12 +36,18 @@ void			get_champ_file(t_champ *champ)
 		print_error(TOO_BIG_OR_SML);
 	champ->orig_file = (unsigned char *)ft_memalloc(i);
 	ft_memcpy((void *)champ->orig_file, (void*)buf, i);
+	// Why don't you memdup in the last two lines?
+	// I feel like it could safe you a line.
 	champ->file_size = i;
 	champ->name = &champ->orig_file[4];
 	champ->exec_size = &champ->orig_file[8 + PROG_NAME_LENGTH];
 	champ->comment = &champ->orig_file[12 + PROG_NAME_LENGTH];
 	champ->exec_code = &champ->orig_file[CHAMP_MINIMUM_SIZE];
 	num = COREWAR_EXEC_MAGIC;
+	// I don't understand the bit magic here,
+	// Can't you just do things like:
+	// i |= champ->exec_size - 4 | champ->exec_code - 4;
+	// instead of calling memcmp?
 	i = ft_memcmp_rev((void*)champ->orig_file, (void*)&num, 4);
 	num = 0;
 	i |= ft_memcmp((void*)&num, (void*)champ->exec_size - 4, 4) |\
@@ -119,6 +125,11 @@ void			grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 	{
 		if ((champs[i]->n_provided - 1) < 4 && n_ids[champs[i]->n_provided - 1]\
 		== NULL && champs[i]->n_provided != 0)
+		//	your first condition is TRUE if (champs[i]->n_provided - 1) == 0,
+		//	personally I would check for that first:
+		//
+		// 	if (champs[i]->n_provided && (champs[i]->n_provided - 1) < 4 &&
+		//		n_ids[champs[i]->n_provided - 1] == NULL)
 			n_ids[champs[i]->n_provided - 1] = champs[i];
 		else if (champs[i]->n_provided != 0)
 			print_error(SAME_N_VALUE);
