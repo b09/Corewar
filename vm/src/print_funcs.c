@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/04 20:00:59 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/05 13:53:48 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,17 @@ void		print_champs(t_arena *arena)
 	i = 0;
 	while (i < arena->num_champs)
 	{
-		champ = &arena->champs[i];
+		// champ = arena->champs;
+		// // champ = champs[0];
+		// ft_printf("addr:%p\n", champ[i]);
+		// ft_printf("id:%d\n", champ[i].id);
+		// ft_printf("name:%s\n", champ[i].name);
+		// ft_printf("comment:%s\n", champ[i].comment);
+		// ft_printf("exec_size:%d\n", champ[i].exec_size);
+		// ft_printf("file_name:%s\n", champ[i].file_name);
+		// ft_printf("file_size:%d\n\n", champ[i].file_size);
+		// ++i;
+		champ = arena->champs[i];
 		// champ = champs[0];
 		ft_printf("addr:%p\n", champ);
 		ft_printf("id:%d\n", champ->id);

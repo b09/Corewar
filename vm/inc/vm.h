@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/04 19:59:25 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/05 14:29:48 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@
 # define INVALID_N				"Invalid argument provided to -n\n"
 # define INVALID_DUMP			"Invalid argument provided to -dump\n"
 # define INV_ARG_N_DUMP			"Argument is not a number\n"
+# define TOO_BIG_OR_SML			"File is either too big or small\n"
+# define BAD_BINARY				"Binary is not formatted correctly\n"
+# define TOO_MANY_CHAMPS		"Too many champs\n"
 
 typedef struct					s_champ
 {
@@ -92,7 +95,7 @@ typedef struct					s_champ
 
 typedef struct					s_arena
 {
-	t_champ						*champs;
+	t_champ						**champs;
 	int							dump;
 	int							n_flag;
 	int							num_champs;
@@ -104,5 +107,18 @@ typedef struct					s_arena
 
 void		print_champs(t_arena *arena);
 int			print_error(char *str);
+
+/*
+**		input_validation.c
+*/
+
+void		get_champ_file(t_champ *champ);
+void		validate_champs(char *input, t_arena *arena);
+void		validate_flag(char **argv, t_arena *arena, int *argc, int len);
+void		grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
+				int num_champs);
+void		validate_ids(t_arena *arena);
+
+
 
 #endif
