@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/05 14:29:48 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 11:44:21 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct					s_champ
 	unsigned char				*name;
 	unsigned char				*comment;
 	unsigned char				*exec_size;
+	int							real_exec_size;
 	unsigned char				*exec_code;
 	char						*file_name;
 	int							id;
@@ -99,7 +100,26 @@ typedef struct					s_arena
 	int							dump;
 	int							n_flag;
 	int							num_champs;
+	unsigned char				*field;
+	int							num_cursors;
+	int							cycles;
+	int							cycles_to_die;
+	int							num_cursors;
+	struct s_cursor				*cursor_head;
 }								t_arena;
+
+typedef struct					s_cursor
+{
+	int							id;
+	bool						carry;
+	int							opcode;
+	int							last_live;
+	int							wait_cycles;
+	int							position;
+	int							jump;
+	int							registry[16];
+	struct s_cursor				*next;
+}								t_cursor;
 
 /*
 **		print_funcs.c
@@ -107,6 +127,8 @@ typedef struct					s_arena
 
 void		print_champs(t_arena *arena);
 int			print_error(char *str);
+void		intro_champs(t_arena *arena);
+
 
 /*
 **		input_validation.c

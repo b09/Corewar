@@ -23,6 +23,14 @@
 **		null bytes are correctly placed
 **		exec_size is the same size as counted bytes in binary
 **		champ name exists
+**			COMMENTS:
+	// I don't understand the bit magic here,
+	// Can't you just do things like:
+	// i |= champ->exec_size - 4 | champ->exec_code - 4;
+	// instead of calling memcmp?
+	// answer bprado:
+	// i don't know how to dereference champ->orig_file as an int, as it
+	// currently is a unsigned char *.
 */
 
 void			get_champ_file(t_champ *champ)
@@ -34,20 +42,13 @@ void			get_champ_file(t_champ *champ)
 	i = read(champ->fd, &buf, EXEC_CODE_MAX_SIZE + CHAMP_MINIMUM_SIZE + 1);
 	if (i == 2857 || i < CHAMP_MINIMUM_SIZE || i == -1)
 		print_error(TOO_BIG_OR_SML);
-	champ->orig_file = (unsigned char *)ft_memalloc(i);
-	ft_memcpy((void *)champ->orig_file, (void*)buf, i);
-	// Why don't you memdup in the last two lines?
-	// I feel like it could safe you a line.
+	champ->orig_file = (unsigned char*)ft_memdup(buf, i);
 	champ->file_size = i;
 	champ->name = &champ->orig_file[4];
 	champ->exec_size = &champ->orig_file[8 + PROG_NAME_LENGTH];
 	champ->comment = &champ->orig_file[12 + PROG_NAME_LENGTH];
 	champ->exec_code = &champ->orig_file[CHAMP_MINIMUM_SIZE];
 	num = COREWAR_EXEC_MAGIC;
-	// I don't understand the bit magic here,
-	// Can't you just do things like:
-	// i |= champ->exec_size - 4 | champ->exec_code - 4;
-	// instead of calling memcmp?
 	i = ft_memcmp_rev((void*)champ->orig_file, (void*)&num, 4);
 	num = 0;
 	i |= ft_memcmp((void*)&num, (void*)champ->exec_size - 4, 4) |\
@@ -55,6 +56,7 @@ void			get_champ_file(t_champ *champ)
 	num = champ->file_size - CHAMP_MINIMUM_SIZE;
 	i |= ft_memcmp_rev((void*)champ->exec_size, (void*)&num, 4);
 	(i || !champ->name[0]) && print_error(BAD_BINARY);
+	champ->real_exec_size = num;
 }
 
 /*
@@ -72,6 +74,7 @@ void			validate_champs(char *input, t_arena *arena)
 	champ->id = arena->num_champs;
 	champ->n_provided = arena->n_flag;
 	arena->n_flag = 0;
+	champ->file_name = input;
 	champ->fd = open(input, O_RDONLY);
 	if (champ->fd < 0 || arena->num_champs == MAX_PLAYERS + 1)
 		print_error(TOO_MANY_CHAMPS);
@@ -92,7 +95,7 @@ void			validate_flag(char **argv, t_arena *arena, int *argc, int len)
 		++index;
 	if (index != ft_strlen(argv[*argc]) | index > 9)
 		print_error(INV_ARG_N_DUMP);
-	if (len == 5 && arena->dump == 0) // is '-dump'
+	if (len == 5 && arena->dump == 0)
 	{
 		arena->dump = ft_atoi(argv[*argc]);
 		arena->dump == 0 && print_error(INVALID_DUMP);
@@ -109,12 +112,13 @@ void			validate_flag(char **argv, t_arena *arena, int *argc, int len)
 
 /*
 **	popupulates n_ids[4] with address of champ at the index provided by
-**	champ->n_provided. If there is already an address in n_ids at that index
+**	champ->n_provided - 1. If there is already an address in n_ids at that index
 **	then multiple champs have the same n_provided index, which is an error.
 **	for the remaining indeces in n_ids[4] which are zero, func() populates
 **	the remaining champ address (which did not have an n_provided) at the first
 **	available indeces.
 */
+
 void			grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 				int num_champs)
 {
@@ -123,13 +127,8 @@ void			grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 	i = 0;
 	while (i < num_champs)
 	{
-		if ((champs[i]->n_provided - 1) < 4 && n_ids[champs[i]->n_provided - 1]\
-		== NULL && champs[i]->n_provided != 0)
-		//	your first condition is TRUE if (champs[i]->n_provided - 1) == 0,
-		//	personally I would check for that first:
-		//
-		// 	if (champs[i]->n_provided && (champs[i]->n_provided - 1) < 4 &&
-		//		n_ids[champs[i]->n_provided - 1] == NULL)
+		if (champs[i]->n_provided && (champs[i]->n_provided - 1) < 4 &&
+		n_ids[champs[i]->n_provided - 1] == NULL)
 			n_ids[champs[i]->n_provided - 1] = champs[i];
 		else if (champs[i]->n_provided != 0)
 			print_error(SAME_N_VALUE);
@@ -147,7 +146,6 @@ void			grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 		++i;
 	}
 }
-
 
 /*
 **	grab all n_ids
