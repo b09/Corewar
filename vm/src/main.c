@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 17:19:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 18:25:51 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ int				main(int argc, char **argv)
 	input_validation(argc, argv, &arena);
 	intro_champs(&arena);
 	initialize_arena(&arena);
+	battle(arena);
 	return (0);
 }

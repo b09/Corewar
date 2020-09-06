@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 17:40:04 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 19:25:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ typedef struct					s_arena
 	int							cycles;
 	int							cycles_to_die;
 	struct s_cursor				*cursor_head;
+	int							wait_cycle_arr[16];
+	int							latest_champ_alive;
 }								t_arena;
 
 typedef struct					s_cursor
@@ -114,12 +116,14 @@ typedef struct					s_cursor
 	bool						carry;
 	int							opcode;
 	int							last_live;
-	int							wait_cycles;
+	int							wait_cycle;
 	int							position;
 	int							jump;
 	int							registry[16];
 	struct s_cursor				*next;
 }								t_cursor;
+
+typedef void			(*t_func)(t_cursor *, t_arena *arena);
 
 /*
 **		print_funcs.c
@@ -151,6 +155,27 @@ void		validate_ids(t_arena *arena);
 
 void		initialize_arena(t_arena *arena);
 void		battle(t_arena *arena);
+
+/*
+**		operations.c
+*/
+
+void		op_live(t_cursor *cursor, t_arena *arena);
+void		op_ld(t_cursor *cursor, t_arena *arena);
+void		op_st(t_cursor *cursor, t_arena *arena);
+void		op_add(t_cursor *cursor, t_arena *arena);
+void		op_sub(t_cursor *cursor, t_arena *arena);
+void		op_and(t_cursor *cursor, t_arena *arena);
+void		op_or(t_cursor *cursor, t_arena *arena);
+void		op_xor(t_cursor *cursor, t_arena *arena);
+void		op_zjmp(t_cursor *cursor, t_arena *arena);
+void		op_ldi(t_cursor *cursor, t_arena *arena);
+void		op_sti(t_cursor *cursor, t_arena *arena);
+void		op_fork(t_cursor *cursor, t_arena *arena);
+void		op_lld(t_cursor *cursor, t_arena *arena);
+void		op_lldi(t_cursor *cursor, t_arena *arena);
+void		op_lfork(t_cursor *cursor, t_arena *arena);
+void		op_aff(t_cursor *cursor, t_arena *arena);
 
 
 #endif

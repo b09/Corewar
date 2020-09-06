@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 17:40:18 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 18:26:17 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 **	the negated player id (r1 = -player_id).
 */
 
-void			initialize_cursors(t_arena *arena)
+static void		initialize_cursors(t_arena *arena)
 {
 	int			i;
 	t_cursor	*cursor;
@@ -42,14 +42,35 @@ void			initialize_cursors(t_arena *arena)
 	}
 }
 
-void		initialize_arena(t_arena *arena)
+static void		cursor_wait_cycle(int *wait_cycle_arr)
 {
-	int		i;
-	t_champ *champ;
+	wait_cycle_arr[0] = 10;
+	wait_cycle_arr[1] = 5;
+	wait_cycle_arr[2] = 5;
+	wait_cycle_arr[3] = 10;
+	wait_cycle_arr[4] = 10;
+	wait_cycle_arr[5] = 6;
+	wait_cycle_arr[6] = 6;
+	wait_cycle_arr[7] = 6;
+	wait_cycle_arr[8] = 20;
+	wait_cycle_arr[9] = 25;
+	wait_cycle_arr[10] = 25;
+	wait_cycle_arr[11] = 800;
+	wait_cycle_arr[12] = 10;
+	wait_cycle_arr[13] = 50;
+	wait_cycle_arr[14] = 1000;
+	wait_cycle_arr[15] = 2;
+}
+
+void			initialize_arena(t_arena *arena)
+{
+	int			i;
+	t_champ 	*champ;
 
 	i = 0;
 	champ = NULL;
 	arena->field = (unsigned char *)ft_memalloc(MEM_SIZE);
+	cursor_wait_cycle(arena->wait_cycle_arr);
 	while (i < arena->num_champs)
 	{
 		champ = arena->champs[i];
@@ -58,21 +79,4 @@ void		initialize_arena(t_arena *arena)
 		++i;
 	}
 	initialize_cursors(arena);
-	battle(arena);
-}
-
-void		battle(t_arena *arena)
-{
-	// int		i;
-	print_arena_and_cursors(arena);
-	// while(42)
-	// {
-	// 	i = 0;
-	// 	while(i < arena->num_cursors)
-	// 	{
-	// 		// do something with cursors;
-	// 		++i;
-	// 	}
-	// 	(arena->cycles)++;
-	// }
 }

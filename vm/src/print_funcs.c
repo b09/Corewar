@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 17:41:09 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 18:19:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void			print_hexdump(t_arena *arena)
 		++i;
 	}
 	ft_printf("\n");
+	exit(1);
 }
 
 void			print_arena_and_cursors(t_arena *arena)
@@ -109,4 +110,6 @@ void			print_arena_and_cursors(t_arena *arena)
 		}
 		cursor = cursor->next;
 	}
+
+	ft_printf("test arr[14]: %d\n", arena->wait_cycle_arr[14]);
 }
