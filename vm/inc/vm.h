@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 19:25:46 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 21:38:24 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct					s_arena
 	int							num_cursors;
 	int							cycles;
 	int							cycles_to_die;
+	int							max_checks;
 	struct s_cursor				*cursor_head;
 	int							wait_cycle_arr[16];
 	int							latest_champ_alive;

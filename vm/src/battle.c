@@ -6,13 +6,13 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 19:25:46 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 22:02:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static void		populate_func_array(t_func arrpointer[128])
+static void		populate_operation_array(t_func arrpointer[128])
 {
 	arrpointer[0] = op_live;
 	arrpointer[1] = op_ld;
@@ -32,18 +32,29 @@ static void		populate_func_array(t_func arrpointer[128])
 	arrpointer[15] = op_aff;
 }
 
+//		FROM PROJECT PDF
+// - Every CYCLE_TO_DIE cycles, the machine needs to make sure that each process
+// has executed at least one live since the last check. A process that does not
+// abide by this rule will be killed immediately
+// - If during one of those checkups we notice that there has been at least one
+// NBR_LIVE execution of live since the latest check up, we will decrease
+// CYCLE_TO_DIE of CYCLE_DELTA units. 
+// - The game is over when all processes are dead.
+// - The winner is the last player to be reported alive. The machine will then
+// show “Player X (champion_name) won”, where X is the player’s number and cham-
+// pion_name is its name. For example: “Player 2 (rainbowdash) won”.
+// - If CYCLE_TO_DIE wasn’t decreased since MAX_CHECKS checkups, decrease it.
+
 void			battle(t_arena *arena)
 {
-	// int			i;
 	t_func		arrpointer[16];
 	t_cursor	*cursor;
 
-	populate_func_array(arrpointer);
+	populate_operation_array(arrpointer);
 	while(42)
 	{
 		if (arena->cycles == arena->dump)
 			print_hexdump(arena);
-		// i = 0;
 		cursor = arena->cursor_head;
 		while(cursor)
 		{

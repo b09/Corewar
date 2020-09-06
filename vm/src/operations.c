@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 19:25:12 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 21:36:01 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@
 
 void		op_live(t_cursor *cursor, t_arena *arena)
 {
+	// FROM COREWAR PDF:
+	// For each valid execution of the live instruction, the machine must display: 
+	// “A process shows that player X (champion_name) is alive”. 
 	return ;
 }
 /*
