@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 11:44:21 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/06 17:40:04 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define MAX_PLAYERS			4
 # define MEM_SIZE				4096
 # define IDX_MOD				512
+# define HEXDUMP_WIDTH			32
 # define EXEC_CODE_MAX_SIZE		682
 # define CHAMP_MINIMUM_SIZE		2192
 # define N_OPCODES				16
@@ -104,7 +105,6 @@ typedef struct					s_arena
 	int							num_cursors;
 	int							cycles;
 	int							cycles_to_die;
-	int							num_cursors;
 	struct s_cursor				*cursor_head;
 }								t_arena;
 
@@ -128,6 +128,10 @@ typedef struct					s_cursor
 void		print_champs(t_arena *arena);
 int			print_error(char *str);
 void		intro_champs(t_arena *arena);
+void		print_hexdump(t_arena *arena);
+void		print_arena_and_cursors(t_arena *arena);
+
+
 
 
 /*
@@ -141,6 +145,12 @@ void		grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 				int num_champs);
 void		validate_ids(t_arena *arena);
 
+/*
+**		initialize_arena.c
+*/
+
+void		initialize_arena(t_arena *arena);
+void		battle(t_arena *arena);
 
 
 #endif
