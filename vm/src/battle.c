@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 20:42:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 20:47:16 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,6 @@ static void		check_cursors(t_arena *arena)
 
 void			battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
 {
-	// t_func		arrpointer[16];
-	// t_cursor	*cursor;
-
 	populate_operation_array(arrpointer);
 	while(42)
 	{

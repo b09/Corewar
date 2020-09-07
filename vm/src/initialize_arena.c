@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 20:00:53 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 21:36:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,18 @@
 void				create_cursor(t_arena *arena, int i)
 {
 	t_cursor		*cursor;
-	static t_cursor	*tail;
 
 	cursor = (t_cursor*)ft_memalloc(sizeof(t_cursor));
 	ft_bzero(cursor, sizeof(int) * 16);
-	cursor->registry[0] = i;
-	cursor->position = (MEM_SIZE / arena->num_champs) * ((i * -1) - 1);
-	if (arena->cursor_head == NULL)
-		arena->cursor_head = cursor;
-	else
+	cursor->registry[0] = (i + 1) * -1;
+	cursor->position = (MEM_SIZE / arena->num_champs) * i;
+	if (arena->cursor_head != NULL)
 	{
-		tail->next = cursor;
-		cursor->prev = tail;
+		cursor->next = arena->cursor_head;
+		arena->cursor_head->prev = cursor;
 	}
-	tail = cursor;
+	else
+		arena->cursor_head = cursor;
 }
 
 static void			cursor_wait_cycle(int *wait_cycle_arr)
@@ -60,6 +58,13 @@ static void			cursor_wait_cycle(int *wait_cycle_arr)
 	wait_cycle_arr[15] = 2;
 }
 
+/*
+**	creates all the components necessary for the gameplay to happen. the start
+**	of the game will create the same number of cursors as number of champions,
+**	though other cursors could be created throughtout the game. create_cursor()
+**	requires that the first cursor be the last champion, see not above
+**	create_cursor() for more details.
+*/
 void				initialize_arena(t_arena *arena)
 {
 	int				i;
@@ -72,9 +77,9 @@ void				initialize_arena(t_arena *arena)
 	while (i < arena->num_champs)
 	{
 		champ = arena->champs[i];
-		ft_memcpy(&arena->field[MEM_SIZE / arena->num_champs * i],\
+		ft_memcpy(&arena->field[(MEM_SIZE / arena->num_champs) * i],\
 		champ->exec_code, champ->real_exec_size);
-		create_cursor(arena, (i - arena->num_champs));
+		create_cursor(arena, i);
 		++i;
 	}
 	arena->last_champ_alive = arena->cursor_head->id;
