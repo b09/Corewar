@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 17:01:26 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 20:43:09 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ typedef struct					s_cursor
 	int							jump;
 	int							registry[16];
 	struct s_cursor				*next;
+	struct s_cursor				*prev;
 }								t_cursor;
 
 typedef void			(*t_func)(t_cursor *, t_arena *arena);
@@ -210,7 +211,13 @@ void		validate_ids(t_arena *arena);
 */
 
 void		initialize_arena(t_arena *arena);
-void		battle(t_arena *arena);
+void		create_cursor(t_arena *arena, int i);
+
+/*
+**		battle.c
+*/
+
+void		battle(t_arena *arena, t_func *arrpointer, t_cursor *cursor);
 
 /*
 **		operations.c
@@ -232,6 +239,12 @@ void		op_lld(t_cursor *cursor, t_arena *arena);
 void		op_lldi(t_cursor *cursor, t_arena *arena);
 void		op_lfork(t_cursor *cursor, t_arena *arena);
 void		op_aff(t_cursor *cursor, t_arena *arena);
+
+/*
+**		delete.c
+*/
+
+void		cursor_unlink_del(t_arena *arena, t_cursor *cursor);
 
 
 #endif

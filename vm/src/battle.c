@@ -6,13 +6,13 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 17:19:17 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 20:42:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static void		populate_operation_array(t_func arrpointer[128])
+static void		populate_operation_array(t_func arrpointer[16])
 {
 	arrpointer[0] = op_live;
 	arrpointer[1] = op_ld;
@@ -32,9 +32,44 @@ static void		populate_operation_array(t_func arrpointer[128])
 	arrpointer[15] = op_aff;
 }
 
-void		cull_cursor(t_arena *arena)
+static void		end_game(t_arena *arena)
 {
-	
+	return ;
+}
+
+/*
+**	iterates through all cursors, checking if the difference between the
+**	cursor's last 'live' operation was more than max_cycle_die's ago.
+**	unlinks all cursors where above statement is true.
+**
+*/
+
+static void		check_cursors(t_arena *arena)
+{
+	t_cursor	*cursor;
+
+	cursor = arena->cursor_head;
+	while (cursor)
+	{
+		if ((arena->cycles - arena->max_cycle_die) >= cursor->last_live)
+		{
+			cursor_unlink_del(arena, cursor);
+			cursor = arena->cursor_head;
+			if (cursor == NULL)
+				end_game(arena); // not written
+		}
+		else
+			cursor = cursor->next;
+	}
+	if (arena->num_checks >= MAX_CHECKS || arena->num_lives >= NBR_LIVE)
+	{
+		arena->max_cycle_die -= CYCLE_DELTA;
+		arena->num_checks = 0;
+		return ;
+	}
+	arena->cycles_to_die = 0;
+	arena->num_lives = 0;
+	arena->num_checks++;
 }
 
 /*
@@ -56,21 +91,17 @@ void		cull_cursor(t_arena *arena)
 // show “Player X (champion_name) won”, where X is the player’s number and cham-
 // pion_name is its name. For example: “Player 2 (rainbowdash) won”.
 
-void			battle(t_arena *arena)
+void			battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
 {
-	t_func		arrpointer[16];
-	t_cursor	*cursor;
+	// t_func		arrpointer[16];
+	// t_cursor	*cursor;
 
 	populate_operation_array(arrpointer);
 	while(42)
 	{
 		arena->cycles == arena->dump && print_hexdump(arena);
 		if (arena->cycles_to_die == arena->max_cycle_die)
-			// loop thru && kill cursors if last_alive is >= max allowed alive
-			// decrease max_cycle_die by CYCLE_DELTA(50) if num_lives >= NBR_LIVES
-			// or if num_checks == MAX_CHECKS(10)
-				// reset num_checks if above true;
-			// reset num_lives
+			check_cursors(arena);
 		cursor = arena->cursor_head;
 		while(cursor)
 		{
@@ -83,7 +114,7 @@ void			battle(t_arena *arena)
 				cursor->wait_cycle = arena->wait_cycle_arr[cursor->opcode - 1];
 				cursor->jump = 1;
 			}
-			cursor->next;
+			cursor = cursor->next;
 		}
 		(arena->cycles_to_die)++;
 		(arena->cycles)++;

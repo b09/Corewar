@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 12:52:38 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 20:00:53 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,27 @@
 **	the negated player id (r1 = -player_id).
 */
 
-static void		initialize_cursors(t_arena *arena)
+// static void			initialize_cursors(t_arena *arena, int i)
+void				create_cursor(t_arena *arena, int i)
 {
-	int			i;
-	t_cursor	*cursor;
-	t_cursor	*tail;
+	t_cursor		*cursor;
+	static t_cursor	*tail;
 
-	i = arena->num_champs;
-	while (i)
+	cursor = (t_cursor*)ft_memalloc(sizeof(t_cursor));
+	ft_bzero(cursor, sizeof(int) * 16);
+	cursor->registry[0] = i;
+	cursor->position = (MEM_SIZE / arena->num_champs) * ((i * -1) - 1);
+	if (arena->cursor_head == NULL)
+		arena->cursor_head = cursor;
+	else
 	{
-		cursor = (t_cursor*)ft_memalloc(sizeof(t_cursor));
-		ft_bzero(cursor, sizeof(int) * 16);
-		cursor->registry[0] = -1 * i;
-		cursor->position = (MEM_SIZE / arena->num_champs) * (i - 1);
-		if (arena->cursor_head == NULL)
-			arena->cursor_head = cursor;
-		else
-			tail->next = cursor;
-		tail = cursor;
-		--i;
+		tail->next = cursor;
+		cursor->prev = tail;
 	}
+	tail = cursor;
 }
 
-static void		cursor_wait_cycle(int *wait_cycle_arr)
+static void			cursor_wait_cycle(int *wait_cycle_arr)
 {
 	wait_cycle_arr[0] = 10;
 	wait_cycle_arr[1] = 5;
@@ -62,10 +60,10 @@ static void		cursor_wait_cycle(int *wait_cycle_arr)
 	wait_cycle_arr[15] = 2;
 }
 
-void			initialize_arena(t_arena *arena)
+void				initialize_arena(t_arena *arena)
 {
-	int			i;
-	t_champ 	*champ;
+	int				i;
+	t_champ 		*champ;
 
 	i = 0;
 	champ = NULL;
@@ -76,9 +74,9 @@ void			initialize_arena(t_arena *arena)
 		champ = arena->champs[i];
 		ft_memcpy(&arena->field[MEM_SIZE / arena->num_champs * i],\
 		champ->exec_code, champ->real_exec_size);
+		create_cursor(arena, (i - arena->num_champs));
 		++i;
 	}
-	initialize_cursors(arena);
 	arena->last_champ_alive = arena->cursor_head->id;
 	arena->max_cycle_die = CYCLE_TO_DIE;
 	arena->num_cursors = arena->num_champs;

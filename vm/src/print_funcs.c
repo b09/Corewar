@@ -6,11 +6,58 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 16:15:26 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 20:35:34 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+int				print_error(char *str)
+{
+	ft_printf("%s", str);
+	exit(1);
+}
+
+void			intro_champs(t_arena *arena)
+{
+	int			i;
+	t_champ		*champ;
+
+	i = 0;
+	champ = NULL;
+	ft_printf("\nLLLeetttttt'sss get reaaddyyyyyy to SEGFAUUULLLT!!!!!!\n");
+	ft_printf("\tWOohoo!! Yeahhhhhh!! (crowd cheeers)\n\n");
+	while (i < arena->num_champs)
+	{
+		champ = arena->champs[i];
+		ft_printf("Player %d, weighing in at %d bytes, \"%s\" (%s)\n", i + 1, \
+		champ->real_exec_size, champ->name, champ->comment);
+		++i;
+	}
+}
+
+int				print_hexdump(t_arena *arena)
+{
+	int			i;
+
+	i = 0;
+	while (i < MEM_SIZE)
+	{
+		if (i == 0)
+			ft_printf("0x0000 : ");
+		if (i && (i % HEXDUMP_WIDTH) == 0)
+			ft_printf("\n%#06x : ", i);
+		ft_printf("%02x ", arena->field[i]);
+		++i;
+	}
+	ft_printf("\n");
+	exit(1);
+	return (1);
+}
+
+/*
+**		DEBUG FUNCTIONS ARE BELOW
+*/
 
 void		print_champs(t_arena *arena)
 {
@@ -45,50 +92,6 @@ void		print_champs(t_arena *arena)
 	}
 }
 
-int				print_error(char *str)
-{
-	ft_printf("%s", str);
-	exit(1);
-}
-
-void			intro_champs(t_arena *arena)
-{
-	int			i;
-	t_champ		*champ;
-
-	i = 0;
-	champ = NULL;
-	ft_printf("\nLLLeetttttt'sss get reaaddyyyyyy to SEGFAUUULLLT!!!!!!\n");
-	ft_printf("\tWOohoo!! Yeahhhhhh!! (crowd cheeers)\n\n");
-	while (i < arena->num_champs)
-	{
-		champ = arena->champs[i];
-		ft_printf("Player %d, weighing in at %d bytes, \"%s\" (%s)\n", i + 1, \
-		champ->real_exec_size, champ->name, champ->comment);
-		++i;
-	}
-
-}
-
-int				print_hexdump(t_arena *arena)
-{
-	int			i;
-
-	i = 0;
-	while (i < MEM_SIZE)
-	{
-		if (i == 0)
-			ft_printf("0x0000 : ");
-		if (i && (i % HEXDUMP_WIDTH) == 0)
-			ft_printf("\n%#06x : ", i);
-		ft_printf("%02x ", arena->field[i]);
-		++i;
-	}
-	ft_printf("\n");
-	exit(1);
-	return (1);
-}
-
 void			print_arena_and_cursors(t_arena *arena)
 {
 	int			reg_i;
@@ -111,6 +114,5 @@ void			print_arena_and_cursors(t_arena *arena)
 		}
 		cursor = cursor->next;
 	}
-
 	ft_printf("test arr[14]: %d\n", arena->wait_cycle_arr[14]);
 }
