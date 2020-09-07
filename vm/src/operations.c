@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 21:36:01 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 16:01:32 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@
 // 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0},
 // 	{0, 0, {0}, 0, 0, 0, 0, 0}
 // };
+
+/*
+**	all funcs() will have to adjust cursor->jump when getting arguments for
+**	the required operation. the cursor position will be update in the game
+**	loop by whatever it's current position is plus the cursor->jump value
+*/
+
+
 
 /*
 **	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0}

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/06 21:38:24 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 17:01:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,21 @@
 # define BAD_BINARY				"Binary is not formatted correctly\n"
 # define TOO_MANY_CHAMPS		"Too many champs\n"
 
+
+/*
+**	fd				= file descriptor when opening file provided in stdin
+**	orig_file		= array of bytes, original raw bytes read from file
+**	file_size		= size of bytes of file provided by read()
+**	name			= pointer to location in array of bytes where name should be
+**	comment			= pointer to location where comment should be
+**	exec_size		= pointer to location where exec_size should be
+**	real_exec_size	= real size in bytes of the exec_code
+**	exec_code		= pointer to location where exec_code should be
+**	file_name		= name of file provided
+**	id				= id assigned when parsed, possibly reassigned if -n flag
+						provided to it or any other champion
+**	n_provided		= if -n flag used, the int value following the -n flag
+*/
 typedef struct					s_champ
 {
 	int							fd;
@@ -95,6 +110,33 @@ typedef struct					s_champ
 	size_t						n_provided;
 }								t_champ;
 
+/*
+**	champs			= array of champs
+**	dump			= number of cycles at which game stops and game field is
+**					printed to stdout
+**	n_flag			= variable used on initialization of champs, not used during
+**					battle
+**	num_champs		= number of champs
+**	field			= array of unsigned char [4096] representing memory from
+**					with champs will be loaded and battle
+**	num_cursors 	= number of active cursors on the field
+**	cycles			= program counter
+**	cycles_to_die	= counter, reset to zero at every max_cycles_die, of which
+**					all cursors must have reported being alive at least once
+**	max_cycles_die	= value representing current max cycles of which a process
+**					must report being alive, decreased every num_checks is
+**					equal to 10, or when the number of 'lives' that have been
+**					reported is >= 21 (NBR_LIVE)
+**	num_checks		= counter for number of times max_cycles_die == cycles_to_di
+**	num_lives		= total number of 'live' operations that have been done
+**					during a max_cycle_die cycle
+**	cursor_head		= pointer to first cursor, which is a linked list of cursors
+**	wait_cycle_arr	= array of values representing the wait times that each
+**					operation costs, placed at the index - 1 for each opcode
+**	last_champ_alive= most recent cursors to perform live on a memory cell
+**					containing some champion's id. (if no id, oh well)
+*/
+
 typedef struct					s_arena
 {
 	t_champ						**champs;
@@ -105,12 +147,25 @@ typedef struct					s_arena
 	int							num_cursors;
 	int							cycles;
 	int							cycles_to_die;
-	int							max_checks;
+	int							max_cycle_die;
+	int							num_checks;
+	int							num_lives;
 	struct s_cursor				*cursor_head;
 	int							wait_cycle_arr[16];
-	int							latest_champ_alive;
+	int							last_champ_alive;
 }								t_arena;
 
+/*
+**	id			= unique id
+**	carry		= flag changed by some operations
+**	opcode		= operation needing to complete
+**	last_live	= cycle number in which cursor last performed 'live' operation
+**	wait_cycle	= amount of cycles to wait before execution of operatino
+**	position	= address in memory
+**	jump		= amout of bytes cursor must jump for next operation
+**	registry	= array of registries used by cursor
+**	next		= link to next cursor
+*/
 typedef struct					s_cursor
 {
 	int							id;
@@ -133,7 +188,7 @@ typedef void			(*t_func)(t_cursor *, t_arena *arena);
 void		print_champs(t_arena *arena);
 int			print_error(char *str);
 void		intro_champs(t_arena *arena);
-void		print_hexdump(t_arena *arena);
+int			print_hexdump(t_arena *arena);
 void		print_arena_and_cursors(t_arena *arena);
 
 
