@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/08 21:37:28 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/08 23:06:51 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,15 @@ void		op_live(t_cursor *cursor, t_arena *arena)
 
 void		op_ld(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -109,6 +118,7 @@ void		op_ld(t_cursor *cursor, t_arena *arena)
 
 void		op_st(t_cursor *cursor, t_arena *arena)
 {
+	read_encoding_byte(cursor, arena);
 	return ;
 }
 
@@ -117,7 +127,7 @@ void		op_st(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= add
 **		cycles;			= 10
 **		*description;	= "addition"
-**		changes carry;	= FALSE
+**		changes carry;	= TRUE
 **		args;			= (T_REG), (T_REG), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (N/A)
@@ -130,7 +140,16 @@ void		op_st(t_cursor *cursor, t_arena *arena)
 
 void		op_add(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
 	cursor->jump = 5;
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -139,7 +158,7 @@ void		op_add(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= sub
 **		cycles;			= 10
 **		*description;	= "subtract"
-**		changes carry;	= FALSE
+**		changes carry;	= TRUE
 **		args;			= (T_REG), (T_REG), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (N/A)
@@ -152,7 +171,16 @@ void		op_add(t_cursor *cursor, t_arena *arena)
 
 void		op_sub(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
 	cursor->jump = 5;
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -161,7 +189,7 @@ void		op_sub(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= and
 **		cycles;			= 6
 **		*description;	= "and"
-**		changes carry;	= FALSE
+**		changes carry;	= TRUE
 **		args;			=(T_REG | T_DIR | T_IND),(T_REG | T_IND | T_DIR),(T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -174,6 +202,15 @@ void		op_sub(t_cursor *cursor, t_arena *arena)
 
 void		op_and(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -182,7 +219,7 @@ void		op_and(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= or
 **		cycles;			= 6
 **		*description;	= "or"
-**		changes carry;	= FALSE
+**		changes carry;	= TRUE
 **		args;			=(T_REG | T_IND | T_DIR),(T_REG | T_IND | T_DIR),(T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -195,6 +232,15 @@ void		op_and(t_cursor *cursor, t_arena *arena)
 
 void		op_or(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -203,7 +249,7 @@ void		op_or(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= xor
 **		cycles;			= 6
 **		*description;	= "xor"
-**		changes carry;	= FALSE
+**		changes carry;	= TRUE
 **		args;			=(T_REG | T_IND | T_DIR),(T_REG | T_IND | T_DIR),(T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -216,6 +262,15 @@ void		op_or(t_cursor *cursor, t_arena *arena)
 
 void		op_xor(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -230,14 +285,14 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 **		label_twobytes;	= 1 (2 byte T_DIR)
 **		number_of_args;	= 1
 **
-**	SIZE:	[1]	[1]	[2]
-**			OP	EN	ARGS
-**	TOTAL SIZE:		4
+**	SIZE:	[1]	[2]
+**			OP	ARGS
+**	TOTAL SIZE:		3
 */
 
 void		op_zjmp(t_cursor *cursor, t_arena *arena)
 {
-	cursor->jump = 4;
+	cursor->jump = 3;
 	return ;
 }
 
@@ -259,6 +314,7 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena)
 
 void		op_ldi(t_cursor *cursor, t_arena *arena)
 {
+	read_encoding_byte(cursor, arena);
 	return ;
 }
 
@@ -280,6 +336,7 @@ void		op_ldi(t_cursor *cursor, t_arena *arena)
 
 void		op_sti(t_cursor *cursor, t_arena *arena)
 {
+	read_encoding_byte(cursor, arena);
 	return ;
 }
 
@@ -294,14 +351,14 @@ void		op_sti(t_cursor *cursor, t_arena *arena)
 **		label_twobytes;	= 1 (2 byte T_DIR)
 **		number_of_args;	= 1
 **
-**	SIZE:	[1]	[1]	[2]
-**			OP	EN	ARGS
-**	TOTAL SIZE:		4
+**	SIZE:	[1]	[2]
+**			OP	ARGS
+**	TOTAL SIZE:		3
 */
 
 void		op_fork(t_cursor *cursor, t_arena *arena)
 {
-	cursor->jump = 4;
+	cursor->jump = 3;
 	return ;
 }
 
@@ -310,7 +367,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= lld
 **		cycles;			= 10
 **		*description;	= "long load"
-**		changes carry;	= FALSE
+**		changes carry;	= TRUE
 **		args;			= (T_DIR | T_IND), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -323,6 +380,15 @@ void		op_fork(t_cursor *cursor, t_arena *arena)
 
 void		op_lld(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -331,7 +397,7 @@ void		op_lld(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= lldi
 **		cycles;			= 50
 **		*description;	= "long load index"
-**		changes carry;	= FALSE
+**		changes carry;	= TRUE
 **		args;			= (T_REG | T_DIR | T_IND), (T_DIR | T_REG), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 1 (2 byte T_DIR)
@@ -344,6 +410,15 @@ void		op_lld(t_cursor *cursor, t_arena *arena)
 
 void		op_lldi(t_cursor *cursor, t_arena *arena)
 {
+	int		num;
+
+	num = 0;
+	read_encoding_byte(cursor, arena);
+
+	if (num == 0)
+		cursor->carry = TRUE;
+	else
+		cursor->carry = FALSE;
 	return ;
 }
 
@@ -358,14 +433,14 @@ void		op_lldi(t_cursor *cursor, t_arena *arena)
 **		label_twobytes;	= 1 (2 byte T_DIR)
 **		number_of_args;	= 1
 **
-**	SIZE:	[1]	[1]	[2]
-**			OP	EN	ARGS
-**	TOTAL SIZE:		4
+**	SIZE:	[1]	[2]
+**			OP	ARGS
+**	TOTAL SIZE:		3
 */
 
 void		op_lfork(t_cursor *cursor, t_arena *arena)
 {
-	cursor->jump = 4;
+	cursor->jump = 3;
 	return ;
 }
 
