@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/08 23:06:51 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/08 23:19:44 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void		op_live(t_cursor *cursor, t_arena *arena)
 // FROM COREWAR PDF:
 // For each valid execution of the live instruction, the machine must display:
 // “A process shows that player X (champion_name) is alive”. 
-	return ;
 }
 
 /*
@@ -97,7 +96,6 @@ void		op_ld(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -119,7 +117,6 @@ void		op_ld(t_cursor *cursor, t_arena *arena)
 void		op_st(t_cursor *cursor, t_arena *arena)
 {
 	read_encoding_byte(cursor, arena);
-	return ;
 }
 
 /*
@@ -150,7 +147,6 @@ void		op_add(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -181,7 +177,6 @@ void		op_sub(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -211,7 +206,6 @@ void		op_and(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -241,7 +235,6 @@ void		op_or(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -271,7 +264,6 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -293,7 +285,6 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 void		op_zjmp(t_cursor *cursor, t_arena *arena)
 {
 	cursor->jump = 3;
-	return ;
 }
 
 /*
@@ -315,7 +306,6 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena)
 void		op_ldi(t_cursor *cursor, t_arena *arena)
 {
 	read_encoding_byte(cursor, arena);
-	return ;
 }
 
 /*
@@ -337,7 +327,6 @@ void		op_ldi(t_cursor *cursor, t_arena *arena)
 void		op_sti(t_cursor *cursor, t_arena *arena)
 {
 	read_encoding_byte(cursor, arena);
-	return ;
 }
 
 /*
@@ -359,7 +348,6 @@ void		op_sti(t_cursor *cursor, t_arena *arena)
 void		op_fork(t_cursor *cursor, t_arena *arena)
 {
 	cursor->jump = 3;
-	return ;
 }
 
 /*
@@ -389,7 +377,6 @@ void		op_lld(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -419,7 +406,6 @@ void		op_lldi(t_cursor *cursor, t_arena *arena)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-	return ;
 }
 
 /*
@@ -441,7 +427,6 @@ void		op_lldi(t_cursor *cursor, t_arena *arena)
 void		op_lfork(t_cursor *cursor, t_arena *arena)
 {
 	cursor->jump = 3;
-	return ;
 }
 
 /*
@@ -463,5 +448,4 @@ void		op_lfork(t_cursor *cursor, t_arena *arena)
 void		op_aff(t_cursor *cursor, t_arena *arena)
 {
 	cursor->jump = 3;
-	return ;
 }
