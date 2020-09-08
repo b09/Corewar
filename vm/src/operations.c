@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/08 20:42:25 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/08 21:37:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 **		*op_str;		= live
 **		cycles;			= 10
 **		*description;	= "alive"
+**		changes carry;	= FALSE
 **		args;			= (T_DIR)
 **		encoding;		= 0
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -62,6 +63,7 @@
 void		op_live(t_cursor *cursor, t_arena *arena)
 {
 	cursor->last_live = arena->cycles;
+	cursor->jump = 5;
 // FROM COREWAR PDF:
 // For each valid execution of the live instruction, the machine must display:
 // “A process shows that player X (champion_name) is alive”. 
@@ -73,6 +75,7 @@ void		op_live(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= ld
 **		cycles;			= 5
 **		*description;	= "load"
+**		changes carry;	= TRUE
 **		args;			= (T_DIR | T_IND), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -93,9 +96,10 @@ void		op_ld(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= st
 **		cycles;			= 5
 **		*description;	= "store"
+**		changes carry;	= FALSE
 **		args;			= (T_REG), (T_IND | T_REG)
 **		encoding;		= 1
-**		label_twobytes;	= 0 (4 byte T_DIR)
+**		label_twobytes;	= 0 (N/A)
 **		number_of_args;	= 2
 **
 **	SIZE:	[1]	[1]	[1][1-2]
@@ -113,9 +117,10 @@ void		op_st(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= add
 **		cycles;			= 10
 **		*description;	= "addition"
+**		changes carry;	= FALSE
 **		args;			= (T_REG), (T_REG), (T_REG)
 **		encoding;		= 1
-**		label_twobytes;	= 0 (4 byte T_DIR)
+**		label_twobytes;	= 0 (N/A)
 **		number_of_args;	= 3
 **
 **	SIZE:	[1]	[1]	[1][1][1]
@@ -125,6 +130,7 @@ void		op_st(t_cursor *cursor, t_arena *arena)
 
 void		op_add(t_cursor *cursor, t_arena *arena)
 {
+	cursor->jump = 5;
 	return ;
 }
 
@@ -133,18 +139,20 @@ void		op_add(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= sub
 **		cycles;			= 10
 **		*description;	= "subtract"
+**		changes carry;	= FALSE
 **		args;			= (T_REG), (T_REG), (T_REG)
 **		encoding;		= 1
-**		label_twobytes;	= 0 (4 byte T_DIR)
+**		label_twobytes;	= 0 (N/A)
 **		number_of_args;	= 3
 **
 **	SIZE:	[1]	[1]	[1][1][1]
-**			OP	EN	ARgS
+**			OP	EN	ARGS
 **	TOTAL SIZE:		5
 */
 
 void		op_sub(t_cursor *cursor, t_arena *arena)
 {
+	cursor->jump = 5;
 	return ;
 }
 
@@ -153,6 +161,7 @@ void		op_sub(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= and
 **		cycles;			= 6
 **		*description;	= "and"
+**		changes carry;	= FALSE
 **		args;			=(T_REG | T_DIR | T_IND),(T_REG | T_IND | T_DIR),(T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -173,6 +182,7 @@ void		op_and(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= or
 **		cycles;			= 6
 **		*description;	= "or"
+**		changes carry;	= FALSE
 **		args;			=(T_REG | T_IND | T_DIR),(T_REG | T_IND | T_DIR),(T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -193,6 +203,7 @@ void		op_or(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= xor
 **		cycles;			= 6
 **		*description;	= "xor"
+**		changes carry;	= FALSE
 **		args;			=(T_REG | T_IND | T_DIR),(T_REG | T_IND | T_DIR),(T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -213,6 +224,7 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= zjmp
 **		cycles;			= 20
 **		*description;	= "jump if zero"
+**		changes carry;	= FALSE
 **		args;			= (T_DIR)
 **		encoding;		= 0
 **		label_twobytes;	= 1 (2 byte T_DIR)
@@ -225,6 +237,7 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 
 void		op_zjmp(t_cursor *cursor, t_arena *arena)
 {
+	cursor->jump = 4;
 	return ;
 }
 
@@ -233,6 +246,7 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= ldi
 **		cycles;			= 25
 **		*description;	= "load index"
+**		changes carry;	= FALSE
 **		args;			= (T_REG | T_DIR | T_IND), (T_DIR | T_REG), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 1 (2 byte T_DIR)
@@ -253,6 +267,7 @@ void		op_ldi(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= sti
 **		cycles;			= 25
 **		*description;	= "store index"
+**		changes carry;	= FALSE
 **		args;			= (T_REG), (T_REG | T_DIR | T_IND), (T_DIR | T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 1 (2 byte T_DIR)
@@ -273,6 +288,7 @@ void		op_sti(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= fork
 **		cycles;			= 800
 **		*description;	= "fork"
+**		changes carry;	= FALSE
 **		args;			= (T_DIR)
 **		encoding;		= 0
 **		label_twobytes;	= 1 (2 byte T_DIR)
@@ -280,11 +296,12 @@ void		op_sti(t_cursor *cursor, t_arena *arena)
 **
 **	SIZE:	[1]	[1]	[2]
 **			OP	EN	ARGS
-**	TOTAL SIZE:		5
+**	TOTAL SIZE:		4
 */
 
 void		op_fork(t_cursor *cursor, t_arena *arena)
 {
+	cursor->jump = 4;
 	return ;
 }
 
@@ -293,6 +310,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= lld
 **		cycles;			= 10
 **		*description;	= "long load"
+**		changes carry;	= FALSE
 **		args;			= (T_DIR | T_IND), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 0 (4 byte T_DIR)
@@ -313,6 +331,7 @@ void		op_lld(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= lldi
 **		cycles;			= 50
 **		*description;	= "long load index"
+**		changes carry;	= FALSE
 **		args;			= (T_REG | T_DIR | T_IND), (T_DIR | T_REG), (T_REG)
 **		encoding;		= 1
 **		label_twobytes;	= 1 (2 byte T_DIR)
@@ -333,6 +352,7 @@ void		op_lldi(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= lfork
 **		cycles;			= 1000
 **		*description;	= "long fork"
+**		changes carry;	= FALSE
 **		args;			= (T_DIR)
 **		encoding;		= 0
 **		label_twobytes;	= 1 (2 byte T_DIR)
@@ -345,6 +365,7 @@ void		op_lldi(t_cursor *cursor, t_arena *arena)
 
 void		op_lfork(t_cursor *cursor, t_arena *arena)
 {
+	cursor->jump = 4;
 	return ;
 }
 
@@ -353,9 +374,10 @@ void		op_lfork(t_cursor *cursor, t_arena *arena)
 **		*op_str;		= aff
 **		cycles;			= 2
 **		*description;	= "aff"
+**		changes carry;	= FALSE
 **		args;			= (T_REG)
 **		encoding;		= 1
-**		label_twobytes;	= 0 (4 byte T_DIR)
+**		label_twobytes;	= 0 (N/A)
 **		number_of_args;	= 1
 **
 **	SIZE:	[1]	[1]	[1]
@@ -365,5 +387,6 @@ void		op_lfork(t_cursor *cursor, t_arena *arena)
 
 void		op_aff(t_cursor *cursor, t_arena *arena)
 {
+	cursor->jump = 3;
 	return ;
 }
