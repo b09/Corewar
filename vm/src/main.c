@@ -6,12 +6,11 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 18:55:06 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 21:44:37 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
 
 /*
 **	valid argv strings will be:
@@ -22,7 +21,7 @@
 
 static void		input_validation(int argc, char **argv, t_arena *arena)
 {
-	int 		i;
+	int			i;
 	int			len;
 
 	i = 1;

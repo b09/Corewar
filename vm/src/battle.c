@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 20:47:16 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 21:39:53 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ static void		check_cursors(t_arena *arena)
 void			battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
 {
 	populate_operation_array(arrpointer);
-	while(42)
+	while (42)
 	{
 		arena->cycles == arena->dump && print_hexdump(arena);
 		if (arena->cycles_to_die == arena->max_cycle_die)
 			check_cursors(arena);
 		cursor = arena->cursor_head;
-		while(cursor)
+		while (cursor)
 		{
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)

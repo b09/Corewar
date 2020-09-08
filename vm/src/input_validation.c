@@ -107,7 +107,6 @@ void			validate_flag(char **argv, t_arena *arena, int *argc, int len)
 	}
 	else
 		print_error(MULTIPLE_N);
-	return ;
 }
 
 /*

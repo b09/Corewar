@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 21:36:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/07 21:42:21 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void			cursor_wait_cycle(int *wait_cycle_arr)
 void				initialize_arena(t_arena *arena)
 {
 	int				i;
-	t_champ 		*champ;
+	t_champ			*champ;
 
 	i = 0;
 	champ = NULL;

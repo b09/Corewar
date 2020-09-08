@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 16:01:32 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/08 20:42:25 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,42 @@
 **	loop by whatever it's current position is plus the cursor->jump value
 */
 
-
-
 /*
-**	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0}
+**		opcode;			= 1
+**		*op_str;		= live
+**		cycles;			= 10
+**		*description;	= "alive"
+**		args;			= (T_DIR)
+**		encoding;		= 0
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 1
+**	SIZE:	[1]	[4]
+**			OP	ARGS
+**	TOTAL SIZE:		5
 */
 
 void		op_live(t_cursor *cursor, t_arena *arena)
 {
-	// FROM COREWAR PDF:
-	// For each valid execution of the live instruction, the machine must display: 
-	// “A process shows that player X (champion_name) is alive”. 
+	cursor->last_live = arena->cycles;
+// FROM COREWAR PDF:
+// For each valid execution of the live instruction, the machine must display:
+// “A process shows that player X (champion_name) is alive”. 
 	return ;
 }
+
 /*
-**	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0}
+**		opcode;			= 2
+**		*op_str;		= ld
+**		cycles;			= 5
+**		*description;	= "load"
+**		args;			= (T_DIR | T_IND), (T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 2
+**
+**	SIZE:	[1]	[1]	[2-4][1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 7
 */
 
 void		op_ld(t_cursor *cursor, t_arena *arena)
@@ -68,118 +89,280 @@ void		op_ld(t_cursor *cursor, t_arena *arena)
 }
 
 /*
-	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0}
+**		opcode;			= 3
+**		*op_str;		= st
+**		cycles;			= 5
+**		*description;	= "store"
+**		args;			= (T_REG), (T_IND | T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 2
+**
+**	SIZE:	[1]	[1]	[1][1-2]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		4 - 5
 */
+
 void		op_st(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0}
+**		opcode;			= 4
+**		*op_str;		= add
+**		cycles;			= 10
+**		*description;	= "addition"
+**		args;			= (T_REG), (T_REG), (T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1][1][1]
+			OP	EN	ARGS
+**	TOTAL SIZE:		5
 */
+
 void		op_add(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 0}
+**		opcode;			= 5
+**		*op_str;		= sub
+**		cycles;			= 10
+**		*description;	= "subtract"
+**		args;			= (T_REG), (T_REG), (T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1][1][1]
+**			OP	EN	ARgS
+**	TOTAL SIZE:		5
 */
+
 void		op_sub(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
-**		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 0}
+**		opcode;			= 6
+**		*op_str;		= and
+**		cycles;			= 6
+**		*description;	= "and"
+**		args;			=(T_REG | T_DIR | T_IND),(T_REG | T_IND | T_DIR),(T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1-4][1-4][1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 11
 */
+
 void		op_and(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
-**		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0}
+**		opcode;			= 7
+**		*op_str;		= or
+**		cycles;			= 6
+**		*description;	= "or"
+**		args;			=(T_REG | T_IND | T_DIR),(T_REG | T_IND | T_DIR),(T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1-4][1-4][1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 11
 */
+
 void		op_or(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
-**		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 0}
+**		opcode;			= 8
+**		*op_str;		= xor
+**		cycles;			= 6
+**		*description;	= "xor"
+**		args;			=(T_REG | T_IND | T_DIR),(T_REG | T_IND | T_DIR),(T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1-4][1-4][1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 11
 */
+
 void		op_xor(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 1}
+**		opcode;			= 9
+**		*op_str;		= zjmp
+**		cycles;			= 20
+**		*description;	= "jump if zero"
+**		args;			= (T_DIR)
+**		encoding;		= 0
+**		label_twobytes;	= 1 (2 byte T_DIR)
+**		number_of_args;	= 1
+**
+**	SIZE:	[1]	[1]	[2]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		4
 */
+
 void		op_zjmp(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
-**		"load index", 1, 1}
+**		opcode;			= 10
+**		*op_str;		= ldi
+**		cycles;			= 25
+**		*description;	= "load index"
+**		args;			= (T_REG | T_DIR | T_IND), (T_DIR | T_REG), (T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 1 (2 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1-2][1-2][1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 7
 */
+
 void		op_ldi(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
-**		"store index", 1, 1}
+**		opcode;			= 11
+**		*op_str;		= sti
+**		cycles;			= 25
+**		*description;	= "store index"
+**		args;			= (T_REG), (T_REG | T_DIR | T_IND), (T_DIR | T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 1 (2 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1][1-2][1-2]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 7
 */
+
 void		op_sti(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1}
+**		opcode;			= 12
+**		*op_str;		= fork
+**		cycles;			= 800
+**		*description;	= "fork"
+**		args;			= (T_DIR)
+**		encoding;		= 0
+**		label_twobytes;	= 1 (2 byte T_DIR)
+**		number_of_args;	= 1
+**
+**	SIZE:	[1]	[1]	[2]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5
 */
+
 void		op_fork(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0}
+**		opcode;			= 13
+**		*op_str;		= lld
+**		cycles;			= 10
+**		*description;	= "long load"
+**		args;			= (T_DIR | T_IND), (T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 2
+**
+**	SIZE:	[1]	[1]	[2-4][1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 7
 */
+
 void		op_lld(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
-**		"long load index", 1, 1}
+**		opcode;			= 14
+**		*op_str;		= lldi
+**		cycles;			= 50
+**		*description;	= "long load index"
+**		args;			= (T_REG | T_DIR | T_IND), (T_DIR | T_REG), (T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 1 (2 byte T_DIR)
+**		number_of_args;	= 3
+**
+**	SIZE:	[1]	[1]	[1-2][1-2][1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		5 - 7
 */
+
 void		op_lldi(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1}
+**		opcode;			= 15
+**		*op_str;		= lfork
+**		cycles;			= 1000
+**		*description;	= "long fork"
+**		args;			= (T_DIR)
+**		encoding;		= 0
+**		label_twobytes;	= 1 (2 byte T_DIR)
+**		number_of_args;	= 1
+**
+**	SIZE:	[1]	[1]	[2]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		4
 */
+
 void		op_lfork(t_cursor *cursor, t_arena *arena)
 {
 	return ;
 }
 
 /*
-**	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0}
+**		opcode;			= 16
+**		*op_str;		= aff
+**		cycles;			= 2
+**		*description;	= "aff"
+**		args;			= (T_REG)
+**		encoding;		= 1
+**		label_twobytes;	= 0 (4 byte T_DIR)
+**		number_of_args;	= 1
+**
+**	SIZE:	[1]	[1]	[1]
+**			OP	EN	ARGS
+**	TOTAL SIZE:		3
 */
+
 void		op_aff(t_cursor *cursor, t_arena *arena)
 {
 	return ;
