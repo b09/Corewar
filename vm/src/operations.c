@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 17:35:55 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 20:24:55 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@
 **	TOTAL SIZE:		5
 */
 
-void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	cursor->last_live = arena->cycles;
 	cursor->jump = 5;
@@ -63,17 +64,15 @@ void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 7
 */
 
-void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
 	num = 0;
-	cursor->jump = populate_arguments(arena->field, cursor->position, args, 0);
-	if (cursor->jump >= 0)
-	{
-		cursor->jump *= -1;
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
+	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
-	}
 	if (args[0][0] == SIZE_LDIR)
 	{
 		
@@ -100,9 +99,12 @@ void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		4 - 5
 */
 
-void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
-	populate_arguments(arena->field, cursor->position, args, 0);
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
+	if (populate_arguments(arena->field, position, args, 0) == 0)
+		return ;
 }
 
 /*
@@ -121,14 +123,15 @@ void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5
 */
 
-void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
 	cursor->jump = 5;
 	num = 0;
-	populate_arguments(arena->field, cursor->position, args, 0);
-
+	if (populate_arguments(arena->field, position, args, 0) == 0)
+		return ;
 	if (num == 0)
 		cursor->carry = TRUE;
 	else
@@ -151,14 +154,15 @@ void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5
 */
 
-void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
 	cursor->jump = 5;
 	num = 0;
-	populate_arguments(arena->field, cursor->position, args, 0);
-
+	if (populate_arguments(arena->field, position, args, 0) == 0)
+		return ;
 	if (num == 0)
 		cursor->carry = TRUE;
 	else
@@ -181,13 +185,16 @@ void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 11
 */
 
-void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
 	num = 0;
-	populate_arguments(arena->field, cursor->position, args, 0);
-
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
+	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 0);
+	if (populate_arguments(arena->field, position, args, 0) == 0)
+		return ;
 	if (num == 0)
 		cursor->carry = TRUE;
 	else
@@ -210,13 +217,16 @@ void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 11
 */
 
-void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
 	num = 0;
-	populate_arguments(arena->field, cursor->position, args, 0);
-
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
+	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 0);
+	if (populate_arguments(arena->field, position, args, 0) == 0)
+		return ;
 	if (num == 0)
 		cursor->carry = TRUE;
 	else
@@ -239,11 +249,14 @@ void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 11
 */
 
-void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
 	num = 0;
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
+	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 0);
 	populate_arguments(arena->field, cursor->position, args, 0);
 
 	if (num == 0)
@@ -268,8 +281,10 @@ void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		3
 */
 
-void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
+	cursor->jump = 3;
 	if (cursor->carry)
 		cursor->jump = FALSE; //FALSE is placeholder, finish statement
 	else
@@ -292,8 +307,11 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 7
 */
 
-void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 1);
+	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
 
 }
@@ -314,8 +332,11 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 7
 */
 
-void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 1, 1);
+	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 2, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
 
 }
@@ -336,11 +357,12 @@ void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		3
 */
 
-void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
+	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
 	arena->cursor_head->position = (FALSE);// false is just placeholder, finish
-	cursor->jump = 3;
 	arena->num_cursors++;
 }
 
@@ -360,11 +382,13 @@ void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 7
 */
 
-void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
 	num = 0;
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
 	populate_arguments(arena->field, cursor->position, args, 0);
 
 
@@ -390,7 +414,8 @@ void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		5 - 7
 */
 
-void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	int		num;
 
@@ -420,7 +445,8 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		3
 */
 
-void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	create_cursor(arena, cursor->id);
 	arena->cursor_head->position = (FALSE);// false is just placeholder, finish
@@ -444,8 +470,207 @@ void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args)
 **	TOTAL SIZE:		3
 */
 
-void		op_aff(t_cursor *cursor, t_arena *arena, unsigned char **args)
+void		op_aff(t_cursor *cursor, t_arena *arena, unsigned char **args,
+			int position)
 {
 	populate_arguments(arena->field, cursor->position, args, 0);
 
+}
+
+
+
+
+
+************************************
+
+
+
+void		op_live(t_cursor *cursor, t_arena *arena)
+{
+	// FROM COREWAR PDF:
+	// For each valid execution of the live instruction, the machine must display:
+	// “A process shows that player X (champion_name) is alive”.
+
+ 	// op_1 + dir_4 == 5
+	cursor->jump = 5;
+	return ;
+}
+/*
+**	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0}
+*/
+
+void		op_ld(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 + (dir_4 | ind_2) + reg_1 == 5 | 7;
+	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0);
+	return ;
+}
+
+/*
+	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0}
+*/
+void		op_st(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 + reg_1 + (reg_1 | ind_2) == 4 | 5;
+	cursor->jump = 3 + get_arg_size(cursor, arena, 1, 0);
+	return ;
+}
+
+/*
+**	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0}
+*/
+void		op_add(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 + reg_1 + reg_1, + reg_1 == 5;
+	cursor->jump = 5;
+	return ;
+}
+
+/*
+**	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 0}
+*/
+void		op_sub(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 + reg_1 + reg_1, + reg_1 == 5;
+	cursor->jump = 5;
+	return ;
+}
+
+/*
+**	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
+**		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 0}
+*/
+void		op_and(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 == 2;
+	// += reg_1 | ind_2 | dir_4
+	// += reg_1 | ind_2 | dir_4
+	// += reg_1
+	// == 5 | 6 | 7 | 8 | 9 | 10 | 11
+	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0) +
+		get_arg_size(cursor, arena, 1, 0);
+	return ;
+}
+
+/*
+**	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
+**		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0}
+*/
+void		op_or(t_cursor *cursor, t_arena *arena)
+{
+	// cursor->jump same as op_and
+	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0) +
+		get_arg_size(cursor, arena, 1, 0);
+	return ;
+}
+
+/*
+**	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
+**		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 0}
+*/
+void		op_xor(t_cursor *cursor, t_arena *arena)
+{
+	// cursor->jump same as op_and
+	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0) +
+		get_arg_size(cursor, arena, 1, 0);
+	return ;
+}
+
+/*
+**	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 1}
+*/
+void		op_zjmp(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + dir_2 == 3;
+	// I could define structs/unions to retrieve values from specific fields,
+	// but I'm hoping you already have some solution.
+	cursor->jump = cursor->carry ? (VALUE AT ARG_1 % IDX_MOD) : 3;
+	return ;
+}
+
+/*
+**	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
+**		"load index", 1, 1}
+*/
+
+void		op_ldi(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 == 2;
+	// += reg_1 | dir_2, ind_2
+	// += reg_1 | dir_2
+	// += reg_1
+	// == 5, 6, 7
+	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 1) +
+		get_arg_size(cursor, arena, 1, 1);
+	return ;
+}
+
+/*
+**	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
+**		"store index", 1, 1}
+*/
+void		op_sti(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 + reg_1 == 3;
+	// += reg_1 | dir_2, ind_2
+	// += reg_1 | dir_2
+	// == 5, 6, 7
+	cursor->jump = 3 + get_arg_size(cursor, arena, 1, 1) +
+		get_arg_size(cursor, arena, 2, 1);;
+	return ;
+}
+
+/*
+**	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1}
+*/
+void		op_fork(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + dir_2 == 3;
+	cursor->jump = 3;
+	return ;
+}
+
+/*
+**	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0}
+*/
+void		op_lld(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 == 2;
+	// += dir_4, ind_2
+	// += reg_1
+	// == 5, 7
+	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0);
+	return ;
+}
+
+/*
+**	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
+**		"long load index", 1, 1}
+*/
+void		op_lldi(t_cursor *cursor, t_arena *arena)
+{
+	// jump same as op_ldi
+	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 1) +
+		get_arg_size(cursor, arena, 1, 1);
+	return ;
+}
+
+/*
+**	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1}
+*/
+void		op_lfork(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + dir_2 == 3;
+	cursor->jump = 3;
+	return ;
+}
+
+/*
+**	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0}
+*/
+void		op_aff(t_cursor *cursor, t_arena *arena)
+{
+	// op_1 + enc_1 + reg_1 == 3;
+	cursor->jump = 3;
+	return ;
 }

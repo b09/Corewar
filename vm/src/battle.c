@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 19:02:39 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 20:10:42 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 	pointer[1] = arg1;
 	ft_bzero(arg3, 5);
 	pointer[2] = arg1;
-	arrpointer[cursor->opcode - 1](cursor, arena, pointer);
+	arrpointer[cursor->opcode - 1](cursor, arena, pointer,\
+				cursor->position % MEM_SIZE);
 	free(pointer);
 }
 

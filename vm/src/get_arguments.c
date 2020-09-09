@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 19:46:48 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 19:51:00 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **	dir_two.
 */
 
-static int			get_arg_size(char encode_byte, int arg_idx, bool dir_is_two)
+int					get_arg_size(char encode_byte, int arg_idx, bool dir_is_two)
 {
 	unsigned char	mask;
 	int				shift;
@@ -62,9 +62,9 @@ int					populate_arguments(unsigned char *field, int pos,\
 	{
 		ft_memcpy((void*)args[i][1], field[pos % MEM_SIZE], args[i][0]);
 		if (args[i][0] == REG_SIZE && (args[i][1] < 0 || args[i][1] > 15))
-			error = -1;
+			return (0);
 		pos += args[i][0];
 		i++;
 	}
-	return (pos * error);
+	return (1);
 }
