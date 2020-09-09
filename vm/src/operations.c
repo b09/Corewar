@@ -53,16 +53,16 @@
 static int	get_arg_size(t_cursor *cursor, t_arena *arena, int arg_idx, int dir_is_two)
 {
 	unsigned char	mask;
+	unsigned char	enc_byte;
 	int				shift;
 
 	shift = (6 - (arg_idx * 2));
 	mask = 0x03;
 	mask <<= shift;
-	if (arena->field[(cursor->position + 1) % MEM_SIZE] & mask ==
-			REG_CODE << shift)
+	enc_byte = arena->field[(cursor->position + 1) % MEM_SIZE];
+	if (enc_byte & mask == REG_CODE << shift)
 		return (1);
-	else if (dir_is_two == FALSE &&
-		arena->field[(cursor->position + 1) % MEM_SIZE] & mask == DIR_CODE << shift))
+	else if (dir_is_two == FALSE && (enc_byte & mask) == DIR_CODE << shift))
 		return (4);
 	return (2);
 }
