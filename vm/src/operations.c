@@ -71,7 +71,7 @@ void		op_live(t_cursor *cursor, t_arena *arena)
 void		op_ld(t_cursor *cursor, t_arena *arena)
 {
 	// op_1 + enc_1 + (dir_4 | ind_2) + reg_1 == 5 | 7;
-	cursor->jump = (arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 5 : 7;
+	cursor->jump = (arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 == IND_CODE << 6) ? 5 : 7;
 	return ;
 }
 
@@ -81,7 +81,7 @@ void		op_ld(t_cursor *cursor, t_arena *arena)
 void		op_st(t_cursor *cursor, t_arena *arena)
 {
 	// op_1 + enc_1 + reg_1 + (reg_1 | ind_2) == 4 | 5;
-	cursor->jump = (arena->field[cursor->position][1] & 0x0C == (REG_CODE << 2)) ? 4 : 5;
+	cursor->jump = (arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == (REG_CODE << 4)) ? 4 : 5;
 	return ;
 }
 
@@ -117,10 +117,10 @@ void		op_and(t_cursor *cursor, t_arena *arena)
 	// += reg_1
 	// == 5 | 6 | 7 | 8 | 9 | 10 | 11
 	cursor->jump = 5;
-	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
-	if ((arena->field[cursor->position][1] & 0x0C != (REG_CODE << 2)))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == (IND_CODE << 2)) ? 1 : 3);
+	if ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 != REG_CODE << 6))
+		cursor->jump += ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 == IND_CODE << 6) ? 1 : 3);
+	if ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0x0C != (REG_CODE << 2)))
+		cursor->jump += ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == (IND_CODE << 4)) ? 1 : 3);
 	return ;
 }
 
@@ -132,10 +132,10 @@ void		op_or(t_cursor *cursor, t_arena *arena)
 {
 	// cursor->jump same as op_and
 	cursor->jump = 5;
-	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
-	if ((arena->field[cursor->position][1] & 0x0C != (REG_CODE << 2)))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == (IND_CODE << 2)) ? 1 : 3);
+	if ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 != REG_CODE << 6))
+		cursor->jump += ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 == IND_CODE << 6) ? 1 : 3);
+	if ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0x0C != (REG_CODE << 2)))
+		cursor->jump += ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == (IND_CODE << 4)) ? 1 : 3);
 	return ;
 }
 
@@ -147,10 +147,10 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 {
 	// cursor->jump same as op_and
 	cursor->jump = 5;
-	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
-	if ((arena->field[cursor->position][1] & 0x0C != (REG_CODE << 2)))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == (IND_CODE << 2)) ? 1 : 3);
+	if ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 != REG_CODE << 6))
+		cursor->jump += ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 == IND_CODE << 6) ? 1 : 3);
+	if ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0x0C != (REG_CODE << 2)))
+		cursor->jump += ((arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == (IND_CODE << 4)) ? 1 : 3);
 	return ;
 }
 
@@ -179,8 +179,8 @@ void		op_ldi(t_cursor *cursor, t_arena *arena)
 	// += reg_1
 	// == 5, 6, 7
 	cursor->jump = 3;
-	cursor->jump += (arena->field[cursor->position][1] & 0x03 == REG_CODE) 1 ? : 2;
-	cursor->jump += (arena->field[cursor->position][1] & 0x0C == (REG_CODE << 2)) 1 ? : 2;
+	cursor->jump += (arena->field[(cursor->position + 1) % MEM_SIZE] & 0xC0 == REG_CODE << 6) 1 ? : 2;
+	cursor->jump += (arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == REG_CODE << 4) 1 ? : 2;
 	return ;
 }
 
@@ -195,8 +195,8 @@ void		op_sti(t_cursor *cursor, t_arena *arena)
 	// += reg_1 | dir_2
 	// == 5, 6, 7
 	cursor->jump = 3;
-	cursor->jump += (arena->field[cursor->position][1] & 0x0C == (REG_CODE << 2)) 1 ? : 2;
-	cursor->jump += (arena->field[cursor->position][1] & 0x30 == (REG_CODE << 4)) 1 ? : 2;
+	cursor->jump += (arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == REG_CODE << 4) 1 ? : 2;
+	cursor->jump += (arena->field[(cursor->position + 1) % MEM_SIZE] & 0x0C == REG_CODE << 2) 1 ? : 2;
 	return ;
 }
 
@@ -219,7 +219,7 @@ void		op_lld(t_cursor *cursor, t_arena *arena)
 	// += dir_4, ind_2
 	// += reg_1
 	// == 5, 7
-	cursor->jump = (cursor->jump += (arena->field[cursor->position][1] & 0x0C == (DIR_CODE << 2)) ? 7 : 5;
+	cursor->jump = (cursor->jump += (arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == DIR_CODE << 4) ? 7 : 5;
 	return ;
 }
 
@@ -230,7 +230,7 @@ void		op_lld(t_cursor *cursor, t_arena *arena)
 void		op_lldi(t_cursor *cursor, t_arena *arena)
 {
 	// jump same as op_ldi
-	cursor->jump = (cursor->jump += (arena->field[cursor->position][1] & 0x0C == (DIR_CODE << 2)) ? 7 : 5;
+	cursor->jump = (cursor->jump += (arena->field[(cursor->position + 1) % MEM_SIZE] & 0x30 == DIR_CODE << 4) ? 7 : 5;
 	return ;
 }
 
