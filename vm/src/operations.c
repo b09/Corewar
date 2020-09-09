@@ -60,8 +60,8 @@ void		op_live(t_cursor *cursor, t_arena *arena)
 	// For each valid execution of the live instruction, the machine must display:
 	// “A process shows that player X (champion_name) is alive”.
 
- 	// op_1 + reg_1 == 2
-	cursor->jump = 2;
+ 	// op_1 + dir_4 == 5
+	cursor->jump = 5;
 	return ;
 }
 /*
@@ -70,8 +70,8 @@ void		op_live(t_cursor *cursor, t_arena *arena)
 
 void		op_ld(t_cursor *cursor, t_arena *arena)
 {
-	// op_1 + enc_1 + dir_4 + (reg_1 | ind_2) == 7 | 8;
-	cursor->jump = (arena->field[cursor->position][1] & 0x03 == REG_CODE) ? 7 : 8;
+	// op_1 + enc_1 + (dir_4 | ind_2) + reg_1 == 5 | 7;
+	cursor->jump = (arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 5 : 7;
 	return ;
 }
 
