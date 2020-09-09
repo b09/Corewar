@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 21:42:21 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 00:08:49 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void				initialize_arena(t_arena *arena)
 		create_cursor(arena, i);
 		++i;
 	}
-	arena->last_champ_alive = arena->cursor_head->id;
+	// arena->last_champ_alive = arena->cursor_head->id;
 	arena->max_cycle_die = CYCLE_TO_DIE;
 	arena->num_cursors = arena->num_champs;
 }

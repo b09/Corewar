@@ -6,13 +6,13 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 21:39:53 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 13:39:37 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static void		populate_operation_array(t_func arrpointer[16])
+static void			populate_operation_array(t_func arrpointer[16])
 {
 	arrpointer[0] = op_live;
 	arrpointer[1] = op_ld;
@@ -32,7 +32,7 @@ static void		populate_operation_array(t_func arrpointer[16])
 	arrpointer[15] = op_aff;
 }
 
-static void		end_game(t_arena *arena)
+static void			end_game(t_arena *arena)
 {
 	return ;
 }
@@ -44,9 +44,9 @@ static void		end_game(t_arena *arena)
 **
 */
 
-static void		check_cursors(t_arena *arena)
+static void			check_cursors(t_arena *arena)
 {
-	t_cursor	*cursor;
+	t_cursor		*cursor;
 
 	cursor = arena->cursor_head;
 	while (cursor)
@@ -67,9 +67,29 @@ static void		check_cursors(t_arena *arena)
 		arena->num_checks = 0;
 		return ;
 	}
+	ft_bzero(arena->alive_champs_arr, sizeof(int) * 4);
 	arena->cycles_to_die = 0;
 	arena->num_lives = 0;
 	arena->num_checks++;
+}
+
+static void			execute_operation(t_arena *arena, t_cursor *cursor,\
+					t_func arrpointer[16])
+{
+	unsigned char	arg1[5];
+	unsigned char	arg2[5];
+	unsigned char	arg3[5];
+	unsigned char	**pointer;
+
+	pointer = (unsigned char **)ft_memalloc(sizeof (char*) * 3);
+	ft_bzero(arg1, 5);
+	pointer[0] = arg1;
+	ft_bzero(arg2, 5);
+	pointer[1] = arg1;
+	ft_bzero(arg3, 5);
+	pointer[2] = arg1;
+	arrpointer[cursor->opcode - 1](cursor, arena, pointer);
+	free(pointer);
 }
 
 /*
@@ -91,7 +111,7 @@ static void		check_cursors(t_arena *arena)
 // show “Player X (champion_name) won”, where X is the player’s number and cham-
 // pion_name is its name. For example: “Player 2 (rainbowdash) won”.
 
-void			battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
+void				battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
 {
 	populate_operation_array(arrpointer);
 	while (42)
@@ -105,7 +125,8 @@ void			battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)
 			{
-				arrpointer[cursor->opcode - 1](cursor, arena);
+				execute_operation(arena, cursor, arrpointer);
+				// arrpointer[cursor->opcode - 1](cursor, arena);
 				cursor->position = (cursor->position + cursor->jump) % MEM_SIZE;
 				cursor->opcode = arena->field[cursor->position];
 				cursor->wait_cycle = arena->wait_cycle_arr[cursor->opcode - 1];

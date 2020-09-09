@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 20:43:09 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 16:36:34 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@
 # define REG_CODE				1
 # define DIR_CODE				2
 # define IND_CODE				3
+# define SIZE_REG				1
+# define SIZE_IND				2
+# define SIZE_SDIR				2
+# define SIZE_LDIR				4
 # define MAX_ARGS_NUMBER		4
 # define MAX_PLAYERS			4
 # define MEM_SIZE				4096
@@ -133,6 +137,8 @@ typedef struct					s_champ
 **	cursor_head		= pointer to first cursor, which is a linked list of cursors
 **	wait_cycle_arr	= array of values representing the wait times that each
 **					operation costs, placed at the index - 1 for each opcode
+**	alive_champs_arr= array in which at every index of champ id - 1 are the
+					number of 'live' reported for each champ
 **	last_champ_alive= most recent cursors to perform live on a memory cell
 **					containing some champion's id. (if no id, oh well)
 */
@@ -152,6 +158,7 @@ typedef struct					s_arena
 	int							num_lives;
 	struct s_cursor				*cursor_head;
 	int							wait_cycle_arr[16];
+	int							alive_champs_arr[4];
 	int							last_champ_alive;
 }								t_arena;
 
@@ -180,7 +187,8 @@ typedef struct					s_cursor
 	struct s_cursor				*prev;
 }								t_cursor;
 
-typedef void			(*t_func)(t_cursor *, t_arena *arena);
+typedef void			(*t_func)(t_cursor *, t_arena *arena,\
+						t_func *arrpointer);
 
 /*
 **		print_funcs.c
@@ -223,22 +231,22 @@ void		battle(t_arena *arena, t_func *arrpointer, t_cursor *cursor);
 **		operations.c
 */
 
-void		op_live(t_cursor *cursor, t_arena *arena);
-void		op_ld(t_cursor *cursor, t_arena *arena);
-void		op_st(t_cursor *cursor, t_arena *arena);
-void		op_add(t_cursor *cursor, t_arena *arena);
-void		op_sub(t_cursor *cursor, t_arena *arena);
-void		op_and(t_cursor *cursor, t_arena *arena);
-void		op_or(t_cursor *cursor, t_arena *arena);
-void		op_xor(t_cursor *cursor, t_arena *arena);
-void		op_zjmp(t_cursor *cursor, t_arena *arena);
-void		op_ldi(t_cursor *cursor, t_arena *arena);
-void		op_sti(t_cursor *cursor, t_arena *arena);
-void		op_fork(t_cursor *cursor, t_arena *arena);
-void		op_lld(t_cursor *cursor, t_arena *arena);
-void		op_lldi(t_cursor *cursor, t_arena *arena);
-void		op_lfork(t_cursor *cursor, t_arena *arena);
-void		op_aff(t_cursor *cursor, t_arena *arena);
+void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args);
+void		op_aff(t_cursor *cursor, t_arena *arena, unsigned char **args);
 
 /*
 **		delete.c
@@ -246,5 +254,11 @@ void		op_aff(t_cursor *cursor, t_arena *arena);
 
 void		cursor_unlink_del(t_arena *arena, t_cursor *cursor);
 
+/*
+**		get_arguments.c
+*/
+
+int			populate_arguments(unsigned char *field, int position,\
+			unsigned char **args, bool dir_is_two);
 
 #endif
