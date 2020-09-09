@@ -45,7 +45,10 @@
 **	loop by whatever it's current position is plus the cursor->jump value
 */
 
-
+// arg sizes:
+// reg == 1
+// dir == 2 | 4
+// ind == 2
 
 /*
 **	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0}
@@ -54,8 +57,11 @@
 void		op_live(t_cursor *cursor, t_arena *arena)
 {
 	// FROM COREWAR PDF:
-	// For each valid execution of the live instruction, the machine must display: 
-	// “A process shows that player X (champion_name) is alive”. 
+	// For each valid execution of the live instruction, the machine must display:
+	// “A process shows that player X (champion_name) is alive”.
+
+ 	// op_1 + reg_1 == 2
+	cursor->jump = 2;
 	return ;
 }
 /*
@@ -64,6 +70,8 @@ void		op_live(t_cursor *cursor, t_arena *arena)
 
 void		op_ld(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 + dir_4 + (reg_1 | ind_2) == 7 | 8;
+	cursor->jump = (arena->field[cursor->position][1] & 0x03 == REG_CODE) ? 7 : 8;
 	return ;
 }
 
@@ -72,6 +80,8 @@ void		op_ld(t_cursor *cursor, t_arena *arena)
 */
 void		op_st(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 + reg_1 + (reg_1 | ind_2) == 4 | 5;
+	cursor->jump = (arena->field[cursor->position][1] & 0x0C == (REG_CODE << 2)) ? 4 : 5;
 	return ;
 }
 
@@ -80,6 +90,8 @@ void		op_st(t_cursor *cursor, t_arena *arena)
 */
 void		op_add(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 + reg_1 + reg_1, + reg_1 == 5;
+	cursor->jump = 5;
 	return ;
 }
 
@@ -88,6 +100,8 @@ void		op_add(t_cursor *cursor, t_arena *arena)
 */
 void		op_sub(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 + reg_1 + reg_1, + reg_1 == 5;
+	cursor->jump = 5;
 	return ;
 }
 
@@ -97,6 +111,16 @@ void		op_sub(t_cursor *cursor, t_arena *arena)
 */
 void		op_and(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 == 2;
+	// += reg_1 | ind_2 | dir_4
+	// += reg_1 | ind_2 | dir_4
+	// += reg_1
+	// == 5 | 6 | 7 | 8 | 9 | 10 | 11
+	cursor->jump = 5;
+	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
+	if ((arena->field[cursor->position][1] & 0x0C != REG_CODE))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == IND_CODE) ? 1 : 3);
 	return ;
 }
 
@@ -106,6 +130,12 @@ void		op_and(t_cursor *cursor, t_arena *arena)
 */
 void		op_or(t_cursor *cursor, t_arena *arena)
 {
+	// cursor->jump same as op_and
+	cursor->jump = 5;
+	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
+	if ((arena->field[cursor->position][1] & 0x0C != REG_CODE))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == IND_CODE) ? 1 : 3);
 	return ;
 }
 
@@ -115,6 +145,12 @@ void		op_or(t_cursor *cursor, t_arena *arena)
 */
 void		op_xor(t_cursor *cursor, t_arena *arena)
 {
+	// cursor->jump same as op_and
+	cursor->jump = 5;
+	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
+	if ((arena->field[cursor->position][1] & 0x0C != REG_CODE))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == IND_CODE) ? 1 : 3);
 	return ;
 }
 
@@ -123,6 +159,10 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 */
 void		op_zjmp(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + dir_2 == 3;
+	// I could define structs/unions to retrieve values from specific fields,
+	// but I'm hoping you already have some solution.
+	cursor->jump = cursor->carry ? (VALUE AT ARG_1 % IDX_MOD) : 3;
 	return ;
 }
 
@@ -130,8 +170,17 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena)
 **	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
 **		"load index", 1, 1}
 */
+
 void		op_ldi(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 == 2;
+	// += reg_1 | dir_2, ind_2
+	// += reg_1 | dir_2
+	// += reg_1
+	// == 5, 6, 7
+	cursor->jump = 3;
+	cursor->jump += (arena->field[cursor->position][1] & 0x03 == REG_CODE) 1 ? : 2;
+	cursor->jump += (arena->field[cursor->position][1] & 0x0C == (REG_CODE << 2)) 1 ? : 2;
 	return ;
 }
 
@@ -141,6 +190,13 @@ void		op_ldi(t_cursor *cursor, t_arena *arena)
 */
 void		op_sti(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 + reg_1 == 3;
+	// += reg_1 | dir_2, ind_2
+	// += reg_1 | dir_2
+	// == 5, 6, 7
+	cursor->jump = 3;
+	cursor->jump += (arena->field[cursor->position][1] & 0x0C == (REG_CODE << 2)) 1 ? : 2;
+	cursor->jump += (arena->field[cursor->position][1] & 0x30 == (REG_CODE << 4)) 1 ? : 2;
 	return ;
 }
 
@@ -149,6 +205,8 @@ void		op_sti(t_cursor *cursor, t_arena *arena)
 */
 void		op_fork(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + dir_2 == 3;
+	cursor->jump = 3;
 	return ;
 }
 
@@ -157,6 +215,11 @@ void		op_fork(t_cursor *cursor, t_arena *arena)
 */
 void		op_lld(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 == 2;
+	// += dir_4, ind_2
+	// += reg_1
+	// == 5, 7
+	cursor->jump = (cursor->jump += (arena->field[cursor->position][1] & 0x0C == (DIR_CODE << 2)) ? 7 : 5;
 	return ;
 }
 
@@ -166,6 +229,8 @@ void		op_lld(t_cursor *cursor, t_arena *arena)
 */
 void		op_lldi(t_cursor *cursor, t_arena *arena)
 {
+	// jump same as op_ldi
+	cursor->jump = (cursor->jump += (arena->field[cursor->position][1] & 0x0C == (DIR_CODE << 2)) ? 7 : 5;
 	return ;
 }
 
@@ -174,6 +239,8 @@ void		op_lldi(t_cursor *cursor, t_arena *arena)
 */
 void		op_lfork(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + dir_2 == 3;
+	cursor->jump = 3;
 	return ;
 }
 
@@ -182,5 +249,7 @@ void		op_lfork(t_cursor *cursor, t_arena *arena)
 */
 void		op_aff(t_cursor *cursor, t_arena *arena)
 {
+	// op_1 + enc_1 + reg_1 == 3;
+	cursor->jump = 3;
 	return ;
 }
