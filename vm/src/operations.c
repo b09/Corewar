@@ -119,8 +119,8 @@ void		op_and(t_cursor *cursor, t_arena *arena)
 	cursor->jump = 5;
 	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
 		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
-	if ((arena->field[cursor->position][1] & 0x0C != REG_CODE))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == IND_CODE) ? 1 : 3);
+	if ((arena->field[cursor->position][1] & 0x0C != (REG_CODE << 2)))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == (IND_CODE << 2)) ? 1 : 3);
 	return ;
 }
 
@@ -134,8 +134,8 @@ void		op_or(t_cursor *cursor, t_arena *arena)
 	cursor->jump = 5;
 	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
 		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
-	if ((arena->field[cursor->position][1] & 0x0C != REG_CODE))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == IND_CODE) ? 1 : 3);
+	if ((arena->field[cursor->position][1] & 0x0C != (REG_CODE << 2)))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == (IND_CODE << 2)) ? 1 : 3);
 	return ;
 }
 
@@ -149,8 +149,8 @@ void		op_xor(t_cursor *cursor, t_arena *arena)
 	cursor->jump = 5;
 	if ((arena->field[cursor->position][1] & 0x03 != REG_CODE))
 		cursor->jump += ((arena->field[cursor->position][1] & 0x03 == IND_CODE) ? 1 : 3);
-	if ((arena->field[cursor->position][1] & 0x0C != REG_CODE))
-		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == IND_CODE) ? 1 : 3);
+	if ((arena->field[cursor->position][1] & 0x0C != (REG_CODE << 2)))
+		cursor->jump += ((arena->field[cursor->position][1] & 0x0C == (IND_CODE << 2)) ? 1 : 3);
 	return ;
 }
 
