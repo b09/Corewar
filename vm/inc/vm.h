@@ -278,5 +278,13 @@ int			populate_arguments(unsigned char *field, int position,\
 			unsigned char **args, bool dir_is_two);
 int			get_arg_size(char encode_byte, int arg_idx, bool dir_is_two);
 
+/*
+**		operation_aux.c
+*/
+
+int			switch_endianness(int n, size_t size);
+int			ustr_to_int(unsigned char *field, int position, int size);
+void		int_to_ustr(int value, unsigned char *field, int position, int size);
+
 
 #endif
