@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 16:41:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 18:59:47 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int			populate_arguments(unsigned char *field, int position,\
 			unsigned char **args, bool dir_is_two)
 {
 	int		i;
-	int		size;
-	int		field_counter;
 	int		error;
 
 	i = 0;

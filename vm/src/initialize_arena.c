@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 00:08:49 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 18:58:47 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 **	the negated player id (r1 = -player_id).
 */
 
-// static void			initialize_cursors(t_arena *arena, int i)
 void				create_cursor(t_arena *arena, int i)
 {
 	t_cursor		*cursor;
@@ -37,6 +36,12 @@ void				create_cursor(t_arena *arena, int i)
 	else
 		arena->cursor_head = cursor;
 }
+
+/*
+**	each operation requires a wait time, measured in cycles. func() populates
+**	array with wait times, where wait_cycle_arr[opcode - 1] = wait cycles.
+**	array is added to arena struct.
+*/
 
 static void			cursor_wait_cycle(int *wait_cycle_arr)
 {
@@ -65,6 +70,7 @@ static void			cursor_wait_cycle(int *wait_cycle_arr)
 **	requires that the first cursor be the last champion, see not above
 **	create_cursor() for more details.
 */
+
 void				initialize_arena(t_arena *arena)
 {
 	int				i;
@@ -82,7 +88,6 @@ void				initialize_arena(t_arena *arena)
 		create_cursor(arena, i);
 		++i;
 	}
-	// arena->last_champ_alive = arena->cursor_head->id;
 	arena->max_cycle_die = CYCLE_TO_DIE;
 	arena->num_cursors = arena->num_champs;
 }

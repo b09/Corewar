@@ -23,14 +23,6 @@
 **		null bytes are correctly placed
 **		exec_size is the same size as counted bytes in binary
 **		champ name exists
-**			COMMENTS:
-	// I don't understand the bit magic here,
-	// Can't you just do things like:
-	// i |= champ->exec_size - 4 | champ->exec_code - 4;
-	// instead of calling memcmp?
-	// answer bprado:
-	// i don't know how to dereference champ->orig_file as an int, as it
-	// currently is a unsigned char *.
 */
 
 void			get_champ_file(t_champ *champ)

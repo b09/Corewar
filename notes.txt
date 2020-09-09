@@ -1,3 +1,35 @@
+***********************
+DAY: SEPT 9 19:00
+TO DO:
+
+	int		read_encoding_byte(char encoding_byte, int offset, bool dir_two)
+		
+		return the size of the argument based on the encoding byte
+
+
+	int		ustr_to_int(unsigned char *field, int position, int size)
+		
+		return int value of bytes starting at field[position] up
+		field[position + size]. requires big to little endian conversion
+
+
+	void	int_to_ustr(int value, unsigned char *field, int position, int size)
+		
+		write into field[position] up to field[position + size] the value of int
+		(which could also be a 2 byte instead of a 4 bytes)
+
+
+	void	end_game(t_arena *arena)
+
+		call delete_all() and print out winer for the game
+
+
+	void	delete_all(t_arena *arena)
+
+		ensure that all malloced content has been freed
+
+
+**********************
 .comment on top, can contain empty string
     length < 2048 (COMMENT_LENGTH)
     CAN HAVE '/n'

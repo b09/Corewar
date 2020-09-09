@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 21:44:37 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 19:04:50 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int				main(int argc, char **argv)
 {
 	t_arena		arena;
 	t_champ		**all_champs;
-	// if (argc < 3)
-	if (argc < 2) // for debugging
+
+	if (argc < 3)
 		print_error(FEW_ARGS);
 	ft_bzero(&arena, sizeof(arena));
 	all_champs = (t_champ **)ft_memalloc(sizeof (t_champ*) * MAX_PLAYERS + 1);

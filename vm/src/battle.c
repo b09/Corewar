@@ -6,12 +6,15 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 13:39:37 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 19:02:39 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
+/*
+**	array of function pointers to the operations allowed for use in championship
+*/
 static void			populate_operation_array(t_func arrpointer[16])
 {
 	arrpointer[0] = op_live;
@@ -111,7 +114,8 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 // show “Player X (champion_name) won”, where X is the player’s number and cham-
 // pion_name is its name. For example: “Player 2 (rainbowdash) won”.
 
-void				battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
+void				battle(t_arena *arena, t_func arrpointer[16],\
+					t_cursor *cursor)
 {
 	populate_operation_array(arrpointer);
 	while (42)
@@ -126,7 +130,6 @@ void				battle(t_arena *arena, t_func arrpointer[16], t_cursor *cursor)
 			if (cursor->wait_cycle == 0)
 			{
 				execute_operation(arena, cursor, arrpointer);
-				// arrpointer[cursor->opcode - 1](cursor, arena);
 				cursor->position = (cursor->position + cursor->jump) % MEM_SIZE;
 				cursor->opcode = arena->field[cursor->position];
 				cursor->wait_cycle = arena->wait_cycle_arr[cursor->opcode - 1];
