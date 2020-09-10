@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/10 16:02:30 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/10 16:05:57 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,8 @@ void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **			(2)T_REG[i] = (1)T_REG[i]
 **
 **		if ARG2 == T_IND
-**			int position = position + (1)T_IND[i] % IDX_MOD
-**			int value = 4 bytes read at field[position]
-**			(2)T_REG[i] = value
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			field[position] = (1)T_REG[i]
 */
 
 void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
