@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 20:07:52 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/09 22:04:57 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@
 # define COMMENT_LENGTH			2048
 # define COREWAR_EXEC_MAGIC		0xea83f3
 # define MAGIC_BACKWARDS		0xf383ea00
+# define FIRST_ARG				0
+# define SECND_ARG				1
+# define THIRD_ARG				2
+# define SIZE					0
 
 /*
 **		ERROR MACROS

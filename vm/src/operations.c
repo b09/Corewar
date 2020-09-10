@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 20:24:55 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/10 14:48:09 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,25 +62,38 @@ void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[2-4][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 7
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG1 == T_DIR
+**			(2)T_DIR[i] = (1)T_DIR[i]
+**
+**		if ARG1 == T_IND
+**			int position = position + (1)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			(2)T_DIR[i] = value
+**			
+**		if (2)T_DIR[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	int		num;
-
-	num = 0;
 	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
-	if (args[0][0] == SIZE_LDIR)
+	if (args[FIRST_ARG][SIZE] == SIZE_LDIR)
+		cursor->registry[args[SECND_ARG][T_REG]] = args[FIRST_ARG][1];
+	else
 	{
+		position = position + (ustr_to_int(args[FIRST_ARG][1]) % IDX_MOD);
+		ft_memcpy(cursor->registry[args[SECND_ARG][1]], arena->field[position % MEM_SIZE], );
 		
 	}
-	if (num == 0)
-		cursor->carry = TRUE;
-	else
-		cursor->carry = FALSE;
+		cursor->carry = args[FIRST_ARG][1] ? 0 : 1;
 }
 
 /*
@@ -97,6 +110,16 @@ void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1][1-2]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		4 - 5
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG2 == T_REG
+**			(1)T_REG[i] = (2)T_DIR[i]
+**
+**		if ARG2 == T_IND
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			(1)T_DIR[i] = value
 */
 
 void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -119,8 +142,17 @@ void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **		number_of_args;	= 3
 **
 **	SIZE:	[1]	[1]	[1][1][1]
-			OP	EN	ARGS
+**			OP	EN	ARGS
 **	TOTAL SIZE:		5
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		(3)T_REG[i] = (2)T_DIR[i] + (1)T_DIR[i]
+**
+**		if (3)T_DIR[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -152,6 +184,15 @@ void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1][1][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		(3)T_REG[i] = (1)T_DIR[i] - (2)T_DIR[i]
+**
+**		if (3)T_DIR[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -183,6 +224,21 @@ void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1-4][1-4][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 11
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG1 or ARG2 == T_REG or T_DIR
+**			(3)T_REG[i] = ARG1 & ARG2 (bitwise &)
+**
+**		if ARG1 or ARG2 == T_IND
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			(3)T_REG[i] = ARG1 & value (bitwise &)
+**
+**		if (3)T_DIR[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -215,6 +271,21 @@ void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1-4][1-4][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 11
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG1 or ARG2 == T_REG or T_DIR
+**			(3)T_REG[i] = ARG1 | ARG2 (bitwise |)
+**
+**		if ARG1 or ARG2 == T_IND
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			(3)T_REG[i] = ARG1 | value (bitwise |)
+**
+**		if (3)T_DIR[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -247,6 +318,21 @@ void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1-4][1-4][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 11
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG1 or ARG2 == T_REG or T_DIR
+**			(3)T_REG[i] = ARG1 ^ ARG2 (bitwise ^)
+**
+**		if ARG1 or ARG2 == T_IND
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			(3)T_REG[i] = ARG1 ^ value (bitwise ^)
+**
+**		if (3)T_DIR[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -279,6 +365,16 @@ void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[2]
 **			OP	ARGS
 **	TOTAL SIZE:		3
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if cursor->carry == 1
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			cursor->jump = value
+**
+**		if cursor->carr == 0
+**			return ;
 */
 
 void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -305,6 +401,16 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1-2][1-2][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 7
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG1 or ARG2 == T_REG or T_DIR
+**			(3)T_REG[i] = position + ((ARG1 + ARG2) % IDX_MOD)
+**
+**		if ARG1 == T_IND
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			(3)T_REG[i] = position + ((ARG1 (or value) + ARG2) % IDX_MOD)
 */
 
 void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -330,6 +436,17 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1][1-2][1-2]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 7
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG2 == T_REG or T_DIR
+**			position = position + ((ARG2 + ARG3) % IDX_MOD)
+**			field[position] = (1)T_REG[i];
+**
+**		if ARG2 == T_IND
+**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			field[position + ((ARG2 (or value) + ARG3) % IDX_MOD)] = (3)T_REG[i]
 */
 
 void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -355,6 +472,11 @@ void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[2]
 **			OP	ARGS
 **	TOTAL SIZE:		3
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		new cursor = current cursor
+**		new cursor->position = old_position + T_DIR[i] % IDX_MOD
 */
 
 void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -380,6 +502,21 @@ void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[2-4][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 7
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG1 == T_DIR
+**			(2)T_DIR[i] = (1)T_DIR[i]
+**
+**		if ARG1 == T_IND
+**			int position = position + (1)T_IND[i]
+**			int value = 4 bytes read at field[position]
+**			(2)T_DIR[i] = value
+**			
+**		if (2)T_DIR[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -412,6 +549,21 @@ void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1-2][1-2][1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		5 - 7
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		if ARG1 or ARG2 == T_REG or T_DIR
+**			(3)T_REG[i] = position + ARG1 + ARG2
+**
+**		if ARG1 == T_IND
+**			int position = position + (1)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[position]
+**			(3)T_REG[i] = position + ARG1 (or value) + ARG2
+**			
+**		if (3)T_REG[i] == 0
+**			carry = 1
+**		else
+**			carry = 0
 */
 
 void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -443,6 +595,11 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[2]
 **			OP	ARGS
 **	TOTAL SIZE:		3
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		new cursor = current cursor
+**		new cursor->position = old_position + T_DIR[i]
 */
 
 void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -468,6 +625,10 @@ void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	SIZE:	[1]	[1]	[1]
 **			OP	EN	ARGS
 **	TOTAL SIZE:		3
+**
+**	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
+**
+**		putchar(T_REG[i]);
 */
 
 void		op_aff(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -475,202 +636,4 @@ void		op_aff(t_cursor *cursor, t_arena *arena, unsigned char **args,
 {
 	populate_arguments(arena->field, cursor->position, args, 0);
 
-}
-
-
-
-
-
-************************************
-
-
-
-void		op_live(t_cursor *cursor, t_arena *arena)
-{
-	// FROM COREWAR PDF:
-	// For each valid execution of the live instruction, the machine must display:
-	// “A process shows that player X (champion_name) is alive”.
-
- 	// op_1 + dir_4 == 5
-	cursor->jump = 5;
-	return ;
-}
-/*
-**	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0}
-*/
-
-void		op_ld(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 + (dir_4 | ind_2) + reg_1 == 5 | 7;
-	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0);
-	return ;
-}
-
-/*
-	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0}
-*/
-void		op_st(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 + reg_1 + (reg_1 | ind_2) == 4 | 5;
-	cursor->jump = 3 + get_arg_size(cursor, arena, 1, 0);
-	return ;
-}
-
-/*
-**	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0}
-*/
-void		op_add(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 + reg_1 + reg_1, + reg_1 == 5;
-	cursor->jump = 5;
-	return ;
-}
-
-/*
-**	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 0}
-*/
-void		op_sub(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 + reg_1 + reg_1, + reg_1 == 5;
-	cursor->jump = 5;
-	return ;
-}
-
-/*
-**	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
-**		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 0}
-*/
-void		op_and(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 == 2;
-	// += reg_1 | ind_2 | dir_4
-	// += reg_1 | ind_2 | dir_4
-	// += reg_1
-	// == 5 | 6 | 7 | 8 | 9 | 10 | 11
-	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0) +
-		get_arg_size(cursor, arena, 1, 0);
-	return ;
-}
-
-/*
-**	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
-**		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0}
-*/
-void		op_or(t_cursor *cursor, t_arena *arena)
-{
-	// cursor->jump same as op_and
-	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0) +
-		get_arg_size(cursor, arena, 1, 0);
-	return ;
-}
-
-/*
-**	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
-**		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 0}
-*/
-void		op_xor(t_cursor *cursor, t_arena *arena)
-{
-	// cursor->jump same as op_and
-	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0) +
-		get_arg_size(cursor, arena, 1, 0);
-	return ;
-}
-
-/*
-**	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 1}
-*/
-void		op_zjmp(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + dir_2 == 3;
-	// I could define structs/unions to retrieve values from specific fields,
-	// but I'm hoping you already have some solution.
-	cursor->jump = cursor->carry ? (VALUE AT ARG_1 % IDX_MOD) : 3;
-	return ;
-}
-
-/*
-**	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
-**		"load index", 1, 1}
-*/
-
-void		op_ldi(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 == 2;
-	// += reg_1 | dir_2, ind_2
-	// += reg_1 | dir_2
-	// += reg_1
-	// == 5, 6, 7
-	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 1) +
-		get_arg_size(cursor, arena, 1, 1);
-	return ;
-}
-
-/*
-**	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
-**		"store index", 1, 1}
-*/
-void		op_sti(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 + reg_1 == 3;
-	// += reg_1 | dir_2, ind_2
-	// += reg_1 | dir_2
-	// == 5, 6, 7
-	cursor->jump = 3 + get_arg_size(cursor, arena, 1, 1) +
-		get_arg_size(cursor, arena, 2, 1);;
-	return ;
-}
-
-/*
-**	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1}
-*/
-void		op_fork(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + dir_2 == 3;
-	cursor->jump = 3;
-	return ;
-}
-
-/*
-**	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0}
-*/
-void		op_lld(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 == 2;
-	// += dir_4, ind_2
-	// += reg_1
-	// == 5, 7
-	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 0);
-	return ;
-}
-
-/*
-**	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
-**		"long load index", 1, 1}
-*/
-void		op_lldi(t_cursor *cursor, t_arena *arena)
-{
-	// jump same as op_ldi
-	cursor->jump = 3 + get_arg_size(cursor, arena, 0, 1) +
-		get_arg_size(cursor, arena, 1, 1);
-	return ;
-}
-
-/*
-**	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1}
-*/
-void		op_lfork(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + dir_2 == 3;
-	cursor->jump = 3;
-	return ;
-}
-
-/*
-**	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0}
-*/
-void		op_aff(t_cursor *cursor, t_arena *arena)
-{
-	// op_1 + enc_1 + reg_1 == 3;
-	cursor->jump = 3;
-	return ;
 }

@@ -6,15 +6,15 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/09 22:34:50 by fmiceli       ########   odam.nl         */
+/*   Updated: 2020/09/10 12:38:35 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		switch_endianness(int n, size_t size)
+int					switch_endianness(int n, size_t size)
 {
-	int	res;
+	int				res;
 
 	res = 0;
 	if (size == 1)
@@ -23,10 +23,10 @@ int		switch_endianness(int n, size_t size)
 		res = (n >> 8) | (n << 8);
 	else if (size == 4)
 	{
-		res |= ((num >> 8 * 3) & 0x000000FF);
-        res |= ((num << 8 * 1) & 0x00FF0000);
-        res |= ((num >> 8 * 1) & 0x0000FF00);
-        res |= ((num << 8 * 3) & 0xFF000000);
+		res |= ((n >> 8 * 3) & 0x000000FF);
+		res |= ((n << 8 * 1) & 0x00FF0000);
+		res |= ((n >> 8 * 1) & 0x0000FF00);
+		res |= ((n << 8 * 3) & 0xFF000000);
 	}
 	return (res);
 }
@@ -37,11 +37,12 @@ int		switch_endianness(int n, size_t size)
 // 	field[position + size]. requires big to little endian conversion
 //
 
-int		ustr_to_int(unsigned char *field, int position, int size)
+int					ustr_to_int(unsigned char *field, int position, int size)
 {
 	unsigned char	current_byte;
 	unsigned int	res;
 	int				i;
+	int				shift;
 
 	res = 0;
 	i = 0;
@@ -61,7 +62,8 @@ int		ustr_to_int(unsigned char *field, int position, int size)
 // 	write into field[position] up to field[position + size] the value of int
 // 	(which could also be a 2 byte instead of a 4 bytes)
 
-void	int_to_ustr(int value, unsigned char *field, int position, int size)
+void				int_to_ustr(int value, unsigned char *field,\
+					int position, int size)
 {
 	unsigned char	current_byte;
 	unsigned int	mask;
