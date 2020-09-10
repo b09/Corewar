@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/10 14:48:09 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/10 16:02:30 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,14 @@ void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
 **		if ARG1 == T_DIR
-**			(2)T_DIR[i] = (1)T_DIR[i]
+**			(2)T_REG[i] = (1)T_DIR[i]
 **
 **		if ARG1 == T_IND
 **			int position = position + (1)T_IND[i] % IDX_MOD
 **			int value = 4 bytes read at field[position]
-**			(2)T_DIR[i] = value
+**			(2)T_REG[i] = value
 **			
-**		if (2)T_DIR[i] == 0
+**		if (2)T_REG[i] == 0
 **			carry = 1
 **		else
 **			carry = 0
@@ -114,12 +114,12 @@ void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
 **		if ARG2 == T_REG
-**			(1)T_REG[i] = (2)T_DIR[i]
+**			(2)T_REG[i] = (1)T_REG[i]
 **
 **		if ARG2 == T_IND
-**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int position = position + (1)T_IND[i] % IDX_MOD
 **			int value = 4 bytes read at field[position]
-**			(1)T_DIR[i] = value
+**			(2)T_REG[i] = value
 */
 
 void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
