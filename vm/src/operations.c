@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/10 16:05:57 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/10 16:51:31 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,9 @@ void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
-**		(3)T_REG[i] = (2)T_DIR[i] + (1)T_DIR[i]
+**		(3)T_REG[i] = (2)T_REG[i] + (1)T_REG[i]
 **
-**		if (3)T_DIR[i] == 0
+**		if (3)T_REG[i] == 0
 **			carry = 1
 **		else
 **			carry = 0
@@ -186,9 +186,9 @@ void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
-**		(3)T_REG[i] = (1)T_DIR[i] - (2)T_DIR[i]
+**		(3)T_REG[i] = (1)T_REG[i] - (2)T_REG[i]
 **
-**		if (3)T_DIR[i] == 0
+**		if (3)T_REG[i] == 0
 **			carry = 1
 **		else
 **			carry = 0
@@ -226,7 +226,7 @@ void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
-**		if ARG1 or ARG2 == T_REG or T_DIR
+**		if ARG1 and ARG2 != T_IND
 **			(3)T_REG[i] = ARG1 & ARG2 (bitwise &)
 **
 **		if ARG1 or ARG2 == T_IND
@@ -273,7 +273,7 @@ void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
-**		if ARG1 or ARG2 == T_REG or T_DIR
+**		if ARG1 and ARG2 != T_IND
 **			(3)T_REG[i] = ARG1 | ARG2 (bitwise |)
 **
 **		if ARG1 or ARG2 == T_IND
@@ -320,7 +320,7 @@ void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
-**		if ARG1 or ARG2 == T_REG or T_DIR
+**		if ARG1 and ARG2 != T_IND
 **			(3)T_REG[i] = ARG1 ^ ARG2 (bitwise ^)
 **
 **		if ARG1 or ARG2 == T_IND
@@ -368,12 +368,12 @@ void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
 **		if cursor->carry == 1
-**			int position = position + (2)T_IND[i] % IDX_MOD
+**			int position = position + (1)T_DIR[i] % IDX_MOD
 **			int value = 4 bytes read at field[position]
 **			cursor->jump = value
 **
-**		if cursor->carr == 0
-**			return ;
+**		if cursor->carry == 0
+**			cursor->jump = 3 (size of op with args)
 */
 
 void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -403,13 +403,13 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
-**		if ARG1 or ARG2 == T_REG or T_DIR
+**		if ARG1 != T_IND
 **			(3)T_REG[i] = position + ((ARG1 + ARG2) % IDX_MOD)
 **
 **		if ARG1 == T_IND
-**			int position = position + (2)T_IND[i] % IDX_MOD
-**			int value = 4 bytes read at field[position]
-**			(3)T_REG[i] = position + ((ARG1 (or value) + ARG2) % IDX_MOD)
+**			int position = position + (1)T_IND[i] % IDX_MOD
+**			int value = 4 bytes read at field[new position]
+**			(3)T_REG[i] = old position + ((ARG1 (or value) + ARG2) % IDX_MOD)
 */
 
 void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -439,13 +439,13 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
 **		if ARG2 == T_REG or T_DIR
-**			position = position + ((ARG2 + ARG3) % IDX_MOD)
-**			field[position] = (1)T_REG[i];
+**			new position = position + ((ARG2 + ARG3) % IDX_MOD)
+**			field[new position] = (1)T_REG[i];
 **
 **		if ARG2 == T_IND
 **			int position = position + (2)T_IND[i] % IDX_MOD
 **			int value = 4 bytes read at field[position]
-**			field[position + ((ARG2 (or value) + ARG3) % IDX_MOD)] = (3)T_REG[i]
+**			field[position + ((ARG2 (or value) + ARG3) % IDX_MOD)] = (1)T_REG[i]
 */
 
 void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -505,14 +505,14 @@ void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
 **		if ARG1 == T_DIR
-**			(2)T_DIR[i] = (1)T_DIR[i]
+**			(2)T_REG[i] = (1)T_DIR[i]
 **
 **		if ARG1 == T_IND
 **			int position = position + (1)T_IND[i]
 **			int value = 4 bytes read at field[position]
-**			(2)T_DIR[i] = value
+**			(2)T_REG[i] = value
 **			
-**		if (2)T_DIR[i] == 0
+**		if (2)T_REG[i] == 0
 **			carry = 1
 **		else
 **			carry = 0
