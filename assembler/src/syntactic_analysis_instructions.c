@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/01 18:29:56 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/14 13:46:02 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,10 @@ static int	validate_args(t_token **token)
 **	Return: True or False
 **
 **	Called by: valid_syntax()
+**
+**	BUG:
+**	skip_labels(&current);
+**	bug here, try car.s and found invalid but with extras/asm it is valid
 */
 
 int			valid_instructions(t_asm *asm_obj)
@@ -143,7 +147,7 @@ int			valid_instructions(t_asm *asm_obj)
 	current = asm_obj->token_head;
 	while (current)
 	{
-		skip_labels(&current); // bug here, try car.s and found invalid but with extras/asm it is valid
+		skip_labels(&current);
 		if (!is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));
 		validate_args(&current);

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/01 15:47:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/14 13:47:12 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,6 @@ void							tokenize(char *str, t_asm *info);
 
 void							get_argument_size(t_asm *asm_obj);
 void							populate_label_size(t_asm *asm_obj);
-
 
 /*
 **	print_functions.c

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 22:04:57 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/14 16:12:52 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@
 # define SECND_ARG				1
 # define THIRD_ARG				2
 # define SIZE					0
+# define VALUE					4
 
 /*
 **		ERROR MACROS

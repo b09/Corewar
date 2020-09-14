@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/10 16:51:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/14 19:00:31 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 **	SIZE:	[1]	[4]
 **			OP	ARGS
 **	TOTAL SIZE:		5
+**
+**	FROM COREWAR PDF:
+**	For each valid execution of the live instruction, the machine must display:
+**	“A process shows that player X (champion_name) is alive”.
 */
 
 void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args,
@@ -43,9 +47,6 @@ void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args,
 	{
 		arena->last_champ_alive = cursor->registry[0] * -1;
 	}
-// FROM COREWAR PDF:
-// For each valid execution of the live instruction, the machine must display:
-// “A process shows that player X (champion_name) is alive”. 
 }
 
 /*
@@ -72,7 +73,7 @@ void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **			int position = position + (1)T_IND[i] % IDX_MOD
 **			int value = 4 bytes read at field[position]
 **			(2)T_REG[i] = value
-**			
+**
 **		if (2)T_REG[i] == 0
 **			carry = 1
 **		else
@@ -86,14 +87,14 @@ void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
 	if (args[FIRST_ARG][SIZE] == SIZE_LDIR)
-		cursor->registry[args[SECND_ARG][T_REG]] = args[FIRST_ARG][1];
-	else
+		cursor->registry[args[SECND_ARG][VALUE]] = *(int*)(args[FIRST_ARG] + 1);
+	else if (args[FIRST_ARG][SIZE] == SIZE_IND)
 	{
-		position = position + (ustr_to_int(args[FIRST_ARG][1]) % IDX_MOD);
-		ft_memcpy(cursor->registry[args[SECND_ARG][1]], arena->field[position % MEM_SIZE], );
-		
+		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		position = ustr_to_int(arena->field, position, 4);
+		cursor->registry[args[SECND_ARG][VALUE]] = position;
 	}
-		cursor->carry = args[FIRST_ARG][1] ? 0 : 1;
+	cursor->carry = cursor->registry[args[SECND_ARG][VALUE]] ? 0 : 1;
 }
 
 /*
@@ -127,6 +128,15 @@ void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
 	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
+	if (args[SECND_ARG][SIZE] == SIZE_REG)
+		cursor->registry[args[SECND_ARG][VALUE]] =
+		cursor->registry[args[FIRST_ARG][VALUE]];
+	else if (args[SECND_ARG][SIZE] == SIZE_IND)
+	{
+		position = (position + *(int*)(args[SECND_ARG] + 1)) % IDX_MOD;
+		int_to_ustr(cursor->registry[args[FIRST_ARG][VALUE]],
+										arena->field, position, 4);
+	}
 }
 
 /*
@@ -157,13 +167,13 @@ void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	int		num;
-
 	cursor->jump = 5;
-	num = 0;
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
-	if (num == 0)
+	cursor->registry[args[THIRD_ARG][VALUE]] =
+	cursor->registry[args[SECND_ARG][VALUE]] +
+	cursor->registry[args[FIRST_ARG][VALUE]];
+	if (cursor->registry[args[THIRD_ARG][VALUE]] == 0)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
@@ -203,10 +213,37 @@ void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args,
 	num = 0;
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
-	if (num == 0)
+	cursor->registry[args[THIRD_ARG][VALUE]] =
+	cursor->registry[args[FIRST_ARG][VALUE]] -
+	cursor->registry[args[SECND_ARG][VALUE]];
+	if (cursor->registry[args[THIRD_ARG][VALUE]] == 0)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
+}
+
+static int	op_and_helper(unsigned char **args, int position, t_arena *arena)
+{
+	int		value1;
+	int		value2;
+
+	value1 = 0;
+	value2 = 0;
+	if (args[FIRST_ARG][SIZE] == SIZE_IND)
+	{
+		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		value1 = ustr_to_int(arena->field, position, 4); 
+	}
+	else
+		value1 = *(int*)(args[FIRST_ARG] + 1);
+	if (args[SECND_ARG][SIZE] == SIZE_IND)
+	{
+		position = position + *(int*)(args[SECND_ARG] + 1) % IDX_MOD;
+		value2 = ustr_to_int(arena->field, position, 4); 
+	}
+	else
+		value2 = *(int*)(args[SECND_ARG] + 1);
+	return (value1 & value2);
 }
 
 /*
@@ -243,19 +280,49 @@ void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	int		num;
+	int		value1;
+	int		value2;
 
-	num = 0;
-	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
-	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 0);
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0) +
+						get_arg_size((position + 1) % MEM_SIZE, 1, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
-	if (num == 0)
+	if (args[FIRST_ARG][SIZE] != SIZE_IND && args[SECND_ARG][SIZE] != SIZE_IND)
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+		cursor->registry[args[FIRST_ARG][VALUE]] &
+		cursor->registry[args[SECND_ARG][VALUE]];
+	else
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+										op_and_helper(args, position, arena);
+	if (cursor->registry[args[THIRD_ARG][VALUE]] == 0)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
 }
 
+static int	op_or_helper(unsigned char **args, int position, t_arena *arena)
+{
+	int		value1;
+	int		value2;
+
+	value1 = 0;
+	value2 = 0;
+	if (args[FIRST_ARG][SIZE] == SIZE_IND)
+	{
+		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		value1 = ustr_to_int(arena->field, position, 4); 
+	}
+	else
+		value1 = *(int*)(args[FIRST_ARG] + 1);
+	if (args[SECND_ARG][SIZE] == SIZE_IND)
+	{
+		position = position + *(int*)(args[SECND_ARG] + 1) % IDX_MOD;
+		value2 = ustr_to_int(arena->field, position, 4); 
+	}
+	else
+		value2 = *(int*)(args[SECND_ARG] + 1);
+	return (value1 | value2);
+}
 /*
 **		opcode;			= 7
 **		*op_str;		= or
@@ -290,17 +357,48 @@ void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	int		num;
+	int		value1;
+	int		value2;
 
-	num = 0;
-	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
-	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 0);
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0) +
+						get_arg_size((position + 1) % MEM_SIZE, 1, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
-	if (num == 0)
+	if (args[FIRST_ARG][SIZE] != SIZE_IND && args[SECND_ARG][SIZE] != SIZE_IND)
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+		cursor->registry[args[FIRST_ARG][VALUE]] |
+		cursor->registry[args[SECND_ARG][VALUE]];
+	else
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+											op_or_helper(args, position, arena);
+	if (cursor->registry[args[THIRD_ARG][VALUE]] == 0)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
+}
+
+static int	op_xor_helper(unsigned char **args, int position, t_arena *arena)
+{
+	int		value1;
+	int		value2;
+
+	value1 = 0;
+	value2 = 0;
+	if (args[FIRST_ARG][SIZE] == SIZE_IND)
+	{
+		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		value1 = ustr_to_int(arena->field, position, 4); 
+	}
+	else
+		value1 = *(int*)(args[FIRST_ARG] + 1);
+	if (args[SECND_ARG][SIZE] == SIZE_IND)
+	{
+		position = position + *(int*)(args[SECND_ARG] + 1) % IDX_MOD;
+		value2 = ustr_to_int(arena->field, position, 4); 
+	}
+	else
+		value2 = *(int*)(args[SECND_ARG] + 1);
+	return (value1 ^ value2);
 }
 
 /*
@@ -337,14 +435,21 @@ void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	int		num;
+	int		value1;
+	int		value2;
 
-	num = 0;
-	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
-	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 0);
-	populate_arguments(arena->field, cursor->position, args, 0);
-
-	if (num == 0)
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0) +
+						get_arg_size((position + 1) % MEM_SIZE, 1, 0);
+	if (populate_arguments(arena->field, position, args, 0) == 0)
+		return ;
+	if (args[FIRST_ARG][SIZE] != SIZE_IND && args[SECND_ARG][SIZE] != SIZE_IND)
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+		cursor->registry[args[FIRST_ARG][VALUE]] ^
+		cursor->registry[args[SECND_ARG][VALUE]];
+	else
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+										op_xor_helper(args, position, arena);
+	if (cursor->registry[args[THIRD_ARG][VALUE]] == 0)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
@@ -379,11 +484,12 @@ void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	cursor->jump = 3;
+	int		value;
+	value = 3;
 	if (cursor->carry)
-		cursor->jump = FALSE; //FALSE is placeholder, finish statement
-	else
-		cursor->jump = 3;
+		value = ustr_to_int(arena->field,
+					(position + *(int*)(args[SECND_ARG] + 1)) % IDX_MOD, 4);
+	cursor->jump = value;
 }
 
 /*
@@ -404,21 +510,36 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
 **		if ARG1 != T_IND
-**			(3)T_REG[i] = position + ((ARG1 + ARG2) % IDX_MOD)
+**			(3)T_REG[i] = field[position + ((ARG1 + ARG2) % IDX_MOD)] 4 bytes
 **
 **		if ARG1 == T_IND
 **			int position = position + (1)T_IND[i] % IDX_MOD
 **			int value = 4 bytes read at field[new position]
-**			(3)T_REG[i] = old position + ((ARG1 (or value) + ARG2) % IDX_MOD)
+**			(3)T_REG[i] = field[old position + ((ARG1 (or value) + ARG2)\
+**						% IDX_MOD)] 4 bytes
 */
 
 void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
+	int		value;
+	
 	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 1);
 	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
-
+	if (args[FIRST_ARG][SIZE] != SIZE_IND)
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+		ustr_to_int(arena->field, position + ((*(int*)(args[FIRST_ARG] + 1)
+		+ *(int*)(args[SECND_ARG] + 1)) % IDX_MOD), 4);
+	else
+	{
+		value = ustr_to_int(arena->field, position +
+								(*(int*)(args[FIRST_ARG] + 1) % IDX_MOD), 4);
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+		ustr_to_int(arena->field, position + (value +
+								*(int*)(args[SECND_ARG] + 1)) % IDX_MOD, 4);
+		
+	}
 }
 
 /*
@@ -451,10 +572,26 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
+	int		value;
+
 	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 1, 1);
 	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 2, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
-
+	if (args[SECND_ARG][SIZE] != SIZE_IND)
+	{
+		position = position + *(int*)(args[SECND_ARG] + 1) +
+									*(int*)(args[THIRD_ARG] + 1) % IDX_MOD;
+		int_to_ustr(cursor->registry[args[FIRST_ARG][VALUE]],
+							arena->field, position, 4);
+	}
+	else
+	{
+		value = ustr_to_int(arena->field, position +
+									*(int*)(args[SECND_ARG] + 1) % IDX_MOD, 4);
+		int_to_ustr(cursor->registry[args[FIRST_ARG][VALUE]],
+						arena->field, position +
+						(value + *(int*)(args[THIRD_ARG] + 1) % IDX_MOD), 4);
+	}
 }
 
 /*
@@ -483,7 +620,8 @@ void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,
 {
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
-	arena->cursor_head->position = (FALSE);// false is just placeholder, finish
+	arena->cursor_head->position = (position +
+						(*(int*)(args[FIRST_ARG] + 1) % IDX_MOD) % MEM_SIZE);
 	arena->num_cursors++;
 }
 
@@ -511,7 +649,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **			int position = position + (1)T_IND[i]
 **			int value = 4 bytes read at field[position]
 **			(2)T_REG[i] = value
-**			
+**
 **		if (2)T_REG[i] == 0
 **			carry = 1
 **		else
@@ -521,17 +659,18 @@ void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	int		num;
-
-	num = 0;
 	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 0);
-	populate_arguments(arena->field, cursor->position, args, 0);
-
-
-	if (num == 0)
-		cursor->carry = TRUE;
-	else
-		cursor->carry = FALSE;
+	if (populate_arguments(arena->field, position, args, 0) == 0)
+		return ;
+	if (args[FIRST_ARG][SIZE] == SIZE_LDIR)
+		cursor->registry[args[SECND_ARG][VALUE]] = *(int*)(args[FIRST_ARG] + 1);
+	else if (args[FIRST_ARG][SIZE] == SIZE_IND)
+	{
+		position = position + *(int*)(args[FIRST_ARG] + 1);
+		position = ustr_to_int(arena->field, position, 4);
+		cursor->registry[args[SECND_ARG][VALUE]] = position;
+	}
+	cursor->carry = cursor->registry[args[SECND_ARG][VALUE]] ? 0 : 1;
 }
 
 /*
@@ -551,13 +690,13 @@ void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 **
 **	PSEUDOCODE:		T_DIR refers to type, T_DIR[i] is value, (2)T_DIR is 2nd arg
 **
-**		if ARG1 or ARG2 == T_REG or T_DIR
-**			(3)T_REG[i] = position + ARG1 + ARG2
+**		if ARG1 != T_IND
+**			(3)T_REG[i] = field[position + ARG1 + ARG2] 4 bytes
 **
 **		if ARG1 == T_IND
 **			int position = position + (1)T_IND[i] % IDX_MOD
 **			int value = 4 bytes read at field[position]
-**			(3)T_REG[i] = position + ARG1 (or value) + ARG2
+**			(3)T_REG[i] = field[position + ARG1 (or value) + ARG2] 4 bytes
 **			
 **		if (3)T_REG[i] == 0
 **			carry = 1
@@ -568,16 +707,24 @@ void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	int		num;
+	int		value;
 
-	num = 0;
+	cursor->jump = 3 + get_arg_size((position + 1) % MEM_SIZE, 0, 1);
+	cursor->jump += get_arg_size((position + 1) % MEM_SIZE, 1, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
-
-
-	if (num == 0)
-		cursor->carry = TRUE;
+	if (args[FIRST_ARG][SIZE] != SIZE_IND)
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+		ustr_to_int(arena->field, position + *(int*)(args[FIRST_ARG] + 1)
+		+ *(int*)(args[SECND_ARG] + 1), 4);
 	else
-		cursor->carry = FALSE;
+	{
+		value = ustr_to_int(arena->field, position +
+								(*(int*)(args[FIRST_ARG] + 1) % IDX_MOD), 4);
+		cursor->registry[args[THIRD_ARG][VALUE]] =
+		ustr_to_int(arena->field, position + value +
+								*(int*)(args[SECND_ARG] + 1), 4);
+		
+	}
 }
 
 /*
@@ -604,9 +751,10 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args,
 void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
-	create_cursor(arena, cursor->id);
-	arena->cursor_head->position = (FALSE);// false is just placeholder, finish
 	cursor->jump = 3;
+	create_cursor(arena, cursor->id);
+	arena->cursor_head->position = (position +
+						*(int*)(args[FIRST_ARG] + 1) % MEM_SIZE);
 	arena->num_cursors++;
 }
 
@@ -634,5 +782,5 @@ void		op_aff(t_cursor *cursor, t_arena *arena, unsigned char **args,
 			int position)
 {
 	populate_arguments(arena->field, cursor->position, args, 0);
-
+	ft_printf("%c", cursor->registry[args[FIRST_ARG][VALUE]]);
 }
