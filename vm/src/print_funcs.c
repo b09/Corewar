@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/07 20:35:34 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/15 15:50:58 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,26 @@ void			intro_champs(t_arena *arena)
 	}
 }
 
-int				print_hexdump(t_arena *arena)
+int				print_hexdump(t_arena *arena, bool execute_anyway)
 {
 	int			i;
 
 	i = 0;
-	while (i < MEM_SIZE)
+	if ((arena->dump != -1 && arena->cycles == arena->dump) || execute_anyway)
 	{
-		if (i == 0)
-			ft_printf("0x0000 : ");
-		if (i && (i % HEXDUMP_WIDTH) == 0)
-			ft_printf("\n%#06x : ", i);
-		ft_printf("%02x ", arena->field[i]);
-		++i;
+		while (i < MEM_SIZE)
+		{
+			if (i == 0)
+				ft_printf("0x0000 : ");
+			if (i && (i % HEXDUMP_WIDTH) == 0)
+				ft_printf("\n%#06x : ", i);
+			ft_printf("%02x ", arena->field[i]);
+			++i;
+		}
+		ft_printf("\n");
+		// exit(1);// uncomment line
 	}
-	ft_printf("\n");
-	exit(1);
-	return (1);
+	return (0);
 }
 
 /*
@@ -90,6 +93,17 @@ void		print_champs(t_arena *arena)
 		ft_printf("file_size: %d\n\n", champ->file_size);
 		++i;
 	}
+}
+
+void			print_cursor(t_cursor *cursor)
+{
+	ft_printf("\nid: %d  ", cursor->id);
+	ft_printf("carry: %d  ", cursor->carry);
+	ft_printf("opcode: %d  ", cursor->opcode);
+	ft_printf("last_live: %d  ", cursor->last_live);
+	ft_printf("wait_cycle: %d  ", cursor->wait_cycle);
+	ft_printf("positions: %d  ", cursor->position);
+	ft_printf("jump %d\n\n", cursor->jump);
 }
 
 void			print_arena_and_cursors(t_arena *arena)

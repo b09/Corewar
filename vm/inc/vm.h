@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/14 16:12:52 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/15 16:47:24 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,10 @@
 **	exec_code		= pointer to location where exec_code should be
 **	file_name		= name of file provided
 **	id				= id assigned when parsed, possibly reassigned if -n flag
-						provided to it or any other champion
+**						provided to it or any other champion
 **	n_provided		= if -n flag used, the int value following the -n flag
+**	alive			= used to identify if champ is still alive for current
+**						corewar CYCLE_TO_DIE cycle
 */
 typedef struct					s_champ
 {
@@ -117,6 +119,7 @@ typedef struct					s_champ
 	char						*file_name;
 	int							id;
 	size_t						n_provided;
+	bool						alive;
 }								t_champ;
 
 /*
@@ -202,8 +205,9 @@ typedef void			(*t_func)(t_cursor *, t_arena *arena,\
 void		print_champs(t_arena *arena);
 int			print_error(char *str);
 void		intro_champs(t_arena *arena);
-int			print_hexdump(t_arena *arena);
+int			print_hexdump(t_arena *arena, bool execute_anyway);
 void		print_arena_and_cursors(t_arena *arena);
+void		print_cursor(t_cursor *cursor);
 
 
 

@@ -40,6 +40,7 @@ void			get_champ_file(t_champ *champ)
 	champ->exec_size = &champ->orig_file[8 + PROG_NAME_LENGTH];
 	champ->comment = &champ->orig_file[12 + PROG_NAME_LENGTH];
 	champ->exec_code = &champ->orig_file[CHAMP_MINIMUM_SIZE];
+	champ->alive = TRUE;
 	num = COREWAR_EXEC_MAGIC;
 	i = ft_memcmp_rev((void*)champ->orig_file, (void*)&num, 4);
 	num = 0;

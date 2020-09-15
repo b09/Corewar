@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/14 16:23:30 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/15 13:00:12 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void				int_to_ustr(int value, unsigned char *field,\
 	int				shift;
 	int				i;
 
+	i = 0;
 	value = switch_endianness(value, size);
 	while (i < size)
 	{
@@ -77,6 +78,7 @@ void				int_to_ustr(int value, unsigned char *field,\
 		mask = 0xFF << shift;
 		current_byte = (unsigned char)((value & mask) >> shift);
 		field[(position + i) % MEM_SIZE] = current_byte;
+		++i;
 	}
 }
 

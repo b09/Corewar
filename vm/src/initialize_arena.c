@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 18:58:47 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/15 15:12:42 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,18 @@ void				create_cursor(t_arena *arena, int i)
 {
 	t_cursor		*cursor;
 
+	arena->num_cursors += 1;
 	cursor = (t_cursor*)ft_memalloc(sizeof(t_cursor));
-	ft_bzero(cursor, sizeof(int) * 16);
 	cursor->registry[0] = (i + 1) * -1;
 	cursor->position = (MEM_SIZE / arena->num_champs) * i;
+	cursor->id = arena->num_cursors;
+	cursor->opcode = arena->field[cursor->position];
 	if (arena->cursor_head != NULL)
 	{
 		cursor->next = arena->cursor_head;
 		arena->cursor_head->prev = cursor;
 	}
-	else
-		arena->cursor_head = cursor;
+	arena->cursor_head = cursor;
 }
 
 /*
@@ -89,5 +90,6 @@ void				initialize_arena(t_arena *arena)
 		++i;
 	}
 	arena->max_cycle_die = CYCLE_TO_DIE;
-	arena->num_cursors = arena->num_champs;
+	// arena->num_cursors = arena->num_champs; // done in create_cursor;
+	arena->dump = -1;
 }

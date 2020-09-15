@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/14 16:11:55 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/15 16:47:32 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,15 @@ int					get_arg_size(char encode_byte, int arg_idx, bool dir_is_two)
 	shift = (6 - (arg_idx * 2));
 	mask = 0x03;
 	mask <<= shift;
-	if (encode_byte & mask == REG_CODE << shift)
+	if ((encode_byte & mask) == (REG_CODE << shift))
 		return (1);
-	else if (dir_is_two == FALSE && encode_byte & mask == (DIR_CODE << shift))
+	else if (dir_is_two == FALSE && (encode_byte & mask) == (DIR_CODE << shift))
 		return (4);
-	return (2);
+	else if (dir_is_two == TRUE && (encode_byte & mask) == (DIR_CODE << shift))
+		return (2);
+	else if ((encode_byte & mask) == (IND_CODE << shift))
+		return (2);
+	return (0);
 }
 
 /*
@@ -66,6 +70,7 @@ int					populate_arguments(unsigned char *field, int pos,\
 	while (i < 3)
 	{
 		args[i][0] = get_arg_size(field[(pos + 1) % MEM_SIZE], i, dir_is_two);
+		ft_printf("%s args:%d size:%d encode:%x\n", __func__, i + 1, args[i][0], field[(pos + 1) % MEM_SIZE]);
 		++i;
 	}
 	i = 0;

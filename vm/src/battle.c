@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/09 20:10:42 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/15 16:12:13 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,13 @@ static void			check_cursors(t_arena *arena)
 	arena->num_checks++;
 }
 
+static int		is_opcode(int opcode)
+{
+	if (opcode >= 1 && opcode <= 16)
+		return (TRUE);
+	return (FALSE);
+}
+
 static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 					t_func arrpointer[16])
 {
@@ -91,7 +98,9 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 	pointer[1] = arg1;
 	ft_bzero(arg3, 5);
 	pointer[2] = arg1;
-	arrpointer[cursor->opcode - 1](cursor, arena, pointer,\
+	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
+	if (is_opcode(cursor->opcode))
+		arrpointer[cursor->opcode - 1](cursor, arena, pointer,\
 				cursor->position % MEM_SIZE);
 	free(pointer);
 }
@@ -115,29 +124,54 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 // show “Player X (champion_name) won”, where X is the player’s number and cham-
 // pion_name is its name. For example: “Player 2 (rainbowdash) won”.
 
+/*
+.name "Candy"
+.comment ""
+
+	st		r1, r12
+	ld      %0 , r14
+	zjmp    %42
+*/
 void				battle(t_arena *arena, t_func arrpointer[16],\
 					t_cursor *cursor)
 {
-	populate_operation_array(arrpointer);
+	t_func			arrpointer1[16];
+	int				i;//delete
+
+	i = 0;
+
+	populate_operation_array(arrpointer1);
 	while (42)
 	{
-		arena->cycles == arena->dump && print_hexdump(arena);
 		if (arena->cycles_to_die == arena->max_cycle_die)
 			check_cursors(arena);
 		cursor = arena->cursor_head;
 		while (cursor)
 		{
+			ft_printf("****** cursor id: %d *******\n", cursor->id);
+			ft_printf("opcode:%d\n", cursor->opcode);
+			ft_printf("cursor pos:%x\n\n", arena->field[cursor->position % MEM_SIZE]);
+
+
+
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)
 			{
-				execute_operation(arena, cursor, arrpointer);
+				execute_operation(arena, cursor, arrpointer1);
 				cursor->position = (cursor->position + cursor->jump) % MEM_SIZE;
 				cursor->opcode = arena->field[cursor->position];
-				cursor->wait_cycle = arena->wait_cycle_arr[cursor->opcode - 1];
+				cursor->wait_cycle = is_opcode(cursor->opcode) ? arena->wait_cycle_arr[cursor->opcode - 1] : 0;
 				cursor->jump = 1;
 			}
 			cursor = cursor->next;
+			i++; // delete
+			if (i == 50) // delte
+				exit(1); // delete
+
+
+
 		}
+	ft_printf("line:%d func:%s\n", __LINE__, __func__);
 		(arena->cycles_to_die)++;
 		(arena->cycles)++;
 	}
