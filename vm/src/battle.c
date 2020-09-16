@@ -116,7 +116,7 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 {
 	t_args	args;
 
-	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
+	// ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
 	if (is_opcode(cursor->opcode))
 		arrpointer[cursor->opcode - 1](cursor, arena, &args,\
 				cursor->position % MEM_SIZE);
@@ -168,9 +168,9 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)
 			{
-				ft_printf("****** cursor id: %d *******\n", cursor->id);
-				ft_printf("opcode:%d\n", cursor->opcode);
-				ft_printf("cursor pos:%x\n\n", arena->field[cursor->position % MEM_SIZE]);
+				// ft_printf("****** cursor id: %d *******\n", cursor->id);
+				// ft_printf("opcode:%d\n", cursor->opcode);
+				// ft_printf("cursor pos:%x\n\n", arena->field[cursor->position % MEM_SIZE]);
 				i++; // delete
 
 
@@ -183,7 +183,7 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 			}
 			cursor = cursor->next;
 			// i++; // delete
-			if (i == 50) // delte
+			if (i == 10) // delte
 				exit(1); // delete
 
 

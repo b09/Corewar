@@ -293,9 +293,10 @@ void		cursor_unlink_del(t_arena *arena, t_cursor *cursor);
 **		get_arguments.c
 */
 
-int			populate_arguments(unsigned char *field, int pos, t_args *args,\
+void		populate_arguments(unsigned char *field, int pos, t_args *args,\
 			bool dir_is_two);
 int			get_arg_size(char encode_byte, int arg_idx, bool dir_is_two);
+int			check_register_values(t_args *args);
 
 /*
 **		operation_aux.c

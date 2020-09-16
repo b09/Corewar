@@ -114,7 +114,7 @@ static int			get_val(unsigned char *field, int pos, size_t size)
 **	pos + 2 is start of arguments
 */
 
-int					populate_arguments(unsigned char *field, int pos,\
+void				populate_arguments(unsigned char *field, int pos,\
 					t_args *args, bool dir_is_two)
 {
 	int				i;
@@ -129,9 +129,13 @@ int					populate_arguments(unsigned char *field, int pos,\
 	args->value_1 = get_val(field, pos + 2, args->size_1);
 	args->value_2 = get_val(field, pos + 2 + args->size_1, args->size_2);
 	args->value_3 = get_val(field, pos + 2 + args->size_1 + args->size_2, args->size_3);
+}
+
+int					check_register_values(t_args *args)
+{
 	if ((args->size_1 == 1 && (args->value_1 > 15 || args->value_1 < 0)) ||
 		(args->size_2 == 1 && (args->value_2 > 15 || args->value_2 < 0)) ||
 		(args->size_3 == 1 && (args->value_3 > 15 || args->value_3 < 0)))
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }
