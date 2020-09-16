@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 16:59:54 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 17:47:37 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,6 +309,8 @@ int					populate_arguments
 			(unsigned char *field, int pos, t_args *args, bool dir_is_two);
 int					get_arg_size
 			(char encode_byte, int arg_idx, bool dir_is_two);
+int					check_register_values
+			(t_args *args)
 
 /*
 **		operation_aux.c

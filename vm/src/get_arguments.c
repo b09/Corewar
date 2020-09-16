@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 17:27:27 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 17:56:20 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int			get_val(unsigned char *field, int pos, size_t size)
 **	pos + 2 is start of arguments
 */
 
-int					populate_arguments(unsigned char *field, int pos,\
+void				populate_arguments(unsigned char *field, int pos,\
 					t_args *args, bool dir_is_two)
 {
 	args->size_1 = get_arg_size(field[(pos + 1) % MEM_SIZE], 0, dir_is_two);
@@ -71,6 +71,10 @@ int					populate_arguments(unsigned char *field, int pos,\
 	args->value_3 = get_val(field,
 							pos + 2 + args->size_1 + args->size_2,
 							args->size_3);
+}
+
+int					check_register_values(t_args *args)
+{
 	if ((args->size_1 == 1 && (args->value_1 > 15 || args->value_1 < 0)) ||
 		(args->size_2 == 1 && (args->value_2 > 15 || args->value_2 < 0)) ||
 		(args->size_3 == 1 && (args->value_3 > 15 || args->value_3 < 0)))
