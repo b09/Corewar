@@ -516,6 +516,7 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, t_args *args,
 
 	int		value;
 
+	(void*)args;
 	value = 3;
 	if (cursor->carry)
 		value = ustr_to_int(arena->field, (position + 1) % MEM_SIZE, 2);
@@ -648,10 +649,14 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
+	int val;
+
+	(void*)args;
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
+	val = ustr_to_int(arena->field, position + 1, 2);
 	arena->cursor_head->position = (position +
-						(args->value_1 % IDX_MOD) % MEM_SIZE);
+						(val % IDX_MOD) % MEM_SIZE);
 	arena->num_cursors++;
 }
 
@@ -780,10 +785,13 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, t_args *args,
 void		op_lfork(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
+	int val;
+
+	(void*)args;
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
-	arena->cursor_head->position = (position +
-						args->value_1 % MEM_SIZE);
+	val = ustr_to_int(arena->field, position + 1, 2);
+	arena->cursor_head->position = (position + val % MEM_SIZE);
 	arena->num_cursors++;
 }
 
