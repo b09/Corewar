@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/15 16:47:32 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 11:57:33 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,12 @@ static int			get_val(unsigned char *field, int pos, size_t size)
 	}
 	return (ret);
 }
+
+/*
+**	int pos is current position of cursor
+**	pos + 1 is encoding byte
+**	pos + 2 is start of arguments
+*/
 
 int					populate_arguments(unsigned char *field, int pos,\
 					t_args *args, bool dir_is_two)
