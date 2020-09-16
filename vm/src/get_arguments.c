@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 16:11:29 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 17:27:27 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ int					populate_arguments(unsigned char *field, int pos,\
 	if ((args->size_1 == 1 && (args->value_1 > 15 || args->value_1 < 0)) ||
 		(args->size_2 == 1 && (args->value_2 > 15 || args->value_2 < 0)) ||
 		(args->size_3 == 1 && (args->value_3 > 15 || args->value_3 < 0)))
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }

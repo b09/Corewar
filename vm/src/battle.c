@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 16:07:14 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 17:44:58 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,6 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 // show “Player X (champion_name) won”, where X is the player’s number and cham-
 // pion_name is its name. For example: “Player 2 (rainbowdash) won”.
 
-/*
-.name "Candy"
-.comment ""
-
-	st		r1, r12
-	ld      %0 , r14
-	zjmp    %42
-*/
 void				battle(t_arena *arena, t_func arrpointer[16],\
 					t_cursor *cursor)
 {
