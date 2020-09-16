@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/15 16:12:13 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 16:07:14 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
 **	array of function pointers to the operations allowed for use in championship
 */
+
 static void			populate_operation_array(t_func arrpointer[16])
 {
 	arrpointer[0] = op_live;
@@ -33,11 +34,6 @@ static void			populate_operation_array(t_func arrpointer[16])
 	arrpointer[13] = op_lldi;
 	arrpointer[14] = op_lfork;
 	arrpointer[15] = op_aff;
-}
-
-static void			end_game(t_arena *arena)
-{
-	return ;
 }
 
 /*
@@ -59,7 +55,7 @@ static void			check_cursors(t_arena *arena)
 			cursor_unlink_del(arena, cursor);
 			cursor = arena->cursor_head;
 			if (cursor == NULL)
-				end_game(arena); // not written
+				print_winner(arena); // finish writting func
 		}
 		else
 			cursor = cursor->next;
@@ -82,34 +78,6 @@ static int		is_opcode(int opcode)
 		return (TRUE);
 	return (FALSE);
 }
-
-// static void			execute_operation(t_arena *arena, t_cursor *cursor,\
-// 					t_func arrpointer[16])
-// {
-// 	unsigned char	arg1[5];
-// 	unsigned char	arg2[5];
-// 	unsigned char	arg3[5];
-// 	unsigned char	**pointer;
-//
-// 	pointer = (unsigned char **)ft_memalloc(sizeof (char*) * 3);
-// 	// ft_bzero(arg1, 5);
-// 	// pointer[0] = arg1;
-// 	// ft_bzero(arg2, 5);
-// 	// pointer[1] = arg1;
-// 	// ft_bzero(arg3, 5);
-// 	// pointer[2] = arg1;
-// 	ft_bzero(arg1, 5);
-// 	pointer[0] = arg1;
-// 	ft_bzero(arg2, 5);
-// 	pointer[1] = arg1; // why are these arg1 aswell?
-// 	ft_bzero(arg3, 5);
-// 	pointer[2] = arg1; // why are these arg1 aswell?
-// 	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
-// 	if (is_opcode(cursor->opcode))
-// 		arrpointer[cursor->opcode - 1](cursor, arena, pointer,\
-// 				cursor->position % MEM_SIZE);
-// 	free(pointer);
-// }
 
 static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 					t_func arrpointer[16])
@@ -168,10 +136,10 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)
 			{
-				ft_printf("****** cursor id: %d *******\n", cursor->id);
-				ft_printf("opcode:%d\n", cursor->opcode);
-				ft_printf("cursor pos:%x\n\n", arena->field[cursor->position % MEM_SIZE]);
-				i++; // delete
+				// ft_printf("****** cursor id: %d *******\n", cursor->id);
+				// ft_printf("opcode:%d\n", cursor->opcode);
+				// ft_printf("cursor pos:%x\n\n", arena->field[cursor->position % MEM_SIZE]);
+				// i++; // delete
 
 
 

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/15 15:50:58 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 15:25:52 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void			intro_champs(t_arena *arena)
 	champ = NULL;
 	ft_printf("\nLLLeetttttt'sss get reaaddyyyyyy to SEGFAUUULLLT!!!!!!\n");
 	ft_printf("\tWOohoo!! Yeahhhhhh!! (crowd cheeers)\n\n");
+	ft_printf("Introducing contestants...\n");
 	while (i < arena->num_champs)
 	{
 		champ = arena->champs[i];
@@ -34,6 +35,14 @@ void			intro_champs(t_arena *arena)
 		champ->real_exec_size, champ->name, champ->comment);
 		++i;
 	}
+}
+
+void			print_winner(t_arena *arena)
+{
+	ft_printf("\nContestant %d, \"%s\", has won !\n",
+	arena->champs[arena->last_champ_alive - 1]->id,
+	arena->champs[arena->last_champ_alive - 1]->name);
+	exit(1); // free all malloced calls. 
 }
 
 int				print_hexdump(t_arena *arena, bool execute_anyway)
@@ -59,7 +68,7 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 }
 
 /*
-**		DEBUG FUNCTIONS ARE BELOW
+**		DEBUG FUNCTIONS ARE BELOW **************************************
 */
 
 void		print_champs(t_arena *arena)

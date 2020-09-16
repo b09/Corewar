@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/15 16:47:35 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 14:24:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		op_live(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-	(void*)args;
+	(void)args;
 	value = ustr_to_int(arena->field, position + 1, 4);
 	cursor->last_live = arena->cycles;
 	cursor->jump = 5;
@@ -524,7 +524,7 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, t_args *args,
 
 	int		value;
 
-	(void*)args;
+	(void)args;
 	value = 3;
 	if (cursor->carry)
 		value = ustr_to_int(arena->field, (position + 1) % MEM_SIZE, 2);
@@ -662,7 +662,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,
 	int val;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-	(void*)args;
+	(void)args;
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
 	val = ustr_to_int(arena->field, position + 1, 2);
@@ -801,7 +801,7 @@ void		op_lfork(t_cursor *cursor, t_arena *arena, t_args *args,
 	int val;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-	(void*)args;
+	(void)args;
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
 	val = ustr_to_int(arena->field, position + 1, 2);

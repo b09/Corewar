@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/14 21:53:44 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 17:03:08 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void		input_validation(int argc, char **argv, t_arena *arena)
 static void		allocate_for_champs(t_champ **all_champs)
 {
 	int			i;
-	
+
 	i = 0;
 	while (i < MAX_PLAYERS)
 	{
@@ -63,15 +63,21 @@ int				main(int argc, char **argv)
 	t_arena		arena;
 	t_champ		**all_champs;
 
-	if (argc < 3)
+	if (argc < 2)
 		print_error(FEW_ARGS);
 	ft_bzero(&arena, sizeof(arena));
-	all_champs = (t_champ **)ft_memalloc(sizeof (t_champ*) * MAX_PLAYERS + 1);
+	all_champs = (t_champ **)ft_memalloc(sizeof(t_champ*) * MAX_PLAYERS + 1);
 	allocate_for_champs(all_champs);
 	arena.champs = all_champs;
 	input_validation(argc, argv, &arena);
 	intro_champs(&arena);
 	initialize_arena(&arena);
-	battle(&arena, NULL, NULL);
+	if (arena.num_champs == 1)
+	{
+		arena.last_champ_alive = arena.champs[0]->id;
+		print_winner(&arena);// finish writing
+	}
+	else
+		battle(&arena, NULL, NULL);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/15 13:00:12 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 17:05:12 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@ int					switch_endianness(int n, size_t size)
 	return (res);
 }
 
-// int		ustr_to_int(unsigned char *field, int position, int size)
-//
-// 	return int value of bytes starting at field[position] up
-// 	field[position + size]. requires big to little endian conversion
-//
-
 int					ustr_to_int(unsigned char *field, int position, int size)
 {
 	unsigned char	current_byte;
@@ -55,12 +49,6 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 	}
 	return (switch_endianness(res, size));
 }
-
-
-// void	int_to_ustr(int value, unsigned char *field, int position, int size)
-//
-// 	write into field[position] up to field[position + size] the value of int
-// 	(which could also be a 2 byte instead of a 4 bytes)
 
 void				int_to_ustr(int value, unsigned char *field,\
 					int position, int size)
