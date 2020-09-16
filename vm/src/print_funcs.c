@@ -6,15 +6,16 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 18:09:52 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 22:28:36 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int				print_error(char *str)
+int				print_error(t_arena *arena, char *str)
 {
 	ft_printf("%s", str);
+	free_everything(arena);
 	exit(1);
 }
 
@@ -42,7 +43,7 @@ void			print_winner(t_arena *arena)
 	ft_printf("\nContestant %d, \"%s\", has won !\n",
 	arena->champs[arena->last_champ_alive - 1]->id,
 	arena->champs[arena->last_champ_alive - 1]->name);
-	exit(1); // free all malloced calls. 
+	free_everything(arena);
 }
 
 int				print_hexdump(t_arena *arena, bool execute_anyway)
@@ -62,7 +63,7 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 			++i;
 		}
 		ft_printf("\n");
-		// exit(1);// uncomment line
+		free_everything(arena);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 18:08:10 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 22:42:43 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 **		champ name exists
 */
 
-void			get_champ_file(t_champ *champ)
+void			get_champ_file(t_arena *arena, t_champ *champ)
 {
 	char		buf[EXEC_CODE_MAX_SIZE + CHAMP_MINIMUM_SIZE + 1];
 	int			i;
@@ -32,7 +32,7 @@ void			get_champ_file(t_champ *champ)
 
 	i = read(champ->fd, &buf, EXEC_CODE_MAX_SIZE + CHAMP_MINIMUM_SIZE + 1);
 	if (i == 2857 || i < CHAMP_MINIMUM_SIZE || i == -1)
-		print_error(TOO_BIG_OR_SML);
+		print_error(arena, TOO_BIG_OR_SML);
 	champ->orig_file = (unsigned char*)ft_memdup(buf, i);
 	champ->file_size = i;
 	champ->name = &champ->orig_file[4];
@@ -47,7 +47,7 @@ void			get_champ_file(t_champ *champ)
 		ft_memcmp((void*)&num, (void*)champ->exec_code - 4, 4);
 	num = champ->file_size - CHAMP_MINIMUM_SIZE;
 	i |= ft_memcmp_rev((void*)champ->exec_size, (void*)&num, 4);
-	(i || !champ->name[0]) && print_error(BAD_BINARY);
+	(i || !champ->name[0]) && print_error(arena, BAD_BINARY);
 	champ->real_exec_size = num;
 }
 
@@ -68,8 +68,8 @@ void			validate_champs(char *input, t_arena *arena)
 	champ->file_name = input;
 	champ->fd = open(input, O_RDONLY);
 	if (champ->fd < 0 || arena->num_champs == MAX_PLAYERS + 1)
-		print_error(TOO_MANY_CHAMPS);
-	get_champ_file(champ);
+		print_error(arena, TOO_MANY_CHAMPS);
+	get_champ_file(arena, champ);
 }
 
 /*
@@ -84,20 +84,21 @@ void			validate_flag(char **argv, t_arena *arena, int *argc, int len)
 	++(*argc);
 	while (ft_isdigit(argv[*argc][index]))
 		++index;
-	if (index != ft_strlen(argv[*argc]) | index > 9)
-		print_error(INV_ARG_N_DUMP);
-	if (len == 5 && arena->dump == 0)
+	if (!index || index != ft_strlen(argv[*argc]) || index > 9)
+		print_error(arena, INV_ARG_N_DUMP);
+	if (len == 5 && arena->dump == -1)
 	{
 		arena->dump = ft_atoi(argv[*argc]);
-		arena->dump == 0 && print_error(INVALID_DUMP);
+		if (arena->dump == 0 && index != 1)
+			print_error(arena, INVALID_DUMP);
 	}
 	else if (len == 2 && arena->n_flag == 0)
 	{
 		arena->n_flag = ft_atoi(argv[*argc]);
-		arena->n_flag == 0 && print_error(INVALID_N);
+		arena->n_flag == 0 && print_error(arena, INVALID_N);
 	}
 	else
-		print_error(MULTIPLE_N);
+		print_error(arena, MULTIPLE_N);
 }
 
 /*
@@ -109,7 +110,7 @@ void			validate_flag(char **argv, t_arena *arena, int *argc, int len)
 **	available indeces.
 */
 
-void			grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
+int				grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 				int num_champs)
 {
 	int			i;
@@ -121,7 +122,8 @@ void			grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 		n_ids[champs[i]->n_provided - 1] == NULL)
 			n_ids[champs[i]->n_provided - 1] = champs[i];
 		else if (champs[i]->n_provided != 0)
-			print_error(SAME_N_VALUE);
+			return (FALSE);
+			// print_error(SAME_N_VALUE);
 		++i;
 	}
 	i = 0;
@@ -135,6 +137,7 @@ void			grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 		}
 		++i;
 	}
+	return (TRUE);
 }
 
 /*
@@ -152,7 +155,8 @@ void			validate_ids(t_arena *arena)
 
 	i = 0;
 	ft_bzero(&n_ids, sizeof(n_ids));
-	grab_n_ids(n_ids, 0, arena->champs, arena->num_champs);
+	if (grab_n_ids(n_ids, 0, arena->champs, arena->num_champs) == 0)
+			print_error(arena, SAME_N_VALUE);
 	while (i < arena->num_champs)
 	{
 		champs = n_ids[i];

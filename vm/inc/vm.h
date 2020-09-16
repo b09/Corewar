@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 18:03:48 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 22:42:58 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,6 @@ typedef struct		s_champ
 **	cursor_head		= pointer to first cursor, which is a linked list of cursors
 **	wait_cycle_arr	= array of values representing the wait times that each
 **					operation costs, placed at the index - 1 for each opcode
-**	alive_champs_arr= array in which at every index of champ id - 1 are the
-**					number of 'live' reported for each champ
 **	last_champ_alive= most recent cursors to perform live on a memory cell
 **					containing some champion's id. (if no id, oh well)
 */
@@ -165,7 +163,6 @@ typedef struct		s_arena
 	int				num_lives;
 	struct s_cursor	*cursor_head;
 	int				wait_cycle_arr[16];
-	int				alive_champs_arr[4];
 	int				last_champ_alive;
 }					t_arena;
 
@@ -216,7 +213,7 @@ void				print_champs
 void				print_winner
 			(t_arena *arena);
 int					print_error
-			(char *str);
+			(t_arena *arena, char *str);
 void				intro_champs
 			(t_arena *arena);
 int					print_hexdump
@@ -231,12 +228,12 @@ void				print_cursor
 */
 
 void				get_champ_file
-			(t_champ *champ);
+			(t_arena *arena, t_champ *champ);
 void				validate_champs
 			(char *input, t_arena *arena);
 void				validate_flag
 			(char **argv, t_arena *arena, int *argc, int len);
-void				grab_n_ids
+int					grab_n_ids
 			(t_champ *n_ids[4], int n_index, t_champ **champs, int num_champs);
 void				validate_ids
 			(t_arena *arena);
@@ -300,6 +297,8 @@ void				op_aff
 
 void				cursor_unlink_del
 			(t_arena *arena, t_cursor *cursor);
+void				free_everything
+			(t_arena *arena);
 
 /*
 **		get_arguments.c

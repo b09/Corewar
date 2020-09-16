@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 18:06:05 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 22:43:44 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void		input_validation(int argc, char **argv, t_arena *arena)
 
 	i = 1;
 	len = 0;
+	arena->dump = -1;
 	while (i < argc)
 	{
 		len = ft_strlen(argv[i]);
@@ -35,7 +36,7 @@ static void		input_validation(int argc, char **argv, t_arena *arena)
 												ft_strequ("-dump", argv[i])))
 			validate_flag(argv, arena, &i, len);
 		else
-			print_error(INVALID_ARG);
+			print_error(arena, INVALID_ARG);
 		++i;
 	}
 	validate_ids(arena);
@@ -65,20 +66,17 @@ int				main(int argc, char **argv)
 	t_func		arrpointer[16];
 
 	if (argc < 2)
-		print_error(FEW_ARGS);
+	{
+		ft_printf("%s", FEW_ARGS);
+		exit(1);
+	}
 	ft_bzero(&arena, sizeof(arena));
-	all_champs = (t_champ **)ft_memalloc(sizeof(t_champ*) * MAX_PLAYERS + 1);
+	all_champs = (t_champ **)ft_memalloc(sizeof(t_champ*) * (MAX_PLAYERS + 1));
 	allocate_for_champs(all_champs);
 	arena.champs = all_champs;
 	input_validation(argc, argv, &arena);
 	intro_champs(&arena);
 	initialize_arena(&arena);
-	if (arena.num_champs == 1)
-	{
-		arena.last_champ_alive = arena.champs[0]->id;
-		print_winner(&arena);// finish writing
-	}
-	else
-		battle(&arena, arrpointer, NULL);
+	battle(&arena, arrpointer, NULL);
 	return (0);
 }
