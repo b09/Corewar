@@ -91,7 +91,7 @@ int					get_arg_size(char encode_byte, int arg_idx, bool dir_is_two)
 // 	return (1);
 // }
 
-static int			get_val(unsigned char *field, int pos, t_size size)
+static int			get_val(unsigned char *field, int pos, size_t size)
 {
 	int ret;
 	int	byte;

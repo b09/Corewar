@@ -217,7 +217,7 @@ typedef struct					s_args
 }								t_args;
 
 typedef void			(*t_func)(t_cursor *, t_arena *arena,\
-						unsigned char **args, int position);
+						t_args *args, int position);
 
 /*
 **		print_funcs.c
@@ -261,37 +261,37 @@ void		battle(t_arena *arena, t_func *arrpointer, t_cursor *cursor);
 **		operations.c
 */
 
-void		op_live(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_live(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_ld(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_ld(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_st(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_add(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_add(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_sub(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_sub(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_and(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_and(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_or(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_or(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_xor(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_xor(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_zjmp(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_zjmp(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_ldi(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_ldi(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_sti(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_fork(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_lld(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_lld(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_lldi(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_lldi(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_lfork(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_lfork(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
-void		op_aff(t_cursor *cursor, t_arena *arena, unsigned char **args,\
+void		op_aff(t_cursor *cursor, t_arena *arena, t_args *args,\
 			int position);
 
 /*
@@ -304,8 +304,8 @@ void		cursor_unlink_del(t_arena *arena, t_cursor *cursor);
 **		get_arguments.c
 */
 
-int			populate_arguments(unsigned char *field, int position,\
-			unsigned char **args, bool dir_is_two);
+int			populate_arguments(unsigned char *field, int pos, t_args *args,\
+			bool dir_is_two);
 int			get_arg_size(char encode_byte, int arg_idx, bool dir_is_two);
 
 /*

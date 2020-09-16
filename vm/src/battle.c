@@ -83,33 +83,33 @@ static int		is_opcode(int opcode)
 	return (FALSE);
 }
 
-static void			execute_operation(t_arena *arena, t_cursor *cursor,\
-					t_func arrpointer[16])
-{
-	unsigned char	arg1[5];
-	unsigned char	arg2[5];
-	unsigned char	arg3[5];
-	unsigned char	**pointer;
-
-	pointer = (unsigned char **)ft_memalloc(sizeof (char*) * 3);
-	// ft_bzero(arg1, 5);
-	// pointer[0] = arg1;
-	// ft_bzero(arg2, 5);
-	// pointer[1] = arg1;
-	// ft_bzero(arg3, 5);
-	// pointer[2] = arg1;
-	ft_bzero(arg1, 5);
-	pointer[0] = arg1;
-	ft_bzero(arg2, 5);
-	pointer[1] = arg1; // why are these arg1 aswell?
-	ft_bzero(arg3, 5);
-	pointer[2] = arg1; // why are these arg1 aswell?
-	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
-	if (is_opcode(cursor->opcode))
-		arrpointer[cursor->opcode - 1](cursor, arena, pointer,\
-				cursor->position % MEM_SIZE);
-	free(pointer);
-}
+// static void			execute_operation(t_arena *arena, t_cursor *cursor,\
+// 					t_func arrpointer[16])
+// {
+// 	unsigned char	arg1[5];
+// 	unsigned char	arg2[5];
+// 	unsigned char	arg3[5];
+// 	unsigned char	**pointer;
+//
+// 	pointer = (unsigned char **)ft_memalloc(sizeof (char*) * 3);
+// 	// ft_bzero(arg1, 5);
+// 	// pointer[0] = arg1;
+// 	// ft_bzero(arg2, 5);
+// 	// pointer[1] = arg1;
+// 	// ft_bzero(arg3, 5);
+// 	// pointer[2] = arg1;
+// 	ft_bzero(arg1, 5);
+// 	pointer[0] = arg1;
+// 	ft_bzero(arg2, 5);
+// 	pointer[1] = arg1; // why are these arg1 aswell?
+// 	ft_bzero(arg3, 5);
+// 	pointer[2] = arg1; // why are these arg1 aswell?
+// 	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
+// 	if (is_opcode(cursor->opcode))
+// 		arrpointer[cursor->opcode - 1](cursor, arena, pointer,\
+// 				cursor->position % MEM_SIZE);
+// 	free(pointer);
+// }
 
 static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 					t_func arrpointer[16])
@@ -121,7 +121,7 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 	if (is_opcode(cursor->opcode))
 		arrpointer[cursor->opcode - 1](cursor, arena, args,\
 				cursor->position % MEM_SIZE);
-	free(pointer);
+	free(args);
 }
 
 /*
