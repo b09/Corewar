@@ -94,6 +94,7 @@ void		op_ld(t_cursor *cursor, t_arena *arena, t_args *args,
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
+	// ft_printf("func:%s line %d, args content: %d %d\n", __func__, __LINE__, args->value_1, args->value_2);
 	if (args->size_1 == SIZE_LDIR)
 		cursor->registry[args->value_2] = args->value_1;
 	else if (args->size_1 == SIZE_IND)
@@ -151,6 +152,7 @@ void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
+	// ft_printf("func:%s line %d, args content: %d %d\n", __func__, __LINE__, args->value_1, args->value_2);
 	if (args->size_2 == SIZE_REG)
 		cursor->registry[args->value_2] =
 		cursor->registry[args->value_1];

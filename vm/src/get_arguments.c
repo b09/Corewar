@@ -120,9 +120,9 @@ int					populate_arguments(unsigned char *field, int pos,\
 	ft_printf("%s args:%d size:%d encode:%x\n", __func__, 1, args->size_1, field[(pos + 1) % MEM_SIZE]);
 	ft_printf("%s args:%d size:%d encode:%x\n", __func__, 2, args->size_2, field[(pos + 1) % MEM_SIZE]);
 	ft_printf("%s args:%d size:%d encode:%x\n", __func__, 3, args->size_3, field[(pos + 1) % MEM_SIZE]);
-	args->value_1 = get_val(field, pos + 3, args->size_1);
-	args->value_2 = get_val(field, pos + 3 + args->size_1, args->size_2);
-	args->value_3 = get_val(field, pos + 3 + args->size_1 + args->size_2, args->size_3);
+	args->value_1 = get_val(field, pos + 2, args->size_1);
+	args->value_2 = get_val(field, pos + 2 + args->size_1, args->size_2);
+	args->value_3 = get_val(field, pos + 2 + args->size_1 + args->size_2, args->size_3);
 	if ((args->size_1 == 1 && (args->value_1 > 15 || args->value_1 < 0)) ||
 		(args->size_2 == 1 && (args->value_2 > 15 || args->value_2 < 0)) ||
 		(args->size_3 == 1 && (args->value_3 > 15 || args->value_3 < 0)))
