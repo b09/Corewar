@@ -123,9 +123,9 @@ int					populate_arguments(unsigned char *field, int pos,\
 	args->size_1 = get_arg_size(field[(pos + 1) % MEM_SIZE], 0, dir_is_two);
 	args->size_2 = get_arg_size(field[(pos + 1) % MEM_SIZE], 1, dir_is_two);
 	args->size_3 = get_arg_size(field[(pos + 1) % MEM_SIZE], 2, dir_is_two);
-	ft_printf("%s args:%d size:%d encode:%x\n", __func__, 1, args->size_1, field[(pos + 1) % MEM_SIZE]);
-	ft_printf("%s args:%d size:%d encode:%x\n", __func__, 2, args->size_2, field[(pos + 1) % MEM_SIZE]);
-	ft_printf("%s args:%d size:%d encode:%x\n", __func__, 3, args->size_3, field[(pos + 1) % MEM_SIZE]);
+	// ft_printf("%s args:%d size:%d encode:%x\n", __func__, 1, args->size_1, field[(pos + 1) % MEM_SIZE]);
+	// ft_printf("%s args:%d size:%d encode:%x\n", __func__, 2, args->size_2, field[(pos + 1) % MEM_SIZE]);
+	// ft_printf("%s args:%d size:%d encode:%x\n", __func__, 3, args->size_3, field[(pos + 1) % MEM_SIZE]);
 	args->value_1 = get_val(field, pos + 2, args->size_1);
 	args->value_2 = get_val(field, pos + 2 + args->size_1, args->size_2);
 	args->value_3 = get_val(field, pos + 2 + args->size_1 + args->size_2, args->size_3);
