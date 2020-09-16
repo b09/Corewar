@@ -42,6 +42,7 @@ void		op_live(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int		value;
 
+	(void*)args;
 	value = ustr_to_int(arena->field, position, 4);
 	cursor->last_live = arena->cycles;
 	cursor->jump = 5;
@@ -501,7 +502,7 @@ void		op_xor(t_cursor *cursor, t_arena *arena, t_args *args,
 **
 **		if cursor->carry == 1
 **			int position = position + (1)T_DIR[i] % IDX_MOD
-**			int value = 4 bytes read at field[position]
+**			int value = 2 bytes read at field[position]
 **			cursor->jump = value
 **
 **		if cursor->carry == 0
@@ -517,12 +518,9 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, t_args *args,
 
 	value = 3;
 	if (cursor->carry)
-		value = ustr_to_int(arena->field,
-					(position + args->value_2) % IDX_MOD, 4);
-	cursor->jump = value;
-
+		value = ustr_to_int(arena->field, (position + 1) % MEM_SIZE, 2);
+	cursor->jump = value % IDX_MOD;
 	print_cursor(cursor);// delete
-
 }
 
 /*
