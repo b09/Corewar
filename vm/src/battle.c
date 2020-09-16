@@ -92,12 +92,18 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 	unsigned char	**pointer;
 
 	pointer = (unsigned char **)ft_memalloc(sizeof (char*) * 3);
+	// ft_bzero(arg1, 5);
+	// pointer[0] = arg1;
+	// ft_bzero(arg2, 5);
+	// pointer[1] = arg1;
+	// ft_bzero(arg3, 5);
+	// pointer[2] = arg1;
 	ft_bzero(arg1, 5);
 	pointer[0] = arg1;
 	ft_bzero(arg2, 5);
-	pointer[1] = arg1;
+	pointer[1] = arg1; // why are these arg1 aswell?
 	ft_bzero(arg3, 5);
-	pointer[2] = arg1;
+	pointer[2] = arg1; // why are these arg1 aswell?
 	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
 	if (is_opcode(cursor->opcode))
 		arrpointer[cursor->opcode - 1](cursor, arena, pointer,\
@@ -105,10 +111,23 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 	free(pointer);
 }
 
+static void			execute_operation(t_arena *arena, t_cursor *cursor,\
+					t_func arrpointer[16])
+{
+	t_args	*args;
+
+	args = (t_args *)ft_memalloc(sizeof(t_args));
+	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
+	if (is_opcode(cursor->opcode))
+		arrpointer[cursor->opcode - 1](cursor, arena, args,\
+				cursor->position % MEM_SIZE);
+	free(pointer);
+}
+
 /*
 **	each cursor will have an operation which will cost a number of cycles to do.
 **	if the number of cycles completed is sufficient, execute the operation.
-**	
+**
 */
 
 //		FROM PROJECT PDF
@@ -117,7 +136,7 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 // abide by this rule will be killed immediately
 // - If during one of those checkups we notice that there has been at least one
 // NBR_LIVE execution of live since the latest check up, we will decrease
-// CYCLE_TO_DIE of CYCLE_DELTA units. 
+// CYCLE_TO_DIE of CYCLE_DELTA units.
 // - If CYCLE_TO_DIE wasn’t decreased since MAX_CHECKS checkups, decrease it.
 // - The game is over when all processes are dead.
 // - The winner is the last player to be reported alive. The machine will then
