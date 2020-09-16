@@ -95,10 +95,10 @@ void		op_ld(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
 	if (args->size_1 == SIZE_LDIR)
-		cursor->registry[args->value_2] = *(int*)(args[FIRST_ARG] + 1);
+		cursor->registry[args->value_2] = args->value_1;
 	else if (args->size_1 == SIZE_IND)
 	{
-		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		position = position + args->value_1 % IDX_MOD;
 		position = ustr_to_int(arena->field, position, 4);
 		cursor->registry[args->value_2] = position;
 	}
@@ -156,7 +156,7 @@ void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 		cursor->registry[args->value_1];
 	else if (args->size_2 == SIZE_IND)
 	{
-		position = (position + *(int*)(args[SECND_ARG] + 1)) % IDX_MOD;
+		position = (position + args->value_2) % IDX_MOD;
 		int_to_ustr(cursor->registry[args->value_1],
 										arena->field, position, 4);
 	}
@@ -255,18 +255,18 @@ static int	op_and_helper(t_args *args, int position, t_arena *arena)
 	value2 = 0;
 	if (args->size_1 == SIZE_IND)
 	{
-		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		position = position + args->value_1 % IDX_MOD;
 		value1 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value1 = *(int*)(args[FIRST_ARG] + 1);
+		value1 = args->value_1;
 	if (args->size_2 == SIZE_IND)
 	{
-		position = position + *(int*)(args[SECND_ARG] + 1) % IDX_MOD;
+		position = position + args->value_2 % IDX_MOD;
 		value2 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value2 = *(int*)(args[SECND_ARG] + 1);
+		value2 = args->value_2;
 	return (value1 & value2);
 }
 
@@ -333,18 +333,18 @@ static int	op_or_helper(t_args *args, int position, t_arena *arena)
 	value2 = 0;
 	if (args->size_1 == SIZE_IND)
 	{
-		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		position = position + args->value_1 % IDX_MOD;
 		value1 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value1 = *(int*)(args[FIRST_ARG] + 1);
+		value1 = args->value_1;
 	if (args->size_2 == SIZE_IND)
 	{
-		position = position + *(int*)(args[SECND_ARG] + 1) % IDX_MOD;
+		position = position + args->value_2 % IDX_MOD;
 		value2 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value2 = *(int*)(args[SECND_ARG] + 1);
+		value2 = args->value_2;
 	return (value1 | value2);
 }
 
@@ -411,18 +411,18 @@ static int	op_xor_helper(t_args *args, int position, t_arena *arena)
 	value2 = 0;
 	if (args->size_1 == SIZE_IND)
 	{
-		position = position + *(int*)(args[FIRST_ARG] + 1) % IDX_MOD;
+		position = position + args->value_1 % IDX_MOD;
 		value1 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value1 = *(int*)(args[FIRST_ARG] + 1);
+		value1 = args->value_1;
 	if (args->size_2 == SIZE_IND)
 	{
-		position = position + *(int*)(args[SECND_ARG] + 1) % IDX_MOD;
+		position = position + args->value_2 % IDX_MOD;
 		value2 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value2 = *(int*)(args[SECND_ARG] + 1);
+		value2 = args->value_2;
 	return (value1 ^ value2);
 }
 
@@ -516,7 +516,7 @@ void		op_zjmp(t_cursor *cursor, t_arena *arena, t_args *args,
 	value = 3;
 	if (cursor->carry)
 		value = ustr_to_int(arena->field,
-					(position + *(int*)(args[SECND_ARG] + 1)) % IDX_MOD, 4);
+					(position + args->value_2) % IDX_MOD, 4);
 	cursor->jump = value;
 
 	print_cursor(cursor);// delete
@@ -560,15 +560,15 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, t_args *args,
 	populate_arguments(arena->field, cursor->position, args, 1);
 	if (args->size_1 != SIZE_IND)
 		cursor->registry[args->value_3] =
-		ustr_to_int(arena->field, position + ((*(int*)(args[FIRST_ARG] + 1)
-		+ *(int*)(args[SECND_ARG] + 1)) % IDX_MOD), 4);
+		ustr_to_int(arena->field, position + ((args->value_1
+		+ args->value_2) % IDX_MOD), 4);
 	else
 	{
 		value = ustr_to_int(arena->field, position +
-								(*(int*)(args[FIRST_ARG] + 1) % IDX_MOD), 4);
+								(args->value_1 % IDX_MOD), 4);
 		cursor->registry[args->value_3] =
 		ustr_to_int(arena->field, position + (value +
-								*(int*)(args[SECND_ARG] + 1)) % IDX_MOD, 4);
+								args->value_2) % IDX_MOD, 4);
 	}
 }
 
@@ -609,18 +609,18 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	populate_arguments(arena->field, cursor->position, args, 1);
 	if (args->size_2 != SIZE_IND)
 	{
-		position = position + *(int*)(args[SECND_ARG] + 1) +
-									*(int*)(args[THIRD_ARG] + 1) % IDX_MOD;
+		position = position + args->value_2 +
+									args->value_3 % IDX_MOD;
 		int_to_ustr(cursor->registry[args->value_1],
 							arena->field, position, 4);
 	}
 	else
 	{
 		value = ustr_to_int(arena->field, position +
-									*(int*)(args[SECND_ARG] + 1) % IDX_MOD, 4);
+									args->value_2 % IDX_MOD, 4);
 		int_to_ustr(cursor->registry[args->value_1],
 						arena->field, position +
-						(value + *(int*)(args[THIRD_ARG] + 1) % IDX_MOD), 4);
+						(value + args->value_3 % IDX_MOD), 4);
 	}
 }
 
@@ -651,7 +651,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
 	arena->cursor_head->position = (position +
-						(*(int*)(args[FIRST_ARG] + 1) % IDX_MOD) % MEM_SIZE);
+						(args->value_1 % IDX_MOD) % MEM_SIZE);
 	arena->num_cursors++;
 }
 
@@ -693,10 +693,10 @@ void		op_lld(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
 	if (args->size_1 == SIZE_LDIR)
-		cursor->registry[args->value_2] = *(int*)(args[FIRST_ARG] + 1);
+		cursor->registry[args->value_2] = args->value_1;
 	else if (args->size_1 == SIZE_IND)
 	{
-		position = position + *(int*)(args[FIRST_ARG] + 1);
+		position = position + args->value_1;
 		position = ustr_to_int(arena->field, position, 4);
 		cursor->registry[args->value_2] = position;
 	}
@@ -744,15 +744,15 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, t_args *args,
 	populate_arguments(arena->field, cursor->position, args, 1);
 	if (args->size_1 != SIZE_IND)
 		cursor->registry[args->value_3] =
-		ustr_to_int(arena->field, position + *(int*)(args[FIRST_ARG] + 1)
-		+ *(int*)(args[SECND_ARG] + 1), 4);
+		ustr_to_int(arena->field, position + args->value_1
+		+ args->value_2, 4);
 	else
 	{
 		value = ustr_to_int(arena->field, position +
-								(*(int*)(args[FIRST_ARG] + 1) % IDX_MOD), 4);
+								(args->value_1 % IDX_MOD), 4);
 		cursor->registry[args->value_3] =
 		ustr_to_int(arena->field, position + value +
-								*(int*)(args[SECND_ARG] + 1), 4);
+								args->value_2, 4);
 	}
 }
 
@@ -783,7 +783,7 @@ void		op_lfork(t_cursor *cursor, t_arena *arena, t_args *args,
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
 	arena->cursor_head->position = (position +
-						*(int*)(args[FIRST_ARG] + 1) % MEM_SIZE);
+						args->value_1 % MEM_SIZE);
 	arena->num_cursors++;
 }
 

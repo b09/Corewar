@@ -114,14 +114,12 @@ static int		is_opcode(int opcode)
 static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 					t_func arrpointer[16])
 {
-	t_args	*args;
+	t_args	args;
 
-	args = (t_args *)ft_memalloc(sizeof(t_args));
 	ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
 	if (is_opcode(cursor->opcode))
-		arrpointer[cursor->opcode - 1](cursor, arena, args,\
+		arrpointer[cursor->opcode - 1](cursor, arena, &args,\
 				cursor->position % MEM_SIZE);
-	free(args);
 }
 
 /*

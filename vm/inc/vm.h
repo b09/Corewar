@@ -195,17 +195,6 @@ typedef struct					s_cursor
 	struct s_cursor				*prev;
 }								t_cursor;
 
-/*
-**	id			= unique id
-**	carry		= flag changed by some operations
-**	opcode		= operation needing to complete
-**	last_live	= cycle number in which cursor last performed 'live' operation
-**	wait_cycle	= amount of cycles to wait before execution of operatino
-**	position	= address in memory
-**	jump		= amout of bytes cursor must jump for next operation
-**	registry	= array of registries used by cursor
-**	next		= link to next cursor
-*/
 typedef struct					s_args
 {
 	int							value_1;
