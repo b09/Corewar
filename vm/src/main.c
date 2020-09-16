@@ -48,7 +48,7 @@ static void		input_validation(int argc, char **argv, t_arena *arena)
 static void		allocate_for_champs(t_champ **all_champs)
 {
 	int			i;
-	
+
 	i = 0;
 	while (i < MAX_PLAYERS)
 	{
@@ -63,7 +63,7 @@ int				main(int argc, char **argv)
 	t_arena		arena;
 	t_champ		**all_champs;
 
-	if (argc < 3)
+	if (argc < 2)
 		print_error(FEW_ARGS);
 	ft_bzero(&arena, sizeof(arena));
 	all_champs = (t_champ **)ft_memalloc(sizeof (t_champ*) * MAX_PLAYERS + 1);

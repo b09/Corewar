@@ -623,6 +623,11 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (check_register_values(args) == FALSE)
 		return ;
+	ft_printf("Values(big-end): 0x%x 0x%x 0x%x\n", args->value_1, args->value_2, args->value_3);
+	ft_printf("Values(lil-end): 0x%x 0x%x 0x%x\n",
+		switch_endianness(args->value_1, args->size_1),
+		switch_endianness(args->value_2, args->size_2),
+		switch_endianness(args->value_3, args->size_3));
 	if (args->size_2 != SIZE_IND)
 	{
 		position = position + args->value_2 +

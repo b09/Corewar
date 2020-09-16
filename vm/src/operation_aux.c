@@ -20,13 +20,13 @@ int					switch_endianness(int n, size_t size)
 	if (size == 1)
 		return (n);
 	else if (size == 2)
-		res = (n >> 8) | (n << 8);
+		res = ((n >> 8) | (n << 8)) & 0xFFFF;
 	else if (size == 4)
 	{
-		res |= ((n >> 8 * 3) & 0x000000FF);
-		res |= ((n << 8 * 1) & 0x00FF0000);
-		res |= ((n >> 8 * 1) & 0x0000FF00);
-		res |= ((n << 8 * 3) & 0xFF000000);
+		res |= ((n >> (8 * 3)) & 0x000000FF);
+		res |= ((n << (8 * 1)) & 0x00FF0000);
+		res |= ((n >> (8 * 1)) & 0x0000FF00);
+		res |= ((n << (8 * 3)) & 0xFF000000);
 	}
 	return (res);
 }
