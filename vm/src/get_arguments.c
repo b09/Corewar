@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 17:56:20 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 18:07:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int					get_arg_size(char encode_byte, int arg_idx, bool dir_is_two)
 
 static int			get_val(unsigned char *field, int pos, size_t size)
 {
-	int ret;
-	int	byte;
-	int	i;
+	int				ret;
+	int				byte;
+	size_t			i;
 
 	ret = 0;
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 17:03:08 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 18:06:05 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int				main(int argc, char **argv)
 {
 	t_arena		arena;
 	t_champ		**all_champs;
+	t_func		arrpointer[16];
 
 	if (argc < 2)
 		print_error(FEW_ARGS);
@@ -78,6 +79,6 @@ int				main(int argc, char **argv)
 		print_winner(&arena);// finish writing
 	}
 	else
-		battle(&arena, NULL, NULL);
+		battle(&arena, arrpointer, NULL);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 16:14:36 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 18:08:10 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void			get_champ_file(t_champ *champ)
 
 void			validate_champs(char *input, t_arena *arena)
 {
-	int			len;
 	t_champ		*champ;
 
 	arena->num_champs++;
@@ -79,7 +78,7 @@ void			validate_champs(char *input, t_arena *arena)
 
 void			validate_flag(char **argv, t_arena *arena, int *argc, int len)
 {
-	int			index;
+	size_t		index;
 
 	index = 0;
 	++(*argc);

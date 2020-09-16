@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 17:44:58 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 18:05:25 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 
 	i = 0; //delte
 
-	populate_operation_array(arrpointer1);
+	populate_operation_array(arrpointer);
 	while (42)
 	{
 		if (arena->cycles_to_die == arena->max_cycle_die)

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 15:25:52 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 18:09:52 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 void		print_champs(t_arena *arena)
 {
 	int			i;
-	t_champ 	**champs;
 	t_champ 	*champ;
 
 	ft_printf("*** %s() ***\n", __func__);

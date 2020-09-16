@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 17:44:41 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 18:09:12 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,8 +317,6 @@ static int	op_and_helper(t_args *args, int position, t_arena *arena)
 void		op_and(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
-	int		value1;
-	int		value2;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, position, args, 0);
@@ -396,8 +394,6 @@ static int	op_or_helper(t_args *args, int position, t_arena *arena)
 void		op_or(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
-	int		value1;
-	int		value2;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, position, args, 0);
@@ -475,8 +471,6 @@ static int	op_xor_helper(t_args *args, int position, t_arena *arena)
 void		op_xor(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
-	int		value1;
-	int		value2;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	
@@ -571,10 +565,10 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
+	populate_arguments(arena->field, cursor->position, args, 1);
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (check_register_values(args) == FALSE)
 		return ;
-	populate_arguments(arena->field, cursor->position, args, 1);
 
 	if (args->size_1 != SIZE_IND)
 		cursor->registry[args->value_3] =
