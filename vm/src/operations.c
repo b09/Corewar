@@ -42,16 +42,19 @@ void		op_live(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int		value;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	(void*)args;
-	value = ustr_to_int(arena->field, position, 4);
+	value = ustr_to_int(arena->field, position + 1, 4);
 	cursor->last_live = arena->cycles;
 	cursor->jump = 5;
 	arena->num_lives++;
-	if (value && value <= arena->num_champs && (value * -1) ==
-	cursor->registry[0] && arena->champs[value]->alive == TRUE)
+	// if (value > 0 && value <= arena->num_champs &&
+	// 	value + cursor->registry[0] == 0 && arena->champs[value]->alive == TRUE)
+	if (value > 0 && value <= arena->num_champs &&
+		value + cursor->registry[0] == 0)
 	{
 		ft_printf("A process shows that player %d (%s) is alive.\n",
-		value, arena->champs[value]->name);
+		value, arena->champs[value - 1]->name);
 		arena->last_champ_alive = cursor->registry[0] * -1;
 	}
 }
@@ -90,7 +93,7 @@ void		op_live(t_cursor *cursor, t_arena *arena, t_args *args,
 void		op_ld(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
-	ft_printf("func:%s line %d\n", __func__, __LINE__);
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
@@ -148,7 +151,7 @@ Type T_IND is related to the memory addresses, so st workflow is:
 void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
-	ft_printf("func:%s line %d\n", __func__, __LINE__);
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 1, 0);
 
 	if (populate_arguments(arena->field, position, args, 0) == 0)
@@ -194,6 +197,7 @@ void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 void		op_add(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 5;
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
@@ -236,6 +240,7 @@ void		op_sub(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int		num;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 5;
 	num = 0;
 	if (populate_arguments(arena->field, position, args, 0) == 0)
@@ -310,6 +315,7 @@ void		op_and(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value1;
 	int		value2;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 0) +
 						get_arg_size(arena->field[(position + 1) % MEM_SIZE], 1, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
@@ -388,6 +394,7 @@ void		op_or(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value1;
 	int		value2;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 0) +
 						get_arg_size(arena->field[(position + 1) % MEM_SIZE], 1, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
@@ -466,6 +473,7 @@ void		op_xor(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value1;
 	int		value2;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 0) +
 						get_arg_size(arena->field[(position + 1) % MEM_SIZE], 1, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
@@ -556,6 +564,7 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int		value;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 1);
 	cursor->jump += get_arg_size(arena->field[(position + 1) % MEM_SIZE], 1, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
@@ -605,6 +614,7 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int		value;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 1, 1);
 	cursor->jump += get_arg_size(arena->field[(position + 1) % MEM_SIZE], 2, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
@@ -651,6 +661,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int val;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	(void*)args;
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
@@ -694,6 +705,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,
 void		op_lld(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 0);
 	if (populate_arguments(arena->field, position, args, 0) == 0)
 		return ;
@@ -744,6 +756,7 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int		value;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	cursor->jump = 3 + get_arg_size(arena->field[(position + 1) % MEM_SIZE], 0, 1);
 	cursor->jump += get_arg_size(arena->field[(position + 1) % MEM_SIZE], 1, 1);
 	populate_arguments(arena->field, cursor->position, args, 1);
@@ -787,6 +800,7 @@ void		op_lfork(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	int val;
 
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	(void*)args;
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id);
@@ -818,6 +832,7 @@ void		op_lfork(t_cursor *cursor, t_arena *arena, t_args *args,
 void		op_aff(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, cursor->position, args, 0);
 	ft_printf("%c", cursor->registry[args->value_1]);
 }
