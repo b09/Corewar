@@ -61,12 +61,12 @@ labels made only from LABEL_CHARS
 6	DONE
 7	DONE
 8	DONE
-9	
-10
-11
+9	DONE
+10	looks alright
+11	DONE
 12
-13
-14
+13	looks alright
+14	looks alright
 15
 16
 
