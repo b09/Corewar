@@ -82,10 +82,11 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 	// ft_printf("cursor pos:%x\n\n", arena->field[cursor->position % MEM_SIZE]);
 	// i++; // delete
 
+	ft_printf("opcode: %d\n", cursor->opcode);
 	if (cursor->opcode >= 1 && cursor->opcode <= 16)
 		arrpointer[cursor->opcode - 1](cursor, arena,
 		&args, cursor->position % MEM_SIZE);
-	cursor->position = (cursor->position + cursor->jump) % MEM_SIZE;
+	cursor->position = pos_mem_size(cursor->position + cursor->jump);
 	cursor->opcode = arena->field[cursor->position];
 	if (cursor->opcode >= 1 && cursor->opcode <= 16)
 		cursor->wait_cycle = arena->wait_cycle_arr[cursor->opcode - 1];
@@ -115,6 +116,9 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 void				battle(t_arena *arena, t_func arrpointer[16],\
 					t_cursor *cursor)
 {
+	int	i; //delete
+
+	i = 0; //delete
 	populate_operation_array(arrpointer);
 	while (42)
 	{
@@ -126,8 +130,13 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 		{
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)
+			{
 				execute_operation(arena, cursor, arrpointer);
+				i++;
+			}
 			cursor = cursor->next;
+			if (i == 50) //delte
+				exit(0); //delete
 		}
 		(arena->cycles_to_die)++;
 		(arena->cycles)++;

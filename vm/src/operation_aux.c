@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/17 08:31:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 12:14:37 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 
 	res = 0;
 	i = 0;
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
+	ft_printf("position: %d, size: %d\n", position, size);
 	while (i < size)
 	{
 		current_byte = field[pos_mem_size(position + i)];
@@ -55,7 +57,8 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 		res |= (unsigned int)current_byte << shift;
 		i++;
 	}
-	return (switch_endianness(res, size));
+	//ft_printf("res: %d after switch: %d\n", res, switch_endianness(res, size));
+	return (res);
 }
 
 void				int_to_ustr(int value, unsigned char *field,\

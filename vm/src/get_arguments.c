@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 08:08:19 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 12:15:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int			get_val(unsigned char *field, int pos, size_t size)
 		ret |= (byte << (i * 8));
 		i++;
 	}
-	return (ret);
+	return (switch_endianness(ret, size));
 }
 
 /*
@@ -73,11 +73,23 @@ void				populate_arguments(unsigned char *field, int pos,\
 							args->size_3);
 }
 
-int					check_register_values(t_args *args)
+int					check_register_values(t_args *args,
+					bool first, bool second, bool third)
 {
-	if ((args->size_1 == 1 && (args->value_1 > 15 || args->value_1 < 0)) ||
-		(args->size_2 == 1 && (args->value_2 > 15 || args->value_2 < 0)) ||
-		(args->size_3 == 1 && (args->value_3 > 15 || args->value_3 < 0)))
+
+	if (!args->size_1 ||
+		(args->size_1 == 1 && (args->value_1 > 16 || args->value_1 < 1)) ||
+		(first && args->size_1 != 1))
 		return (FALSE);
+
+	if ((args->size_2 == 1 && (args->value_2 > 16 || args->value_2 < 1)) ||
+		(second && args->size_2 != 1))
+		return (FALSE);
+
+	if ((args->size_3 && !args->size_2) ||
+		(args->size_3 == 1 && (args->value_3 > 16 || args->value_3 < 1)) ||
+		(third && args->size_3 != 1))
+		return (FALSE);
+		
 	return (TRUE);
 }

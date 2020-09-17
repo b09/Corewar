@@ -3,18 +3,18 @@ DAY: SEPT 9 19:00
 TO DO:
 
 	int		read_encoding_byte(char encoding_byte, int offset, bool dir_two)
-		
+
 		return the size of the argument based on the encoding byte
 
 
 	int		ustr_to_int(unsigned char *field, int position, int size)
-		
+
 		return int value of bytes starting at field[position] up
 		field[position + size]. requires big to little endian conversion
 
 
 	void	int_to_ustr(int value, unsigned char *field, int position, int size)
-		
+
 		write into field[position] up to field[position + size] the value of int
 		(which could also be a 2 byte instead of a 4 bytes)
 
@@ -53,3 +53,24 @@ labels made only from LABEL_CHARS
     point to one single instruction (?)
     en empty instruction will default to next line's instruction
 
+1
+2	DONE
+3	DONE
+4	DONE
+5	DONE
+6	DONE
+7	DONE
+8	DONE
+9	
+10
+11
+12
+13
+14
+15
+16
+
+
+if args are invalid, jump will be invalid/ maybe should replace jump
+check op_and() .. not valid
+check op_or() .. not valid
