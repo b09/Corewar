@@ -66,14 +66,10 @@ int				main(int argc, char **argv)
 	t_func		arrpointer[16];
 
 	if (argc < 2)
-<<<<<<< HEAD
-		print_error(FEW_ARGS);
-=======
 	{
 		ft_printf("%s", FEW_ARGS);
 		exit(1);
 	}
->>>>>>> virtual_machine
 	ft_bzero(&arena, sizeof(arena));
 	all_champs = (t_champ **)ft_memalloc(sizeof(t_champ*) * (MAX_PLAYERS + 1));
 	allocate_for_champs(all_champs);

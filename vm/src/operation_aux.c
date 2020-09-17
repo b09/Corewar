@@ -69,11 +69,8 @@ void				int_to_ustr(int value, unsigned char *field,\
 		++i;
 	}
 }
-<<<<<<< HEAD
 
 int					tind_value(int position, unsigned char *ind_str)
 {
 	return ((position + *(int*)ind_str) % IDX_MOD);
 }
-=======
->>>>>>> virtual_machine

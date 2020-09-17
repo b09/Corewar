@@ -43,12 +43,8 @@ void		op_live(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-<<<<<<< HEAD
-	print_cursor(cursor);// delete
-	(void*)args;
-=======
+
 	(void)args;
->>>>>>> virtual_machine
 	value = ustr_to_int(arena->field, position + 1, 4);
 	ft_printf("Value: %d\n", value);
 	cursor->last_live = arena->cycles;
@@ -159,10 +155,7 @@ void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-<<<<<<< HEAD
-=======
-	
->>>>>>> virtual_machine
+
 	populate_arguments(arena->field, position, args, 0);
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (check_register_values(args) == FALSE)
@@ -209,10 +202,7 @@ void		op_add(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-<<<<<<< HEAD
-=======
 
->>>>>>> virtual_machine
 	populate_arguments(arena->field, position, args, 0);
 	cursor->jump = 5;
 	if (check_register_values(args) == FALSE)
@@ -254,16 +244,10 @@ void		op_add(t_cursor *cursor, t_arena *arena, t_args *args,
 void		op_sub(t_cursor *cursor, t_arena *arena, t_args *args,
 			int position)
 {
-<<<<<<< HEAD
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-=======
 
-	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-	cursor->jump = 5;
-
->>>>>>> virtual_machine
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
+	cursor->jump = 5;
 	if (check_register_values(args) == FALSE)
 		return ;
 	cursor->registry[args->value_3] =
@@ -489,10 +473,7 @@ void		op_xor(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-<<<<<<< HEAD
-=======
-	
->>>>>>> virtual_machine
+
 	populate_arguments(arena->field, position, args, 0);
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (check_register_values(args) == FALSE)
@@ -588,10 +569,7 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, t_args *args,
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (check_register_values(args) == FALSE)
 		return ;
-<<<<<<< HEAD
-=======
 
->>>>>>> virtual_machine
 	if (args->size_1 != SIZE_IND)
 		cursor->registry[args->value_3] =
 		ustr_to_int(arena->field, position + ((args->value_1
@@ -639,16 +617,10 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-<<<<<<< HEAD
-	print_cursor(cursor);// delete
-=======
-
->>>>>>> virtual_machine
 	populate_arguments(arena->field, cursor->position, args, 1);
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (check_register_values(args) == FALSE)
 		return ;
-<<<<<<< HEAD
 	// ft_printf("Values(big-end): 0x%x 0x%x 0x%x\n", args->value_1, args->value_2, args->value_3);
 	// ft_printf("Values(lil-end): 0x%x 0x%x 0x%x\n",
 	// 	switch_endianness(args->value_1, args->size_1),
@@ -656,10 +628,7 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	// 	switch_endianness(args->value_3, args->size_3));
 	print_hexdump(arena, TRUE);
 	ft_putchar('\n');
-	if (args->size_2 != SIZE_IND) // SIZE_IND and SIZE_SDIR are the same
-=======
 	if (args->size_2 != SIZE_IND)
->>>>>>> virtual_machine
 	{
 		position = position + args->value_2 +
 									args->value_3 % IDX_MOD;
@@ -800,10 +769,7 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, t_args *args,
 	int		value;
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-<<<<<<< HEAD
-=======
-	
->>>>>>> virtual_machine
+
 	populate_arguments(arena->field, position, args, 0);
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (check_register_values(args) == FALSE)

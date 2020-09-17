@@ -113,6 +113,9 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 void				battle(t_arena *arena, t_func arrpointer[16],\
 					t_cursor *cursor)
 {
+	int	i; //delete
+
+	i = 0; //delete
 	populate_operation_array(arrpointer);
 	while (42)
 	{
@@ -124,8 +127,13 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 		{
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)
+			{
 				execute_operation(arena, cursor, arrpointer);
+				i++;
+			}
 			cursor = cursor->next;
+			if (i == 10) //delte
+				exit(0); //delete
 		}
 		(arena->cycles_to_die)++;
 		(arena->cycles)++;
