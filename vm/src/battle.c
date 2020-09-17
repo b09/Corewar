@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 20:32:38 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 07:01:02 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void			populate_operation_array(t_func arrpointer[16])
 static void			check_cursors(t_arena *arena, t_cursor *cursor)
 {
 	if (cursor == NULL)
-		print_winner(arena); // finish writtin func
+		print_winner(arena);
 	while (cursor)
 	{
 		if ((arena->cycles - arena->max_cycle_die) >= cursor->last_live)
@@ -54,7 +54,7 @@ static void			check_cursors(t_arena *arena, t_cursor *cursor)
 			cursor_unlink_del(arena, cursor);
 			cursor = arena->cursor_head;
 			if (cursor == NULL)
-				print_winner(arena); // finish writting func
+				print_winner(arena);
 		}
 		else
 			cursor = cursor->next;
@@ -62,6 +62,8 @@ static void			check_cursors(t_arena *arena, t_cursor *cursor)
 	if (arena->num_checks >= MAX_CHECKS || arena->num_lives >= NBR_LIVE)
 	{
 		arena->max_cycle_die -= CYCLE_DELTA;
+		if (arena->max_cycle_die < 0)
+			print_winner(arena);
 		arena->num_checks = -1;
 	}
 	arena->cycles_to_die = 0;

@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/16 17:23:52 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 07:48:23 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,21 @@ int					switch_endianness(int n, size_t size)
 	return (res);
 }
 
+int					pos_mem_size(int position)
+{
+	position = position % MEM_SIZE;
+	if (position < 0)
+		return (position + MEM_SIZE);
+	return (position);
+}
+
 int					ustr_to_int(unsigned char *field, int position, int size)
 {
 	unsigned char	current_byte;
 	unsigned int	res;
 	int				i;
 	int				shift;
+	int				check;
 
 	res = 0;
 	i = 0;
@@ -44,7 +53,7 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 	ft_printf("position: %d, size: %d\n", position, size);
 	while (i < size)
 	{
-		current_byte = field[(position + i) % MEM_SIZE];
+		current_byte = field[pos_mem_size(position + i)];
 		shift = (((size - 1) * 8) - (i * 8));
 		res |= (unsigned int)current_byte << shift;
 		i++;
@@ -68,7 +77,7 @@ void				int_to_ustr(int value, unsigned char *field,\
 		shift = (((size - 1) * 8) - (i * 8));
 		mask = 0xFF << shift;
 		current_byte = (unsigned char)((value & mask) >> shift);
-		field[(position + i) % MEM_SIZE] = current_byte;
+		field[pos_mem_size(position + i)] = current_byte;
 		++i;
 	}
 }
