@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 16:34:33 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 17:29:08 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ int				grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 	i = 0;
 	while (i < num_champs)
 	{
-		if (champs[i]->n_provided && (champs[i]->n_provided - 1) < 4 &&
-		n_ids[champs[i]->n_provided - 1] == NULL)
+		if (champs[i]->n_provided && champs[i]->n_provided < num_champs &&
+		(champs[i]->n_provided - 1) < 4 && !n_ids[champs[i]->n_provided - 1])
 			n_ids[champs[i]->n_provided - 1] = champs[i];
 		else if (champs[i]->n_provided != 0)
 			return (FALSE);
@@ -133,7 +133,7 @@ int				grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 	{
 		if (champs[i]->n_provided == 0)
 		{
-			while (n_index < 4 && n_ids[n_index])
+			while (n_index < num_champs && n_ids[n_index])
 				++n_index;
 			n_ids[n_index] = champs[i];
 		}

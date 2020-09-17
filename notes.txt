@@ -74,3 +74,4 @@ labels made only from LABEL_CHARS
 if args are invalid, jump will be invalid/ maybe should replace jump
 check op_and() .. not valid
 check op_or() .. not valid
+segfault occuring if -n is 4 but champs number of champs is below that

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 12:40:54 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 17:25:10 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 				i++;
 			}
 			cursor = cursor->next;
-			if (i == 50) //delte
-				exit(0); //delete
+			// if (i == 50) //delte
+			// 	exit(0); //delete
 		}
 		(arena->cycles_to_die)++;
 		(arena->cycles)++;
