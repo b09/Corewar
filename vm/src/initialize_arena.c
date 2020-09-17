@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/15 15:12:42 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 19:19:10 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,4 @@ void				initialize_arena(t_arena *arena)
 		++i;
 	}
 	arena->max_cycle_die = CYCLE_TO_DIE;
-	// arena->num_cursors = arena->num_champs; // done in create_cursor;
-	arena->dump = -1;
 }
