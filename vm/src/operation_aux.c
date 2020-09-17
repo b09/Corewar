@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/17 07:48:23 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 08:31:31 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 	unsigned int	res;
 	int				i;
 	int				shift;
-	int				check;
 
 	res = 0;
 	i = 0;
@@ -68,7 +67,6 @@ void				int_to_ustr(int value, unsigned char *field,\
 	int				i;
 
 	i = 0;
-	value = switch_endianness(value, size);
 	while (i < size)
 	{
 		shift = (((size - 1) * 8) - (i * 8));

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 18:07:11 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 08:08:19 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int			get_val(unsigned char *field, int pos, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		byte = field[(pos + i) % MEM_SIZE];
+		byte = field[pos_mem_size(pos + i)];
 		ret |= (byte << (i * 8));
 		i++;
 	}
@@ -63,9 +63,9 @@ static int			get_val(unsigned char *field, int pos, size_t size)
 void				populate_arguments(unsigned char *field, int pos,\
 					t_args *args, bool dir_is_two)
 {
-	args->size_1 = get_arg_size(field[(pos + 1) % MEM_SIZE], 0, dir_is_two);
-	args->size_2 = get_arg_size(field[(pos + 1) % MEM_SIZE], 1, dir_is_two);
-	args->size_3 = get_arg_size(field[(pos + 1) % MEM_SIZE], 2, dir_is_two);
+	args->size_1 = get_arg_size(field[pos_mem_size(pos + 1)], 0, dir_is_two);
+	args->size_2 = get_arg_size(field[pos_mem_size(pos + 1)], 1, dir_is_two);
+	args->size_3 = get_arg_size(field[pos_mem_size(pos + 1)], 2, dir_is_two);
 	args->value_1 = get_val(field, pos + 2, args->size_1);
 	args->value_2 = get_val(field, pos + 2 + args->size_1, args->size_2);
 	args->value_3 = get_val(field,

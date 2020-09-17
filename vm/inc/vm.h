@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 07:48:56 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 07:56:21 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,6 @@ int					ustr_to_int
 void				int_to_ustr
 			(int value, unsigned char *field, int position, int size);
 int					pos_mem_size
-			(int position)
+			(int position);
 
 #endif
