@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 13:01:13 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 13:29:49 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,28 +257,31 @@ void		op_sub(t_cursor *cursor, t_arena *arena, t_args *args,
 	print_hexdump(arena, TRUE);
 }
 
-static int	op_and_helper(t_args *args, int position, t_arena *arena)
+// static int	op_and_helper(t_args *args, int position, t_arena *arena)
+static void	op_helper(t_args *args, int position, t_arena *arena,
+				t_cursor *cursor)
 {
 	int		value1;
 	int		value2;
 
-	value1 = 0;
-	value2 = 0;
 	if (args->size_1 == SIZE_IND)
 	{
 		position = position + args->value_1 % IDX_MOD;
 		value1 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value1 = args->value_1;
+		value1 = args->size_1 != 1 ? args->value_1 :
+											cursor->registry[args->value_1 - 1];
 	if (args->size_2 == SIZE_IND)
 	{
 		position = position + args->value_2 % IDX_MOD;
 		value2 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value2 = args->value_2;
-	return (value1 & value2);
+		value2 = args->size_2 != 1 ? args->value_2 :
+											cursor->registry[args->value_2 - 1];
+	args->value_1 = value1;
+	args->value_2 = value2;
 }
 
 /*
@@ -321,41 +324,12 @@ void		op_and(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (check_register_values(args, 0, 0, 3) == FALSE)
 		return ;
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (args->size_1 != SIZE_IND && args->size_2 != SIZE_IND)
-		cursor->registry[args->value_3 - 1] =
-		cursor->registry[args->value_1 - 1] &
-		cursor->registry[args->value_2 - 1]; // this doesn't look like the pseudocode
-	else
-		cursor->registry[args->value_3 - 1] =
-										op_and_helper(args, position, arena);
+	op_helper(args, position, arena, cursor);
+	cursor->registry[args->value_3 - 1] = args->value_1 & args->value_2;
 	if (cursor->registry[args->value_3 - 1] == 0)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-}
-
-static int	op_or_helper(t_args *args, int position, t_arena *arena)
-{
-	int		value1;
-	int		value2;
-
-	value1 = 0;
-	value2 = 0;
-	if (args->size_1 == SIZE_IND)
-	{
-		position = position + args->value_1 % IDX_MOD;
-		value1 = ustr_to_int(arena->field, position, 4);
-	}
-	else
-		value1 = args->value_1;
-	if (args->size_2 == SIZE_IND)
-	{
-		position = position + args->value_2 % IDX_MOD;
-		value2 = ustr_to_int(arena->field, position, 4);
-	}
-	else
-		value2 = args->value_2;
-	return (value1 | value2);
 }
 
 /*
@@ -398,41 +372,12 @@ void		op_or(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (check_register_values(args, 0, 0, 3) == FALSE)
 		return ;
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (args->size_1 != SIZE_IND && args->size_2 != SIZE_IND)
-		cursor->registry[args->value_3 - 1] =
-		cursor->registry[args->value_1 - 1] |
-		cursor->registry[args->value_2 - 1];
-	else
-		cursor->registry[args->value_3 - 1] =
-											op_or_helper(args, position, arena);
+	op_helper(args, position, arena, cursor);
+	cursor->registry[args->value_3 - 1] = args->value_1 | args->value_2;
 	if (cursor->registry[args->value_3 - 1] == 0)
 		cursor->carry = TRUE;
 	else
 		cursor->carry = FALSE;
-}
-
-static int	op_xor_helper(t_args *args, int position, t_arena *arena)
-{
-	int		value1;
-	int		value2;
-
-	value1 = 0;
-	value2 = 0;
-	if (args->size_1 == SIZE_IND)
-	{
-		position = position + args->value_1 % IDX_MOD;
-		value1 = ustr_to_int(arena->field, position, 4);
-	}
-	else
-		value1 = args->value_1;
-	if (args->size_2 == SIZE_IND)
-	{
-		position = position + args->value_2 % IDX_MOD;
-		value2 = ustr_to_int(arena->field, position, 4);
-	}
-	else
-		value2 = args->value_2;
-	return (value1 ^ value2);
 }
 
 /*
@@ -476,13 +421,8 @@ void		op_xor(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (check_register_values(args, 0, 0, 3) == FALSE)
 		return ;
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (args->size_1 != SIZE_IND && args->size_2 != SIZE_IND)
-		cursor->registry[args->value_3 - 1] =
-		cursor->registry[args->value_1 - 1] ^
-		cursor->registry[args->value_2 - 1];
-	else
-		cursor->registry[args->value_3 - 1] =
-										op_xor_helper(args, position, arena);
+	op_helper(args, position, arena, cursor);
+	cursor->registry[args->value_3 - 1] = args->value_1 ^ args->value_2;
 	if (cursor->registry[args->value_3 - 1] == 0)
 		cursor->carry = TRUE;
 	else
