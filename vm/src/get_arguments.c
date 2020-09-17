@@ -75,9 +75,14 @@ void				populate_arguments(unsigned char *field, int pos,\
 
 int					check_register_values(t_args *args)
 {
-	if ((args->size_1 == 1 && (args->value_1 > 15 || args->value_1 < 0)) ||
-		(args->size_2 == 1 && (args->value_2 > 15 || args->value_2 < 0)) ||
-		(args->size_3 == 1 && (args->value_3 > 15 || args->value_3 < 0)))
+	ft_printf("arg1: %d %d\n", args->size_1, args->value_1);
+	ft_printf("arg2: %d %d\n", args->size_2, args->value_2);
+	ft_printf("arg3: %d %d\n", args->size_3, args->value_3);
+	if (args->size_1 == 1 && (args->value_1 > 16 || args->value_1 < 1))
+		return (FALSE);
+	if (args->size_2 == 1 && (args->value_2 > 16 || args->value_2 < 1))
+		return (FALSE);
+	if (args->size_3 == 1 && (args->value_3 > 16 || args->value_3 < 1))
 		return (FALSE);
 	return (TRUE);
 }

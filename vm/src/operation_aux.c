@@ -58,8 +58,8 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 		res |= (unsigned int)current_byte << shift;
 		i++;
 	}
-	ft_printf("res: %d after switch: %d\n", res, switch_endianness(res, size));
-	return (switch_endianness(res, size));
+	//ft_printf("res: %d after switch: %d\n", res, switch_endianness(res, size));
+	return (res);
 }
 
 void				int_to_ustr(int value, unsigned char *field,\
@@ -71,7 +71,7 @@ void				int_to_ustr(int value, unsigned char *field,\
 	int				i;
 
 	i = 0;
-	value = switch_endianness(value, size);
+	// value = switch_endianness(value, size);
 	while (i < size)
 	{
 		shift = (((size - 1) * 8) - (i * 8));

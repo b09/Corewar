@@ -320,6 +320,6 @@ int					ustr_to_int
 void				int_to_ustr
 			(int value, unsigned char *field, int position, int size);
 int					pos_mem_size
-			(int position)
+			(int position);
 
 #endif
