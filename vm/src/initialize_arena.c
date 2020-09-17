@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 19:19:10 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 12:39:21 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void				create_cursor(t_arena *arena, int i)
 		arena->cursor_head->prev = cursor;
 	}
 	arena->cursor_head = cursor;
+	arena->last_champ_alive = i + 1;
 }
 
 /*

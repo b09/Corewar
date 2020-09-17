@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 07:01:02 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 12:33:09 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void			check_cursors(t_arena *arena, t_cursor *cursor)
 			cursor = arena->cursor_head;
 			if (cursor == NULL)
 				print_winner(arena);
+			ft_printf("%s line: %d\n", __func__, __LINE__);
 		}
 		else
 			cursor = cursor->next;
@@ -76,13 +77,7 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 {
 	t_args	args;
 
-	// ft_printf("func:%s line:%d opcode: %d\n", __func__, __LINE__, cursor->opcode);
-	// ft_printf("****** cursor id: %d *******\n", cursor->id);
-	// ft_printf("opcode:%d\n", cursor->opcode);
-	// ft_printf("cursor pos:%x\n\n", arena->field[cursor->position % MEM_SIZE]);
-	// i++; // delete
-
-	ft_printf("opcode: %d\n", cursor->opcode);
+	ft_printf("opcode: %d\n", cursor->opcode); // delete
 	if (cursor->opcode >= 1 && cursor->opcode <= 16)
 		arrpointer[cursor->opcode - 1](cursor, arena,
 		&args, cursor->position % MEM_SIZE);
@@ -135,8 +130,8 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 				i++;
 			}
 			cursor = cursor->next;
-			if (i == 50) //delte
-				exit(0); //delete
+			// if (i == 50) //delte
+			// 	exit(0); //delete
 		}
 		(arena->cycles_to_die)++;
 		(arena->cycles)++;

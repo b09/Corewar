@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 22:36:42 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 12:32:23 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void		cursor_unlink_del(t_arena *arena, t_cursor *cursor)
 		if (cursor == arena->cursor_head)
 		{
 			arena->cursor_head = cursor->next;
-			arena->cursor_head->prev = NULL;
+			if (arena->cursor_head)
+				arena->cursor_head->prev = NULL;
 		}
 		else
 		{
@@ -43,7 +44,6 @@ void		cursor_unlink_del(t_arena *arena, t_cursor *cursor)
 **
 **	4 initialize_arena
 **		arena->field char *
-**
 **
 **	5 create_cursor
 **		arena->cursor_head (t_cursor*) linked list
