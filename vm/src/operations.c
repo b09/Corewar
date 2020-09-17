@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 13:29:49 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 13:50:58 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -781,5 +781,5 @@ void		op_aff(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (check_register_values(args, 1, 0, 0) == FALSE)
 		return ;
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	ft_printf("%c", cursor->registry[args->value_1 - 1]);
+	ft_printf("%c", cursor->registry[args->value_1 - 1] % 256);
 }
