@@ -64,7 +64,7 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 			++i;
 		}
 		ft_printf("\n");
-		free_everything(arena);
+		// free_everything(arena); // segfaults during debugging of operations.c
 	}
 	return (0);
 }

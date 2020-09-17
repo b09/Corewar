@@ -40,6 +40,8 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 
 	res = 0;
 	i = 0;
+	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
+	ft_printf("position: %d, size: %d\n", position, size);
 	while (i < size)
 	{
 		current_byte = field[(position + i) % MEM_SIZE];
@@ -47,6 +49,7 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 		res |= (unsigned int)current_byte << shift;
 		i++;
 	}
+	ft_printf("res: %d after switch: %d\n", res, switch_endianness(res, size));
 	return (switch_endianness(res, size));
 }
 

@@ -630,6 +630,7 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_putchar('\n');
 	if (args->size_2 != SIZE_IND)
 	{
+		ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 		position = position + args->value_2 +
 									args->value_3 % IDX_MOD;
 		int_to_ustr(cursor->registry[args->value_1],
@@ -639,6 +640,8 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	{
 		value = ustr_to_int(arena->field, position +
 									args->value_2 % IDX_MOD, 4);
+		ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
+		ft_printf("value: %d\n", value);
 		int_to_ustr(cursor->registry[args->value_1],
 						arena->field, position +
 						(value + args->value_3 % IDX_MOD), 4);

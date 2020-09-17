@@ -51,7 +51,7 @@ static int			get_val(unsigned char *field, int pos, size_t size)
 		ret |= (byte << (i * 8));
 		i++;
 	}
-	return (ret);
+	return (switch_endianness(ret, size));
 }
 
 /*
