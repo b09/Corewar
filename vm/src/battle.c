@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 12:33:09 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 12:40:54 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 void				battle(t_arena *arena, t_func arrpointer[16],\
 					t_cursor *cursor)
 {
-	int	i; //delete
+	// int	i; //delete
 
-	i = 0; //delete
+	// i = 0; //delete
 	populate_operation_array(arrpointer);
 	while (42)
 	{
@@ -127,7 +127,7 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 			if (cursor->wait_cycle == 0)
 			{
 				execute_operation(arena, cursor, arrpointer);
-				i++;
+				// i++;
 			}
 			cursor = cursor->next;
 			// if (i == 50) //delte

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 11:37:55 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 13:01:13 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -665,7 +665,7 @@ void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	(void)args;
 	cursor->jump = 3;
-	create_cursor(arena, cursor->id);
+	create_cursor(arena, cursor->id, FALSE);
 	val = ustr_to_int(arena->field, position + 1, 2);
 	arena->cursor_head->position = (position +
 						(val % IDX_MOD) % MEM_SIZE);
@@ -807,7 +807,7 @@ void		op_lfork(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	(void)args;
 	cursor->jump = 3;
-	create_cursor(arena, cursor->id);
+	create_cursor(arena, cursor->id, FALSE);
 	val = ustr_to_int(arena->field, position + 1, 2);
 	arena->cursor_head->position = (position + val % MEM_SIZE);
 	arena->num_cursors++;

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 12:15:53 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 13:00:09 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ void				validate_ids
 void				initialize_arena
 			(t_arena *arena);
 void				create_cursor
-			(t_arena *arena, int i);
+			(t_arena *arena, int i, bool start);
 
 /*
 **		battle.c
