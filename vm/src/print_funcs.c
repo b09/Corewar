@@ -43,7 +43,8 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 	i = 0;
 	if ((arena->dump != -1 && arena->cycles == arena->dump) || execute_anyway)
 	{
-		while (i < MEM_SIZE)
+		// while (i < MEM_SIZE)
+		while (i < MEM_SIZE / 16) // TEMP FOR DEBUG, USE LINE ABOVE!
 		{
 			if (i == 0)
 				ft_printf("0x0000 : ");
