@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 07:48:56 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 11:14:54 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,10 +304,12 @@ void				free_everything
 **		get_arguments.c
 */
 
-void		populate_arguments(unsigned char *field, int pos, t_args *args,\
-			bool dir_is_two);
-int			get_arg_size(char encode_byte, int arg_idx, bool dir_is_two);
-int			check_register_values(t_args *args);
+void				populate_arguments
+			(unsigned char *field, int pos, t_args *args, bool dir_is_two);
+int					get_arg_size
+			(char encode_byte, int arg_idx, bool dir_is_two);
+int					check_register_values
+			(t_args *args, bool one, bool two, bool three);
 
 /*
 **		operation_aux.c

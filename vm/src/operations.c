@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 07:12:48 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 11:22:07 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void		op_ld(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 0, 2, 0) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	// ft_printf("func:%s line %d, args content: %d %d\n", __func__, __LINE__, args->value_1, args->value_2);
 	if (args->size_1 == SIZE_LDIR)
 		cursor->registry[args->value_2 - 1] = args->value_1;
@@ -154,9 +154,9 @@ void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 1, 0, 0) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	// ft_printf("func:%s line %d, args content: %d %d\n", __func__, __LINE__, args->value_1, args->value_2);
 	if (args->size_2 == SIZE_REG)
 		cursor->registry[args->value_2 - 1] =
@@ -200,10 +200,10 @@ void		op_add(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	print_hexdump(arena, TRUE);
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 5;
 	if (arena->field[position + 1] != 0x1008)
 		return ;
-	if (check_register_values(args) == FALSE)
+	cursor->jump = 5;
+	if (check_register_values(args, 1, 2, 3) == FALSE)
 	{
 		ft_printf("printd\n");
 		return ;
@@ -248,9 +248,9 @@ void		op_sub(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 5;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 1, 2, 3) == FALSE)
 		return ;
+	cursor->jump = 5;
 	cursor->registry[args->value_3 - 1] =
 	cursor->registry[args->value_1 - 1] -
 	cursor->registry[args->value_2 - 1];
@@ -322,13 +322,13 @@ void		op_and(t_cursor *cursor, t_arena *arena, t_args *args,
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 0, 0, 3) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (args->size_1 != SIZE_IND && args->size_2 != SIZE_IND)
 		cursor->registry[args->value_3 - 1] =
 		cursor->registry[args->value_1 - 1] &
-		cursor->registry[args->value_2 - 1];
+		cursor->registry[args->value_2 - 1]; // this doesn't look like the pseudocode
 	else
 		cursor->registry[args->value_3 - 1] =
 										op_and_helper(args, position, arena);
@@ -399,9 +399,9 @@ void		op_or(t_cursor *cursor, t_arena *arena, t_args *args,
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 0, 0, 3) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (args->size_1 != SIZE_IND && args->size_2 != SIZE_IND)
 		cursor->registry[args->value_3 - 1] =
 		cursor->registry[args->value_1 - 1] |
@@ -477,9 +477,9 @@ void		op_xor(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 0, 0, 3) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (args->size_1 != SIZE_IND && args->size_2 != SIZE_IND)
 		cursor->registry[args->value_3 - 1] =
 		cursor->registry[args->value_1 - 1] ^
@@ -569,9 +569,9 @@ void		op_ldi(t_cursor *cursor, t_arena *arena, t_args *args,
 
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, cursor->position, args, 1);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 0, 0, 3) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 
 	if (args->size_1 != SIZE_IND)
 		cursor->registry[args->value_3 - 1] =
@@ -619,9 +619,9 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, cursor->position, args, 1);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 1, 0, 0) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	// print_hexdump(arena, TRUE);
 	ft_putchar('\n');
 	if (args->size_2 != SIZE_IND)
@@ -712,9 +712,9 @@ void		op_lld(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 0, 1, 0) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (args->size_1 == SIZE_LDIR)
 		cursor->registry[args->value_2 - 1] = args->value_1;
 	else if (args->size_1 == SIZE_IND)
@@ -765,9 +765,9 @@ void		op_lldi(t_cursor *cursor, t_arena *arena, t_args *args,
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 0, 0, 1) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (args->size_1 != SIZE_IND)
 		cursor->registry[args->value_3 - 1] =
 		ustr_to_int(arena->field, position + args->value_1
@@ -842,8 +842,8 @@ void		op_aff(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	populate_arguments(arena->field, position, args, 0);
-	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	if (check_register_values(args) == FALSE)
+	if (check_register_values(args, 1, 0, 0) == FALSE)
 		return ;
+	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	ft_printf("%c", cursor->registry[args->value_1 - 1]);
 }

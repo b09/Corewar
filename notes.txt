@@ -69,3 +69,7 @@ labels made only from LABEL_CHARS
 14
 15
 16
+
+
+if args are invalid, jump will be invalid/ maybe should replace jump
+check op_and()
