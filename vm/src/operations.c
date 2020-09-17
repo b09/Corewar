@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 11:22:07 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 11:37:55 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,15 +199,11 @@ void		op_add(t_cursor *cursor, t_arena *arena, t_args *args,
 {
 	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
 	print_hexdump(arena, TRUE);
+	
 	populate_arguments(arena->field, position, args, 0);
-	if (arena->field[position + 1] != 0x1008)
+	if (check_register_values(args, 1, 2, 3) == FALSE)
 		return ;
 	cursor->jump = 5;
-	if (check_register_values(args, 1, 2, 3) == FALSE)
-	{
-		ft_printf("printd\n");
-		return ;
-	}
 	cursor->registry[args->value_3 - 1] =
 	cursor->registry[args->value_2 - 1] +
 	cursor->registry[args->value_1 - 1];
