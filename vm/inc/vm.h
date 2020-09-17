@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 13:00:09 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 00:15:16 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,40 +255,44 @@ void				battle
 			(t_arena *arena, t_func *arrpointer, t_cursor *cursor);
 
 /*
-**		operations.c
+**		ops_forks_jump.c
+*/
+
+void				op_forks_jump
+			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
+
+/*
+**		ops_live_aff.c
 */
 
 void				op_live
 			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_ld
+void				op_aff
 			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
+
+/*
+**		ops_load_funcs.c
+*/
+
+void				op_load
+			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
+void				op_load_indexes
+			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
+
+/*
+**		ops_math_bitwise.c
+*/
+
+void				op_math
+			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
+
+/*
+**		ops_store_funcs.c
+*/
+
 void				op_st
 			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_add
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_sub
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_and
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_or
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_xor
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_zjmp
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_ldi
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
 void				op_sti
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_fork
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_lld
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_lldi
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_lfork
-			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
-void				op_aff
 			(t_cursor *cursor, t_arena *arena, t_args *args, int position);
 
 /*
@@ -304,7 +308,7 @@ void				free_everything
 **		get_arguments.c
 */
 
-void				populate_arguments
+void				populate_argmnts
 			(unsigned char *field, int pos, t_args *args, bool dir_is_two);
 int					get_arg_size
 			(char encode_byte, int arg_idx, bool dir_is_two);
@@ -323,5 +327,7 @@ void				int_to_ustr
 			(int value, unsigned char *field, int position, int size);
 int					pos_mem_size
 			(int position);
+void				op_helper
+			(t_args *args, int position, t_arena *arena, t_cursor *cursor);
 
 #endif

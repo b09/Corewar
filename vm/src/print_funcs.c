@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 12:39:54 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 20:35:23 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 	i = 0;
 	if ((arena->dump != -1 && arena->cycles == arena->dump) || execute_anyway)
 	{
-		// while (i < MEM_SIZE)
-		while (i < MEM_SIZE / 16) // TEMP FOR DEBUG, USE LINE ABOVE!
+		while (i < MEM_SIZE)
 		{
 			if (i == 0)
 				ft_printf("0x0000 : ");
@@ -64,7 +63,7 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 			++i;
 		}
 		ft_printf("\n");
-		// free_everything(arena); // segfaults during debugging of operations.c
+		free_everything(arena); // segfaults during debugging of operations.c
 	}
 	return (0);
 }

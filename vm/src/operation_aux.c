@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/17 12:14:37 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 00:17:56 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 
 	res = 0;
 	i = 0;
-	ft_printf("func:%s line %d\n", __func__, __LINE__); //delete
-	ft_printf("position: %d, size: %d\n", position, size);
 	while (i < size)
 	{
 		current_byte = field[pos_mem_size(position + i)];
@@ -57,7 +55,6 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 		res |= (unsigned int)current_byte << shift;
 		i++;
 	}
-	//ft_printf("res: %d after switch: %d\n", res, switch_endianness(res, size));
 	return (res);
 }
 
@@ -78,4 +75,30 @@ void				int_to_ustr(int value, unsigned char *field,\
 		field[pos_mem_size(position + i)] = current_byte;
 		++i;
 	}
+}
+
+void				op_helper(t_args *args, int position, t_arena *arena,
+					t_cursor *cursor)
+{
+	int				value1;
+	int				value2;
+
+	if (args->size_1 == SIZE_IND)
+	{
+		position = position + args->value_1 % IDX_MOD;
+		value1 = ustr_to_int(arena->field, position, 4);
+	}
+	else
+		value1 = args->size_1 != 1 ? args->value_1 :
+											cursor->registry[args->value_1 - 1];
+	if (args->size_2 == SIZE_IND)
+	{
+		position = position + args->value_2 % IDX_MOD;
+		value2 = ustr_to_int(arena->field, position, 4);
+	}
+	else
+		value2 = args->size_2 != 1 ? args->value_2 :
+											cursor->registry[args->value_2 - 1];
+	args->value_1 = value1;
+	args->value_2 = value2;
 }

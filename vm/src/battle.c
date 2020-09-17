@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 17:25:10 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 00:18:22 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@
 static void			populate_operation_array(t_func arrpointer[16])
 {
 	arrpointer[0] = op_live;
-	arrpointer[1] = op_ld;
+	arrpointer[1] = op_load;
 	arrpointer[2] = op_st;
-	arrpointer[3] = op_add;
-	arrpointer[4] = op_sub;
-	arrpointer[5] = op_and;
-	arrpointer[6] = op_or;
-	arrpointer[7] = op_xor;
-	arrpointer[8] = op_zjmp;
-	arrpointer[9] = op_ldi;
+	arrpointer[3] = op_math;
+	arrpointer[4] = op_math;
+	arrpointer[5] = op_math;
+	arrpointer[6] = op_math;
+	arrpointer[7] = op_math;
+	arrpointer[8] = op_forks_jump;
+	arrpointer[9] = op_load_indexes;
 	arrpointer[10] = op_sti;
-	arrpointer[11] = op_fork;
-	arrpointer[12] = op_lld;
-	arrpointer[13] = op_lldi;
-	arrpointer[14] = op_lfork;
+	arrpointer[11] = op_forks_jump;
+	arrpointer[12] = op_load;
+	arrpointer[13] = op_load_indexes;
+	arrpointer[14] = op_forks_jump;
 	arrpointer[15] = op_aff;
 }
 
@@ -55,7 +55,6 @@ static void			check_cursors(t_arena *arena, t_cursor *cursor)
 			cursor = arena->cursor_head;
 			if (cursor == NULL)
 				print_winner(arena);
-			ft_printf("%s line: %d\n", __func__, __LINE__);
 		}
 		else
 			cursor = cursor->next;
@@ -75,12 +74,17 @@ static void			check_cursors(t_arena *arena, t_cursor *cursor)
 static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 					t_func arrpointer[16])
 {
-	t_args	args;
+	t_args			args;
+	int				num;
 
-	ft_printf("opcode: %d\n", cursor->opcode); // delete
+	num = (cursor->opcode == 11 || cursor->opcode == 14 ||
+		cursor->opcode == 10) ? 1 : 0;
 	if (cursor->opcode >= 1 && cursor->opcode <= 16)
+	{
+		populate_argmnts(arena->field, cursor->position % MEM_SIZE, &args, num);
 		arrpointer[cursor->opcode - 1](cursor, arena,
 		&args, cursor->position % MEM_SIZE);
+	}
 	cursor->position = pos_mem_size(cursor->position + cursor->jump);
 	cursor->opcode = arena->field[cursor->position];
 	if (cursor->opcode >= 1 && cursor->opcode <= 16)
@@ -111,9 +115,6 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 void				battle(t_arena *arena, t_func arrpointer[16],\
 					t_cursor *cursor)
 {
-	int	i; //delete
-
-	i = 0; //delete
 	populate_operation_array(arrpointer);
 	while (42)
 	{
@@ -125,13 +126,8 @@ void				battle(t_arena *arena, t_func arrpointer[16],\
 		{
 			cursor->wait_cycle -= cursor->wait_cycle ? 1 : 0;
 			if (cursor->wait_cycle == 0)
-			{
 				execute_operation(arena, cursor, arrpointer);
-				i++;
-			}
 			cursor = cursor->next;
-			// if (i == 50) //delte
-			// 	exit(0); //delete
 		}
 		(arena->cycles_to_die)++;
 		(arena->cycles)++;
