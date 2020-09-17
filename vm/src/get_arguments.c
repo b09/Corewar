@@ -90,6 +90,6 @@ int					check_register_values(t_args *args,
 		(args->size_3 == 1 && (args->value_3 > 16 || args->value_3 < 1)) ||
 		(third && args->size_3 != 1))
 		return (FALSE);
-		
+
 	return (TRUE);
 }
