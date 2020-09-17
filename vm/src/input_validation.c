@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 22:42:43 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 16:34:33 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,15 @@ void			validate_champs(char *input, t_arena *arena)
 
 	arena->num_champs++;
 	champ = arena->champs[arena->num_champs - 1];
-	champ->id = arena->num_champs;
-	champ->n_provided = arena->n_flag;
-	arena->n_flag = 0;
-	champ->file_name = input;
-	champ->fd = open(input, O_RDONLY);
-	if (champ->fd < 0 || arena->num_champs == MAX_PLAYERS + 1)
+	if (champ)
+	{
+		champ->id = arena->num_champs;
+		champ->n_provided = arena->n_flag;
+		arena->n_flag = 0;
+		champ->file_name = input;
+		champ->fd = open(input, O_RDONLY);
+	}
+	if (arena->num_champs == MAX_PLAYERS + 1 || (champ && champ->fd < 0))
 		print_error(arena, TOO_MANY_CHAMPS);
 	get_champ_file(arena, champ);
 }
@@ -123,7 +126,6 @@ int				grab_n_ids(t_champ *n_ids[4], int n_index, t_champ **champs,\
 			n_ids[champs[i]->n_provided - 1] = champs[i];
 		else if (champs[i]->n_provided != 0)
 			return (FALSE);
-			// print_error(SAME_N_VALUE);
 		++i;
 	}
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 22:43:44 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 16:22:38 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static void		input_validation(int argc, char **argv, t_arena *arena)
 		len = ft_strlen(argv[i]);
 		if (len > 4 && ft_strequ(".cor", &argv[i][len - 4]))
 			validate_champs(argv[i], arena);
-		else if ((len == 2 && ft_strequ("-n", argv[i])) || (len == 5 &&\
-												ft_strequ("-dump", argv[i])))
+		else if ((len == 2 && ft_strequ("-n", argv[i])) ||
+				(len == 5 && ft_strequ("-dump", argv[i])))
 			validate_flag(argv, arena, &i, len);
 		else
 			print_error(arena, INVALID_ARG);

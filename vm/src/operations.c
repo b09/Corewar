@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 13:50:58 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/17 15:39:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -614,8 +614,8 @@ void		op_fork(t_cursor *cursor, t_arena *arena, t_args *args,
 	cursor->jump = 3;
 	create_cursor(arena, cursor->id, FALSE);
 	val = ustr_to_int(arena->field, position + 1, 2);
-	arena->cursor_head->position = (position +
-						(val % IDX_MOD) % MEM_SIZE);
+	arena->cursor_head->position = ((position +
+						(val % IDX_MOD)) % MEM_SIZE);
 	arena->num_cursors++;
 }
 
