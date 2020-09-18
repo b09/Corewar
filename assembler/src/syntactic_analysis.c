@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 19:26:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 16:33:05 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/18 14:51:18 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static int	check_for_duplicate_labels(t_asm *asm_obj)
 			j = i->next;
 			while (j)
 			{
-				if (j && j->type == LABEL_TKN && ft_strequ(i->string, j->string))
+				if (j && j->type == LABEL_TKN &&
+										ft_strequ(i->string, j->string))
 					return (print_error(SYNTAX_LABEL_DUPLICATE));
 				j = j->next;
 			}
