@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/14 13:46:02 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 11:08:09 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static int	validate_args(t_token **token)
 
 /*
 **	Makes sure instructions are syntactically correct.
-**	Also allowes any amount of labels to precede an instruction.
+**	Also allows any amount of labels to precede an instruction.
 **	Instruction lines are formatted correctly if;
 **
 **	1. They start with an opcode.
@@ -148,9 +148,10 @@ int			valid_instructions(t_asm *asm_obj)
 	while (current)
 	{
 		skip_labels(&current);
-		if (!is_opcode(current->type))
+		if (current && !is_opcode(current->type))
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));
-		validate_args(&current);
+		if (current)
+			validate_args(&current);
 		if (!current || current->type != ENDLINE_TKN)
 			return (print_error(SYNTAX_EXPECTED_NL));
 		current = current->next;

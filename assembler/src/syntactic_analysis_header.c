@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/26 17:53:23 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 18:12:18 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/18 10:59:44 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,14 @@ int			valid_header(t_asm *asm_obj)
 	{
 		valid_name_cmd(asm_obj);
 		current = asm_obj->token_head;
-		if (ft_strequ(current->string, COMMENT_CMD_STRING))
+		if (current && ft_strequ(current->string, COMMENT_CMD_STRING))
 			return (valid_comment_cmd(asm_obj));
 	}
 	else if (ft_strequ(current->string, COMMENT_CMD_STRING))
 	{
 		valid_comment_cmd(asm_obj);
 		current = asm_obj->token_head;
-		if (ft_strequ(current->string, NAME_CMD_STRING))
+		if (current && ft_strequ(current->string, NAME_CMD_STRING))
 			return (valid_name_cmd(asm_obj));
 	}
 	return (print_error(SYNTAX_HEADER_INVALID));

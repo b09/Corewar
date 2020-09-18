@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:54:56 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/31 19:17:40 by bprado        ########   odam.nl         */
+/*   Updated: 2020/09/18 10:56:28 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	token_unlink_del(t_asm *asm_obj, t_token *token)
 	if (token == asm_obj->token_head)
 	{
 		asm_obj->token_head = token->next;
-		asm_obj->token_head->prev = NULL;
+		if (asm_obj->token_head)
+			asm_obj->token_head->prev = NULL;
 	}
 	else
 	{
