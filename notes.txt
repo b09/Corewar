@@ -78,3 +78,4 @@ segfault occuring if -n is 4 but champs number of champs is below that
 
 comment below found in print_hexdump(), delete this comment when no segfault
 	segfaults during debugging of operations.c
+	not yet checked, CHECK!!!

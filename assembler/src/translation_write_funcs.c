@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/16 18:11:34 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 14:10:31 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ int				create_and_write_file(t_asm *asm_obj)
 
 	file = ft_strjoin(asm_obj->file_name, ".cor");
 	fd = open(file, O_RDWR | O_APPEND | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		print_error(BAD_FILE_DESCRIPTOR);
 	asm_obj->fd = fd;
 	magic_number = COREWAR_EXEC_MAGIC;
 	write_to_file(fd, (unsigned char *)&magic_number, 4, 1);
@@ -185,6 +187,7 @@ int				create_and_write_file(t_asm *asm_obj)
 	write_exec_size(asm_obj);
 	write_string(asm_obj, asm_obj->champ_comment, COMMENT_LENGTH + 4);
 	write_exec_code(asm_obj);
-	free(file);
+	if (file)
+		free(file);
 	return (1);
 }

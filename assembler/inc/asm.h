@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/14 13:47:12 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 14:10:13 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@
 # define NUM_ARGS_INVALID		"Use one assembly file at a time.\n"
 # define SYNTAX_MISSING_NL		"Syntax error: Missing new line\n"
 # define INVALID_TKN_TYPE		"Operation is invalid for some reason\n"
+# define BAD_FILE_DESCRIPTOR	"File descriptor returned error\n"
 
 /*
 **		TOKENS:
