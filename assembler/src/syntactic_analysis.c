@@ -12,11 +12,36 @@
 
 #include "asm.h"
 
+static int	check_for_duplicate_labels(t_asm *asm_obj)
+{
+	t_token	*i;
+	t_token *j;
+
+	i = asm_obj->token_head;
+	while (i)
+	{
+		while (i->type != LABEL_TKN)
+			i = i->next;
+		if (i)
+		{
+			j = i;
+			while (j)
+			{
+				if (j->type == LABEL_TKN && ft_strequ(i->string, j->string))
+					return (print_error(SYNTAX_LABEL_DUPLICATE));
+				j = j->next;
+			}
+		}
+		i = i->next;
+	}
+	return (TRUE);
+}
+
 /*
 **	Called by:	main()
 */
 
-int		valid_syntax(t_asm *asm_obj)
+int			valid_syntax(t_asm *asm_obj)
 {
 	remove_comments_and_extra_nl(asm_obj);
 	if (valid_header(asm_obj) == FALSE)
@@ -24,5 +49,6 @@ int		valid_syntax(t_asm *asm_obj)
 	if (valid_instructions(asm_obj) == FALSE)
 		return (FALSE);
 	remove_separators_and_nl(asm_obj);
+	check_for_duplicate_labels(asm_obj);
 	return (TRUE);
 }
