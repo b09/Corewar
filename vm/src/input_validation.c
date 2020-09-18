@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 13:33:53 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 16:06:07 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,12 @@ void			validate_champs(char *input, t_arena *arena)
 		champ->file_name = input;
 		champ->fd = open(input, O_RDONLY);
 	}
-	if (arena->num_champs == MAX_PLAYERS + 1 || (champ && champ->fd < 0))
+	if (!champ || arena->num_champs == MAX_PLAYERS + 1 ||
+		(champ && champ->fd < 0))
 		print_error(arena, TOO_MANY_CHAMPS);
 	get_champ_file(arena, champ);
+	if (champ->real_exec_size == 0)
+		print_error(arena, "File is too small to be a champion\n");
 }
 
 /*
