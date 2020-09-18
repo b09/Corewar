@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 15:44:50 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 17:40:29 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void		cursor_unlink_del(t_arena *arena, t_cursor *cursor)
 				cursor->next->prev = cursor->prev;
 		}
 		free((void*)cursor);
+		arena->num_cursors--;
 	}
 }
 

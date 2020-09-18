@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 13:32:43 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 17:28:36 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
 	if (args->size_2 != SIZE_IND)
 	{
-		position = position + args->value_2 +
-									args->value_3 % IDX_MOD;
+		position = position + (args->value_2 +
+									args->value_3) % IDX_MOD;
 		int_to_ustr(cursor->registry[args->value_1 - 1],
 							arena->field, position, 4);
 	}
