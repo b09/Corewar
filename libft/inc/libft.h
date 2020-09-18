@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/01/11 11:56:34 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/03 17:13:40 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:37:40 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int					ft_max(int x, int y);
 size_t				ft_strlen(const char *str);
 
 int					ft_atoi(const char *c);
+long				ft_atol(const char *str);
 
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strequ(char const *s1, char const *s2);
@@ -156,7 +157,7 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstdequeue(t_list **alst);
 t_list				*ft_lstunlink(t_list **head_node, t_list *to_unlink);
-t_list 				*ft_lstrev(t_list **alst);
+t_list				*ft_lstrev(t_list **alst);
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstappend(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));

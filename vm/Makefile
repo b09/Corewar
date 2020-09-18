@@ -1,6 +1,6 @@
 
 NAME		= ../corewar
-# CFLAGS		= -Wall -Wextra -Werror -g
+CFLAGS		= -Wall -Wextra -Werror -g
 SRC			= $(wildcard src/*.c)
 OBJ			= $(patsubst src/%.c,obj/%.o,$(SRC))
 CC			= gcc

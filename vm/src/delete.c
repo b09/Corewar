@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 12:32:23 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:33:25 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,16 @@ void		free_everything(t_arena *arena)
 			++i;
 			next = arena->champs[i];
 			if (champ->orig_file)
-				free((void*)champ->orig_file); // alloc #3
-			free((void*)champ); // alloc #2
+				free((void*)champ->orig_file);
+			free((void*)champ);
 			champ = next;
 		}
 		if (arena->champs)
-			free((void*)arena->champs); // alloc #1
+			free((void*)arena->champs);
 	}
 	if (arena->field)
-		free ((void*)arena->field); // alloc #4
+		free((void*)arena->field);
 	while (arena->cursor_head)
-		cursor_unlink_del(arena, arena->cursor_head); // alloc #5 all cursors
+		cursor_unlink_del(arena, arena->cursor_head);
 	exit(1);
 }

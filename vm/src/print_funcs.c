@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 20:35:23 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:31:22 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,79 +63,7 @@ int				print_hexdump(t_arena *arena, bool execute_anyway)
 			++i;
 		}
 		ft_printf("\n");
-		free_everything(arena); // segfaults during debugging of operations.c
+		free_everything(arena);
 	}
 	return (0);
-}
-
-/*
-**		DEBUG FUNCTIONS ARE BELOW **************************************
-*/
-
-void		print_champs(t_arena *arena)
-{
-	int			i;
-	t_champ 	*champ;
-
-	ft_printf("*** %s() ***\n", __func__);
-	i = 0;
-	while (i < arena->num_champs)
-	{
-		// champ = arena->champs;
-		// // champ = champs[0];
-		// ft_printf("addr:%p\n", champ[i]);
-		// ft_printf("id:%d\n", champ[i].id);
-		// ft_printf("name:%s\n", champ[i].name);
-		// ft_printf("comment:%s\n", champ[i].comment);
-		// ft_printf("exec_size:%d\n", champ[i].exec_size);
-		// ft_printf("file_name:%s\n", champ[i].file_name);
-		// ft_printf("file_size:%d\n\n", champ[i].file_size);
-		// ++i;
-		champ = arena->champs[i];
-		// champ = champs[0];
-		ft_printf("addr: %p\n", champ);
-		ft_printf("id: %d\n", champ->id);
-		ft_printf("name: %s\n", champ->name);
-		ft_printf("comment: %s\n", champ->comment);
-		ft_printf("real_exec_size: %d\n", champ->real_exec_size);
-		ft_printf("file_name: %s\n", champ->file_name);
-		ft_printf("file_size: %d\n\n", champ->file_size);
-		++i;
-	}
-}
-
-void			print_cursor(t_cursor *cursor)
-{
-	ft_printf("\nid: %d  ", cursor->id);
-	ft_printf("carry: %d  ", cursor->carry);
-	ft_printf("opcode: %d  ", cursor->opcode);
-	ft_printf("last_live: %d  ", cursor->last_live);
-	ft_printf("wait_cycle: %d  ", cursor->wait_cycle);
-	ft_printf("positions: %d  ", cursor->position);
-	ft_printf("jump %d\n\n", cursor->jump);
-}
-
-void			print_arena_and_cursors(t_arena *arena)
-{
-	int			reg_i;
-	t_cursor	*cursor;
-
-	cursor = arena->cursor_head;
-	ft_printf("dump num: %d\n", arena->dump);
-	ft_printf("num_champs: %d\n", arena->num_champs);
-	ft_printf("num_cursors: %d\n", arena->num_cursors);
-	ft_printf("cycles: %d\n", arena->cycles);
-	ft_printf("cycles_to_die: %d\n", arena->cycles_to_die);
-	while (cursor)
-	{
-		cursor = arena->cursor_head;
-		reg_i = 0;
-		while(reg_i < REG_NUMBER)
-		{
-			ft_printf("reg[%d]: %d\n", reg_i, cursor->registry[reg_i]);
-			++reg_i;
-		}
-		cursor = cursor->next;
-	}
-	ft_printf("test arr[14]: %d\n", arena->wait_cycle_arr[14]);
 }

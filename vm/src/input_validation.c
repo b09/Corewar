@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/17 17:29:08 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:33:53 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void			validate_ids(t_arena *arena)
 	i = 0;
 	ft_bzero(&n_ids, sizeof(n_ids));
 	if (grab_n_ids(n_ids, 0, arena->champs, arena->num_champs) == 0)
-			print_error(arena, SAME_N_VALUE);
+		print_error(arena, SAME_N_VALUE);
 	while (i < arena->num_champs)
 	{
 		champs = n_ids[i];

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 00:15:16 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:25:10 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct		s_champ
 	unsigned char	*exec_code;
 	char			*file_name;
 	int				id;
-	size_t			n_provided;
+	int				n_provided;
 	bool			alive;
 }					t_champ;
 

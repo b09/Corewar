@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 00:18:56 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:32:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void				populate_argmnts(unsigned char *field, int pos,\
 int					check_register_values(t_args *args,
 					bool first, bool second, bool third)
 {
-
 	if (!args->size_1 ||
 		(args->size_1 == 1 && (args->value_1 > 16 || args->value_1 < 1)) ||
 		(first && args->size_1 != 1))

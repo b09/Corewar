@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/19 13:56:19 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/08/30 13:34:06 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:02:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,27 @@ int			valid_cmd_tkn(char *str)
 
 int			valid_dir_tkn(char *str)
 {
+	int		i;
+	long	int_max;
+	long	int_min;
+
+	int_min = -2147483648;
+	int_max = 2147483647;
+	i = 0;
 	if (*str != DIRECT_CHAR)
 		return (FALSE);
 	str++;
-	if (*str == '-')
-		str++;
-	if (*str == '\0')
+	if (str[i] == '-')
+		i++;
+	if (str[i] == '\0')
 		return (FALSE);
-	while (ft_isdigit(*str))
-		str++;
-	if (*str != '\0')
+	while (ft_isdigit(str[i]))
+		i++;
+	if (str[i] != '\0')
+		return (FALSE);
+	if (i > 10)
+		return (FALSE);
+	if (ft_atol(str) > int_max || ft_atol(str) > int_min)
 		return (FALSE);
 	return (TRUE);
 }
@@ -98,13 +109,24 @@ int			valid_ilbl_tkn(char *str)
 
 int			valid_ind_tkn(char *str)
 {
-	if (*str == '-')
-		str++;
-	if (*str == '\0')
+	int		i;
+	long	int_max;
+	long	int_min;
+
+	int_min = -2147483648;
+	int_max = 2147483647;
+	i = 0;
+	if (str[i] == '-')
+		i++;
+	if (str[i] == '\0')
 		return (FALSE);
-	while (ft_isdigit(*str))
-		str++;
-	if (*str != '\0')
+	while (ft_isdigit(str[i]))
+		i++;
+	if (str[i] != '\0')
+		return (FALSE);
+	if (i > 10)
+		return (FALSE);
+	if (ft_atol(str) > int_max || ft_atol(str) > int_min)
 		return (FALSE);
 	return (TRUE);
 }

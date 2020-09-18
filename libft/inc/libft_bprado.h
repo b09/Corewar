@@ -6,12 +6,12 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/01/29 17:27:40 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/03 15:06:20 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 13:38:19 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef LIBFT_BPRADO_H
+# define LIBFT_BPRADO_H
 # define BUFF_SIZE 1
 # include <string.h>
 # include <unistd.h>

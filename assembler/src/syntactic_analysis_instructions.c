@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/28 16:51:58 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/18 11:08:09 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 12:09:11 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	validate_args(t_token **token)
 	int		i;
 
 	ins = *token;
-	current = ins->next;
+	current = (*token)->next;
 	i = 0;
 	while (i < ins->t_oper->number_of_args)
 	{
@@ -109,7 +109,7 @@ static int	validate_args(t_token **token)
 		current = current->next;
 		if (i < ins->t_oper->number_of_args)
 		{
-			if (current->type != SEPARATOR_TKN)
+			if (!current || current->type != SEPARATOR_TKN)
 				return (print_error(SYNTAX_MISSING_SEPARATOR));
 			current = current->next;
 		}
@@ -152,9 +152,10 @@ int			valid_instructions(t_asm *asm_obj)
 			return (print_error(SYNTAX_EXPECTED_INSTRUCTION));
 		if (current)
 			validate_args(&current);
-		if (!current || current->type != ENDLINE_TKN)
+		if (current && current->type != ENDLINE_TKN)
 			return (print_error(SYNTAX_EXPECTED_NL));
-		current = current->next;
+		if (current)
+			current = current->next;
 	}
 	return (TRUE);
 }
