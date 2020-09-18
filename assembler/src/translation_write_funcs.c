@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 14:10:31 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 14:28:08 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ static void		write_to_file(int fd, unsigned char *val, size_t size,
 **			char *str		==> string to be written into the file
 **			size_t null_cnt	==> amount of zeros to be written after the string
 **
+**	Notes:
+**			Both strings for '.name' and '.comment' with at least be empty
+**			empty string written as "". The quotes must be taken from both
+**			strings, which is why size is decremented by 2, and why *str, is
+**			increased by + 1 in the first call of write_to_file()
+**
 **	Return:
 **			Void
 **
@@ -74,8 +80,8 @@ static void		write_string(t_asm *asm_obj, char *str, size_t null_count)
 {
 	size_t		size;
 
-	size = ft_strlen(str) - 2;
-	size = size < 0 ? 0 : size;
+	size = ft_strlen(str);
+	size = size < 2 ? 0 : size - 2;
 	write_to_file(asm_obj->fd, (unsigned char *)str + 1, size, 0);
 	str = "\0";
 	while (size < null_count)
