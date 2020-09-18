@@ -87,6 +87,7 @@
 # define NUM_ARGS_INVALID		"Use one assembly file at a time.\n"
 # define SYNTAX_MISSING_NL		"Syntax error: Missing new line\n"
 # define INVALID_TKN_TYPE		"Operation is invalid for some reason\n"
+# define SYNTAX_LABEL_DUPLICATE	"Redefinition of label not allowed\n"
 
 /*
 **		TOKENS:
