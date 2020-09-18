@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/01 18:45:29 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/16 18:11:34 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 **			create_and_write_file()
 */
 
-static void		write_to_file(int fd, unsigned char *val, size_t size, int rev)
+static void		write_to_file(int fd, unsigned char *val, size_t size,
+				size_t rev)
 {
 	if (rev)
 	{

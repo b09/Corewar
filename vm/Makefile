@@ -1,7 +1,7 @@
 
 NAME		= ../corewar
-CFLAGS		= -Wall -Wextra -Werror -g
-SRC			= src/main.c
+# CFLAGS		= -Wall -Wextra -Werror -g
+SRC			= $(wildcard src/*.c)
 OBJ			= $(patsubst src/%.c,obj/%.o,$(SRC))
 CC			= gcc
 INC			= -I inc -I ../libft/inc -I ../ft_printf/inc

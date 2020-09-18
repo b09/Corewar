@@ -1,0 +1,22 @@
+-[../valid_asm/valid_cor/champ.cor] memory is NOT the same at cycle [1600]
+
+-[../valid_asm/valid_cor/sti_reg_ind_dir.cor] memory is NOT the same at cycle [100]
+
+-[../valid_asm/valid_cor/sti_reg_ind_reg.cor] memory is NOT the same at cycle [100]
+
+-[../valid_asm/valid_cor/test_and6.cor] memory is NOT the same at cycle [100]
+
+-[../valid_asm/valid_cor/test_ldi.cor] memory is NOT the same at cycle [1600]
+
+-[42.cor] Segmentation fault (core dumped)
+    also error message is diffrent then from the original one
+
+-[../valid_asm/valid_cor/42small.cor] memory is NOT the same at cycle [1600]
+
+-[../valid_asm/valid_cor/Asombra_small.cor] memory is NOT the same at cycle [1600]
+    Ours dumps not
+
+-[../valid_asm/valid_cor/Bazou_small.cor] memory is NOT the same at cycle [100]
+
+-
+
