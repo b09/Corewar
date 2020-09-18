@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/01 18:27:38 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/18 08:57:24 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,14 @@ static int		lexicon_valid(t_asm *info)
 
 static void		asm_obj_content_del(t_asm *asm_obj)
 {
-	token_lst_del(asm_obj->token_head);
-	free(asm_obj->file_name);
-	free(asm_obj->champ_name);
-	free(asm_obj->champ_comment);
+	if (asm_obj->token_head)
+		token_lst_del(asm_obj->token_head);
+	if (asm_obj->file_name)
+		free(asm_obj->file_name);
+	if (asm_obj->champ_name)
+		free(asm_obj->champ_name);
+	if (asm_obj->champ_comment)
+		free(asm_obj->champ_comment);
 }
 
 int				main(int argc, char **argv)
