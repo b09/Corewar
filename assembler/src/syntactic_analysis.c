@@ -20,19 +20,19 @@ static int	check_for_duplicate_labels(t_asm *asm_obj)
 	i = asm_obj->token_head;
 	while (i)
 	{
-		while (i->type != LABEL_TKN)
+		while (i && i->type != LABEL_TKN)
 			i = i->next;
 		if (i)
 		{
-			j = i;
+			j = i->next;
 			while (j)
 			{
-				if (j->type == LABEL_TKN && ft_strequ(i->string, j->string))
+				if (j && j->type == LABEL_TKN && ft_strequ(i->string, j->string))
 					return (print_error(SYNTAX_LABEL_DUPLICATE));
 				j = j->next;
 			}
+			i = i->next;
 		}
-		i = i->next;
 	}
 	return (TRUE);
 }

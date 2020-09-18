@@ -54,7 +54,7 @@ int			valid_dir_tkn(char *str)
 		return (FALSE);
 	if (i > 10)
 		return (FALSE);
-	if (ft_atol(str) > int_max || ft_atol(str) > int_min)
+	if (ft_atol(str) > int_max || ft_atol(str) < int_min)
 		return (FALSE);
 	return (TRUE);
 }
@@ -126,7 +126,7 @@ int			valid_ind_tkn(char *str)
 		return (FALSE);
 	if (i > 10)
 		return (FALSE);
-	if (ft_atol(str) > int_max || ft_atol(str) > int_min)
+	if (ft_atol(str) > int_max || ft_atol(str) < int_min)
 		return (FALSE);
 	return (TRUE);
 }

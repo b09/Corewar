@@ -71,7 +71,7 @@ static int		lexicon_valid(t_asm *info)
 	{
 		if (valid_token(curr) == FALSE)
 		{
-			ft_putendl_fd("Invalid token", 2);
+			ft_printf("Invalid token %s at %d, %d\n", curr->string, curr->row, curr->col);
 			exit(1);
 		}
 		curr = curr->next;

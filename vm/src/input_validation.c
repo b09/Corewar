@@ -47,7 +47,8 @@ void			get_champ_file(t_arena *arena, t_champ *champ)
 		ft_memcmp((void*)&num, (void*)champ->exec_code - 4, 4);
 	num = champ->file_size - CHAMP_MINIMUM_SIZE;
 	i |= ft_memcmp_rev((void*)champ->exec_size, (void*)&num, 4);
-	(i || !champ->name[0]) && print_error(arena, BAD_BINARY);
+	if (i || !champ->name[0])
+		print_error(arena, BAD_BINARY);
 	champ->real_exec_size = num;
 }
 
@@ -98,7 +99,8 @@ void			validate_flag(char **argv, t_arena *arena, int *argc, int len)
 	else if (len == 2 && arena->n_flag == 0)
 	{
 		arena->n_flag = ft_atoi(argv[*argc]);
-		arena->n_flag == 0 && print_error(arena, INVALID_N);
+		if (arena->n_flag == 0)
+			print_error(arena, INVALID_N);
 	}
 	else
 		print_error(arena, MULTIPLE_N);
