@@ -156,6 +156,7 @@ typedef struct		s_arena
 	int				num_champs;
 	unsigned char	*field;
 	int				num_cursors;
+	int				num_forks;
 	int				cycles;
 	int				cycles_to_die;
 	int				max_cycle_die;

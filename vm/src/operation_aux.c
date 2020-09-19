@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/19 17:02:06 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/19 17:34:26 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 	while (i < size)
 	{
 		current_byte = field[pos_mem_size(position + i)];
-		shift = (((size - 1) * 8) - (i * 8));
-		res |= (unsigned int)current_byte << shift;
+		shift = (size - 1) - i;
+		res |= (unsigned int)current_byte << (shift * 8);
 		i++;
 	}
 	if (size == 2)
