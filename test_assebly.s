@@ -2,5 +2,5 @@
 .comment ""
 
 label:
-	live %0
+	live %10000000000 
 	

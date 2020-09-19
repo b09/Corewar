@@ -6,7 +6,7 @@
 /*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/09 22:34:22 by fmiceli       #+#    #+#                 */
-/*   Updated: 2020/09/18 00:17:56 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/19 17:02:06 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,23 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 void				int_to_ustr(int value, unsigned char *field,\
 					int position, int size)
 {
-	unsigned char	current_byte;
-	unsigned int	mask;
-	int				shift;
-	int				i;
+	int str[4];
 
-	i = 0;
-	while (i < size)
+	str[0] = (value >> 24) & 255;
+	str[1] = (value >> 16) & 255;
+	str[2] = (value >> 8) & 255;
+	str[3] = value & 255;
+	if (size == 2)
 	{
-		shift = (((size - 1) * 8) - (i * 8));
-		mask = 0xFF << shift;
-		current_byte = (unsigned char)((value & mask) >> shift);
-		field[pos_mem_size(position + i)] = current_byte;
-		++i;
+		field[pos_mem_size(position + 2)] = str[2];
+		field[pos_mem_size(position + 3)] = str[3];
+	}
+	if (size == 4)
+	{
+		field[pos_mem_size(position)] = str[0];
+		field[pos_mem_size(position + 1)] = str[1];
+		field[pos_mem_size(position + 2)] = str[2];
+		field[pos_mem_size(position + 3)] = str[3];
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 17:28:36 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/19 14:37:52 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 	{
 		position = (position + args->value_2) % IDX_MOD;
 		int_to_ustr(cursor->registry[args->value_1 - 1],
-										arena->field, position, 4);
+										arena->field, position, 2);
 	}
 }
 
@@ -46,7 +46,7 @@ void		op_sti(t_cursor *cursor, t_arena *arena, t_args *args,
 	{
 		int_to_ustr(cursor->registry[args->value_1 - 1],
 						arena->field, position +
-						((args->value_2 + args->value_3) % IDX_MOD), 4);
+						((args->value_2 + args->value_3) % IDX_MOD), 2);
 	}
 }
 

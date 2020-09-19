@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/18 08:57:24 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/19 17:06:47 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,18 @@ static int		read_file(int argc, char **argv, t_asm *info)
 	return (TRUE);
 }
 
+static void		asm_obj_content_del(t_asm *asm_obj)
+{
+	if (asm_obj->token_head)
+		token_lst_del(asm_obj->token_head);
+	if (asm_obj->file_name)
+		free(asm_obj->file_name);
+	if (asm_obj->champ_name)
+		free(asm_obj->champ_name);
+	if (asm_obj->champ_comment)
+		free(asm_obj->champ_comment);
+}
+
 /*
 **	Params:		info struct
 **
@@ -71,24 +83,14 @@ static int		lexicon_valid(t_asm *info)
 	{
 		if (valid_token(curr) == FALSE)
 		{
-			ft_printf("Invalid token %s at %d, %d\n", curr->string, curr->row, curr->col);
+			ft_printf("Invalid token with string:[%s] line:%d, char:%d\n",
+			curr->string, curr->row, curr->col);
+			asm_obj_content_del(info);
 			exit(1);
 		}
 		curr = curr->next;
 	}
 	return (TRUE);
-}
-
-static void		asm_obj_content_del(t_asm *asm_obj)
-{
-	if (asm_obj->token_head)
-		token_lst_del(asm_obj->token_head);
-	if (asm_obj->file_name)
-		free(asm_obj->file_name);
-	if (asm_obj->champ_name)
-		free(asm_obj->champ_name);
-	if (asm_obj->champ_comment)
-		free(asm_obj->champ_comment);
 }
 
 int				main(int argc, char **argv)
