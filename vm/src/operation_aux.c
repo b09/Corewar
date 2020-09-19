@@ -51,8 +51,8 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 	while (i < size)
 	{
 		current_byte = field[pos_mem_size(position + i)];
-		shift = (((size - 1) * 8) - (i * 8));
-		res |= (unsigned int)current_byte << shift;
+		shift = (size - 1) - i;
+		res |= (unsigned int)current_byte << (shift * 8);
 		i++;
 	}
 	if (size == 2)
@@ -71,9 +71,9 @@ void				int_to_ustr(int value, unsigned char *field,\
 	i = 0;
 	while (i < size)
 	{
-		shift = (((size - 1) * 8) - (i * 8));
-		mask = 0xFF << shift;
-		current_byte = (unsigned char)((value & mask) >> shift);
+		shift = (size - 1) - i;;
+		mask = 0xFF << (shift * 8);
+		current_byte = (unsigned char)((value & mask) >> (shift * 8));
 		field[pos_mem_size(position + i)] = current_byte;
 		++i;
 	}
