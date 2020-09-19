@@ -82,8 +82,13 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 	if (cursor->opcode >= 1 && cursor->opcode <= 16)
 	{
 		populate_argmnts(arena->field, cursor->position % MEM_SIZE, &args, num);
+		ft_printf("Before: ");
+		print_cursor(cursor);
 		arrpointer[cursor->opcode - 1](cursor, arena,
-		&args, cursor->position % MEM_SIZE);
+										&args, cursor->position % MEM_SIZE);
+		ft_printf("After : ");
+		print_cursor(cursor);
+		ft_putchar('\n');
 	}
 	cursor->position = pos_mem_size(cursor->position + cursor->jump);
 	cursor->opcode = arena->field[cursor->position];

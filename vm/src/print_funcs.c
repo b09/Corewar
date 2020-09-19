@@ -12,6 +12,24 @@
 
 #include "vm.h"
 
+void			print_cursor(t_cursor *cursor)
+{
+	// remove?
+	ft_printf("id: %d ", cursor->id);
+	// ft_printf("carry: %d ", cursor->carry);
+	ft_printf("opcode: %d ", cursor->opcode);
+	// ft_printf("last_live: %d ", cursor->last_live);
+	// ft_printf("wait_cycle: %d ", cursor->wait_cycle);
+	// ft_printf("positions: %d ", cursor->position);
+	// ft_printf("jump %d ", cursor->jump);
+	ft_printf("reg[0]: %d ", cursor->registry[0]);
+	// ft_printf("reg[1]: %d ", cursor->registry[1]);
+	// ft_printf("reg[2]: %d ", cursor->registry[2]);
+	// ft_printf("reg[3]: %d ", cursor->registry[3]);
+	// ft_printf("reg[4]: %d\n", cursor->registry[4]);
+	ft_putchar('\n');
+}
+
 int				print_error(t_arena *arena, char *str)
 {
 	ft_printf("%s", str);

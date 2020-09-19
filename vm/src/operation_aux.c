@@ -89,7 +89,7 @@ void				op_helper(t_args *args, int position, t_arena *arena,
 		value1 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value1 = args->size_1 != 1 ? args->value_1 :
+		value1 = (args->size_1 != 1) ? args->value_1 :
 											cursor->registry[args->value_1 - 1];
 	if (args->size_2 == SIZE_IND)
 	{
@@ -97,7 +97,7 @@ void				op_helper(t_args *args, int position, t_arena *arena,
 		value2 = ustr_to_int(arena->field, position, 4);
 	}
 	else
-		value2 = args->size_2 != 1 ? args->value_2 :
+		value2 = (args->size_2 != 1) ? args->value_2 :
 											cursor->registry[args->value_2 - 1];
 	args->value_1 = value1;
 	args->value_2 = value2;
