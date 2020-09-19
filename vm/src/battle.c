@@ -81,7 +81,6 @@ static void			execute_operation(t_arena *arena, t_cursor *cursor,\
 		cursor->opcode == 10) ? 1 : 0;
 	if (cursor->opcode >= 1 && cursor->opcode <= 16)
 	{
-		ft_printf("id: %d op: %d\n", cursor->id, cursor->opcode);
 		populate_argmnts(arena->field, cursor->position % MEM_SIZE, &args, num);
 		arrpointer[cursor->opcode - 1](cursor, arena,
 										&args, cursor->position % MEM_SIZE);
