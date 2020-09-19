@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/27 18:13:22 by bprado        #+#    #+#                 */
-/*   Updated: 2020/09/19 17:01:42 by macbook       ########   odam.nl         */
+/*   Updated: 2020/09/19 17:13:46 by macbook       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void			op_live(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (value < 0 && value >= -MAX_PLAYERS)
 	{
 		ft_printf("A process shows that player %d (%s) is alive.\n",
-		value, arena->champs[(value * -1) - 1]->name);
+		value * -1 , arena->champs[(value * -1) - 1]->name);
 		arena->last_champ_alive = value * -1;
 	}
 }
