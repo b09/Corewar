@@ -2,11 +2,14 @@
 .comment ""
 
 	sti		r1, %:live, %1
+	sti		r1, %:live2, %1
 	live	%-1
 	sub		r1, r1, r2
 fork:
-	fork	%9
+	fork	%14
 	fork	%-3
+live2:
+	live	%0
 	zjmp	%:fork
 	sub		r1, r1, r2
 live:

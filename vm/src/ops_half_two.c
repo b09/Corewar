@@ -18,9 +18,10 @@ static void				copy_cursor(t_arena *arena, int r1, int pos)
 
 	// ft_printf("champ: %d\n", r1);
 	arena->num_cursors += 1;
+	arena->num_forks += 1;
 	cursor = (t_cursor*)ft_memalloc(sizeof(t_cursor));
 	cursor->registry[0] = r1;
-	cursor->id = arena->num_cursors;
+	cursor->id = arena->num_champs + arena->num_forks;
 	cursor->position = pos;
 	cursor->opcode = arena->field[cursor->position];
 	if (arena->cursor_head != NULL)
