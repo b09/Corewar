@@ -4,7 +4,7 @@
 	sti		r1, %:live, %1
 	sub		r1, r1, r2
 fork:
-	fork	%7
+	fork	%9
 	fork	%-3
 	zjmp	%:fork
 live:
