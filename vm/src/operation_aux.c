@@ -55,6 +55,8 @@ int					ustr_to_int(unsigned char *field, int position, int size)
 		res |= (unsigned int)current_byte << shift;
 		i++;
 	}
+	if (size == 2)
+		return ((short)res);
 	return (res);
 }
 
@@ -86,7 +88,7 @@ void				op_helper(t_args *args, int position, t_arena *arena,
 	if (args->size_1 == SIZE_IND)
 	{
 		position = position + args->value_1 % IDX_MOD;
-		value1 = ustr_to_int(arena->field, position, 4);
+		value1 = ustr_to_int(arena->field, position, 2);
 	}
 	else
 		value1 = (args->size_1 != 1) ? args->value_1 :
@@ -94,7 +96,7 @@ void				op_helper(t_args *args, int position, t_arena *arena,
 	if (args->size_2 == SIZE_IND)
 	{
 		position = position + args->value_2 % IDX_MOD;
-		value2 = ustr_to_int(arena->field, position, 4);
+		value2 = ustr_to_int(arena->field, position, 2);
 	}
 	else
 		value2 = (args->size_2 != 1) ? args->value_2 :

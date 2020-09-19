@@ -60,8 +60,6 @@ void		op_math(t_cursor *cursor, t_arena *arena, t_args *args,
 		(cursor->opcode <= 5 && check_register_values(args, 1, 2, 3) == FALSE))
 		return ;
 	cursor->jump = 2 + args->size_1 + args->size_2 + args->size_3;
-	// ft_printf("%s opcode: %d\n", __func__, cursor->opcode);
-	// ft_printf("arg1, %d arg2, %d arg3 %d\n", args->value_1, args->value_2, args->value_3);
 	op_helper(args, position, arena, cursor);
 	if (cursor->opcode == 4)
 		cursor->registry[args->value_3 - 1] = args->value_1 + args->value_2;
