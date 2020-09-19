@@ -23,7 +23,7 @@ void		op_st(t_cursor *cursor, t_arena *arena, t_args *args,
 		cursor->registry[args->value_1 - 1];
 	else if (args->size_2 == SIZE_IND)
 	{
-		position = (position + args->value_2) % IDX_MOD;
+		position = position + (args->value_2 % IDX_MOD);
 		int_to_ustr(cursor->registry[args->value_1 - 1],
 										arena->field, position, 2);
 	}
