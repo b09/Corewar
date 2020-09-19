@@ -1,5 +1,5 @@
-.name "Simple"
-.comment ""
+.name "Nippertje"
+.comment "Dress me slowly, cause I'm in a Spanish hurry."
 
 	sti		r1, %:live, %1
 	sti		r1, %:live2, %1

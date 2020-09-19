@@ -87,7 +87,7 @@ void			op_live(t_cursor *cursor, t_arena *arena, t_args *args,
 	if (value < 0 && value >= -MAX_PLAYERS)
 	{
 		ft_printf("A process shows that player %d (%s) is alive.\n",
-		value * -1 , arena->champs[(value * -1) - 1]->name);
+		value * -1, arena->champs[(value * -1) - 1]->name);
 		arena->last_champ_alive = value * -1;
 	}
 }
